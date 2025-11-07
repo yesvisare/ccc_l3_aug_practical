@@ -1,0 +1,74 @@
+{
+  "queries": [
+    {
+      "id": 1,
+      "query": "Analyze our top 3 competitors in the cloud storage market and create a strategy report",
+      "complexity": "high",
+      "expected_agents": ["planner", "executor", "validator"],
+      "description": "Complex multi-step analytical task requiring research, strategy, and validation"
+    },
+    {
+      "id": 2,
+      "query": "What is our product return policy?",
+      "complexity": "low",
+      "expected_agents": ["single"],
+      "description": "Simple factual query - should NOT use multi-agent (anti-pattern)"
+    },
+    {
+      "id": 3,
+      "query": "Create a comprehensive market entry strategy for Southeast Asia including competitor analysis, pricing strategy, and risk assessment",
+      "complexity": "high",
+      "expected_agents": ["planner", "executor", "validator"],
+      "description": "Complex strategic task with multiple independent components"
+    },
+    {
+      "id": 4,
+      "query": "Research emerging AI trends in healthcare, identify top 5 opportunities, and draft investment recommendations",
+      "complexity": "high",
+      "expected_agents": ["planner", "executor", "validator"],
+      "description": "Research-heavy task with structured deliverables"
+    },
+    {
+      "id": 5,
+      "query": "List our office locations",
+      "complexity": "low",
+      "expected_agents": ["single"],
+      "description": "Simple lookup - demonstrates multi-agent overkill anti-pattern"
+    }
+  ],
+  "expected_outcomes": {
+    "high_complexity": {
+      "min_latency_seconds": 30,
+      "max_latency_seconds": 60,
+      "estimated_cost_usd": 0.045,
+      "quality_improvement": "15-30%"
+    },
+    "low_complexity": {
+      "note": "Should use single-agent approach",
+      "latency_seconds": 3,
+      "estimated_cost_usd": 0.015
+    }
+  },
+  "common_failures": [
+    {
+      "failure": "communication_deadlock",
+      "trigger": "Missing conditional edges in routing",
+      "symptom": "System hangs indefinitely"
+    },
+    {
+      "failure": "role_confusion",
+      "trigger": "Executor starts planning instead of executing",
+      "symptom": "Agents override their designated roles"
+    },
+    {
+      "failure": "validation_loops",
+      "trigger": "Non-specific validator feedback",
+      "symptom": "Endless iterations without improvement"
+    },
+    {
+      "failure": "multi_agent_overkill",
+      "trigger": "Simple query routed to multi-agent",
+      "symptom": "3x cost and latency for no quality gain"
+    }
+  ]
+}
