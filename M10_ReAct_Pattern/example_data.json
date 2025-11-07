@@ -1,0 +1,61 @@
+{
+  "description": "Example queries demonstrating ReAct pattern usage",
+  "test_queries": {
+    "simple_rag": [
+      "What is our refund policy?",
+      "What are our office hours?",
+      "How do I reset my password?"
+    ],
+    "calculator": [
+      "What is 125000 * 1.15?",
+      "Calculate the percentage difference between 98000 and 143750",
+      "What is 50000 + 25000 - 15000?"
+    ],
+    "industry_data": [
+      "What is the SaaS industry growth rate?",
+      "What is the E-commerce conversion rate benchmark?",
+      "What is the typical LTV:CAC ratio for SaaS?"
+    ],
+    "multi_step": [
+      "Compare our Q3 revenue of $125,000 to the SaaS industry growth rate and calculate the percentage difference",
+      "Search our refund policy and compare it to E-commerce industry standards",
+      "What is 100000 * 1.25, and how does that compare to the SaaS industry revenue benchmark?"
+    ]
+  },
+  "expected_tool_usage": {
+    "simple_rag": ["RAG_Search"],
+    "calculator": ["Calculator"],
+    "industry_data": ["Industry_Data"],
+    "multi_step": ["RAG_Search", "Industry_Data", "Calculator"]
+  },
+  "company_data": {
+    "financials": {
+      "Q1_revenue": 98000,
+      "Q2_revenue": 110000,
+      "Q3_revenue": 125000,
+      "Q4_target": 145000
+    },
+    "metrics": {
+      "customer_count": 450,
+      "churn_rate": "6.2%",
+      "avg_deal_size": 5000,
+      "growth_rate": "27.5% YoY"
+    }
+  },
+  "failure_scenarios": {
+    "infinite_loop": {
+      "query": "What is the population of cities in California?",
+      "expected_behavior": "Loop detection triggers after 3 identical tool calls"
+    },
+    "wrong_tool": {
+      "query": "What is 500 * 2?",
+      "correct_tool": "Calculator",
+      "common_mistake": "RAG_Search (especially with GPT-3.5)"
+    },
+    "missing_stop": {
+      "query": "What is our refund policy?",
+      "expected_steps": "1-2",
+      "inefficient_steps": "5+"
+    }
+  }
+}
