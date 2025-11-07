@@ -1,0 +1,75 @@
+{
+  "tenants": [
+    {
+      "tenant_id": "tenant_free_001",
+      "name": "Startup Co",
+      "tier": "free",
+      "queries_per_hour": 100,
+      "description": "Small startup testing the platform"
+    },
+    {
+      "tenant_id": "tenant_pro_001",
+      "name": "Growth Inc",
+      "tier": "pro",
+      "queries_per_hour": 1000,
+      "description": "Growing company with moderate usage"
+    },
+    {
+      "tenant_id": "tenant_enterprise_001",
+      "name": "BigCorp LLC",
+      "tier": "enterprise",
+      "queries_per_hour": 10000,
+      "description": "Large enterprise customer"
+    }
+  ],
+  "sample_queries": [
+    {
+      "query": "What are the best practices for RAG architecture?",
+      "model": "gpt-3.5-turbo",
+      "use_tools": false,
+      "use_embeddings": true,
+      "expected_tokens": 800
+    },
+    {
+      "query": "Analyze this complex dataset and provide insights",
+      "model": "gpt-4",
+      "use_tools": true,
+      "use_embeddings": true,
+      "expected_tokens": 4000
+    },
+    {
+      "query": "Simple FAQ lookup",
+      "model": "gpt-3.5-turbo",
+      "use_tools": false,
+      "use_embeddings": false,
+      "expected_tokens": 200
+    }
+  ],
+  "test_scenarios": [
+    {
+      "name": "Normal Load",
+      "description": "Tenant stays under quota",
+      "tenant_id": "tenant_free_001",
+      "queries_count": 50,
+      "concurrent_requests": 5,
+      "expected_outcome": "All requests succeed"
+    },
+    {
+      "name": "Quota Exceeded",
+      "description": "Tenant exceeds hourly quota",
+      "tenant_id": "tenant_free_001",
+      "queries_count": 150,
+      "concurrent_requests": 10,
+      "expected_outcome": "First 100 succeed, rest queued or rejected"
+    },
+    {
+      "name": "Noisy Neighbor",
+      "description": "One tenant floods system",
+      "tenants": ["tenant_free_001", "tenant_free_002"],
+      "heavy_tenant": "tenant_free_001",
+      "heavy_queries": 200,
+      "normal_queries": 10,
+      "expected_outcome": "Fair queue prevents starvation"
+    }
+  ]
+}
