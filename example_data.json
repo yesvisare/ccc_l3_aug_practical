@@ -1,0 +1,134 @@
+{
+  "documents": [
+    {
+      "id": "doc_001",
+      "title": "2024 Security Audit Report - Executive Summary",
+      "content": "This executive summary highlights critical vulnerabilities identified during Q1 2024. The audit revealed 3 high-severity issues requiring immediate attention. For technical implementation details, see Technical Implementation Guide (doc_002). Risk assessment methodology is documented in Security Assessment Framework (doc_003). Remediation timeline and resource allocation are outlined in Remediation Roadmap (doc_004).",
+      "metadata": {
+        "type": "audit_report",
+        "date": "2024-01-15",
+        "author": "Security Team"
+      },
+      "references": ["doc_002", "doc_003", "doc_004"]
+    },
+    {
+      "id": "doc_002",
+      "title": "Technical Implementation Guide - Authentication System",
+      "content": "The authentication system implements OAuth 2.0 with JWT tokens. Current implementation has a critical vulnerability in token validation logic (CVE-2024-001). The vulnerability allows token reuse beyond expiration. Fix requires updating the TokenValidator class in auth_service module. Related security controls are documented in Access Control Policy (doc_005). Testing procedures are outlined in Security Testing Procedures (doc_006).",
+      "metadata": {
+        "type": "technical_guide",
+        "date": "2024-01-10",
+        "author": "Engineering Team"
+      },
+      "references": ["doc_005", "doc_006"]
+    },
+    {
+      "id": "doc_003",
+      "title": "Security Assessment Framework",
+      "content": "Our security assessment framework follows OWASP Top 10 and NIST guidelines. Assessment includes automated scanning, manual penetration testing, and code review. Vulnerability severity is classified using CVSS v3.1 scoring. High-severity issues (CVSS > 7.0) trigger immediate remediation workflows. The complete assessment checklist is available in Assessment Checklist (doc_007).",
+      "metadata": {
+        "type": "framework_document",
+        "date": "2023-12-01",
+        "author": "Security Architecture"
+      },
+      "references": ["doc_007"]
+    },
+    {
+      "id": "doc_004",
+      "title": "Remediation Roadmap Q1 2024",
+      "content": "Remediation timeline spans 6 weeks with phased deployment. Week 1-2: Fix authentication vulnerabilities (doc_002). Week 3-4: Implement additional security controls (doc_005). Week 5-6: Comprehensive testing and validation (doc_006). Resource allocation: 3 senior engineers, 2 security specialists. Budget approval documented in Budget Allocation (doc_008).",
+      "metadata": {
+        "type": "roadmap",
+        "date": "2024-01-16",
+        "author": "Project Management"
+      },
+      "references": ["doc_002", "doc_005", "doc_006", "doc_008"]
+    },
+    {
+      "id": "doc_005",
+      "title": "Access Control Policy",
+      "content": "Access control implements role-based access control (RBAC) with principle of least privilege. Users are assigned roles: Admin, Developer, Auditor, ReadOnly. Admin role has full system access. Authentication requirements are detailed in Technical Implementation Guide (doc_002). Policy compliance is audited quarterly per Security Audit Report (doc_001).",
+      "metadata": {
+        "type": "policy_document",
+        "date": "2023-11-15",
+        "author": "Security Policy Team"
+      },
+      "references": ["doc_001", "doc_002"]
+    },
+    {
+      "id": "doc_006",
+      "title": "Security Testing Procedures",
+      "content": "Testing includes unit tests, integration tests, and penetration testing. Authentication tests verify token validation, session management, and access control. Test suite runs on every commit via CI/CD pipeline. Manual penetration testing conducted quarterly. Testing framework setup documented in Testing Infrastructure Guide (doc_009).",
+      "metadata": {
+        "type": "procedure_document",
+        "date": "2024-01-05",
+        "author": "QA Team"
+      },
+      "references": ["doc_009"]
+    },
+    {
+      "id": "doc_007",
+      "title": "Security Assessment Checklist",
+      "content": "Comprehensive checklist covering: Authentication mechanisms, Authorization controls, Data encryption, Input validation, Session management, Error handling, Logging and monitoring. Each item includes pass/fail criteria and remediation guidance. Checklist aligns with Security Assessment Framework (doc_003).",
+      "metadata": {
+        "type": "checklist",
+        "date": "2023-12-15",
+        "author": "Security Architecture"
+      },
+      "references": ["doc_003"]
+    },
+    {
+      "id": "doc_008",
+      "title": "Q1 2024 Security Budget Allocation",
+      "content": "Total budget: $250,000. Breakdown: Engineering resources $150,000, Security tools $50,000, External audits $30,000, Training $20,000. Budget approved by CTO and CFO. Allocation supports Remediation Roadmap (doc_004) deliverables.",
+      "metadata": {
+        "type": "budget_document",
+        "date": "2024-01-12",
+        "author": "Finance Team"
+      },
+      "references": ["doc_004"]
+    },
+    {
+      "id": "doc_009",
+      "title": "Testing Infrastructure Guide",
+      "content": "Testing infrastructure uses Jenkins for CI/CD, Selenium for UI testing, and OWASP ZAP for security scanning. Environment includes staging and production mirrors. Test data is anonymized per Data Privacy Policy (doc_010). Infrastructure maintained by DevOps team.",
+      "metadata": {
+        "type": "infrastructure_guide",
+        "date": "2023-10-20",
+        "author": "DevOps Team"
+      },
+      "references": ["doc_010"]
+    },
+    {
+      "id": "doc_010",
+      "title": "Data Privacy Policy",
+      "content": "Policy ensures GDPR and CCPA compliance. Personal data is encrypted at rest and in transit. Data retention: 90 days for logs, 7 years for audit trails. Privacy impact assessments conducted for new features. Related to Access Control Policy (doc_005).",
+      "metadata": {
+        "type": "policy_document",
+        "date": "2023-09-01",
+        "author": "Legal & Compliance"
+      },
+      "references": ["doc_005"]
+    }
+  ],
+  "queries": [
+    {
+      "query": "What authentication vulnerabilities were found and how do we fix them?",
+      "expected_hops": 3,
+      "expected_docs": ["doc_001", "doc_002", "doc_005", "doc_006"],
+      "reasoning": "Starts at audit report (doc_001), follows to technical guide (doc_002), then to access control (doc_005) and testing (doc_006)"
+    },
+    {
+      "query": "What is the complete remediation plan including timeline, budget, and testing?",
+      "expected_hops": 3,
+      "expected_docs": ["doc_004", "doc_002", "doc_005", "doc_006", "doc_008", "doc_009"],
+      "reasoning": "Starts at remediation roadmap (doc_004), follows references to technical details, budget, and testing infrastructure"
+    },
+    {
+      "query": "How does the security assessment framework work?",
+      "expected_hops": 2,
+      "expected_docs": ["doc_003", "doc_007"],
+      "reasoning": "Starts at framework (doc_003), follows to checklist (doc_007)"
+    }
+  ]
+}
