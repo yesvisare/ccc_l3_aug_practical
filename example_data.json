@@ -1,0 +1,132 @@
+{
+  "tenants": [
+    {
+      "tenant_id": "tenant-001",
+      "tenant_name": "Acme Corp",
+      "tier": "free",
+      "documents": [
+        {
+          "id": "acme-doc1",
+          "text": "Acme Corp product documentation for widget A",
+          "metadata": {
+            "title": "Widget A Guide",
+            "category": "product",
+            "version": "1.0"
+          }
+        },
+        {
+          "id": "acme-doc2",
+          "text": "Acme Corp support guide for troubleshooting widget A",
+          "metadata": {
+            "title": "Widget A Troubleshooting",
+            "category": "support",
+            "version": "1.0"
+          }
+        }
+      ]
+    },
+    {
+      "tenant_id": "tenant-002",
+      "tenant_name": "Beta LLC",
+      "tier": "pro",
+      "documents": [
+        {
+          "id": "beta-doc1",
+          "text": "Beta LLC internal knowledge base article on security policies",
+          "metadata": {
+            "title": "Security Policy 2024",
+            "category": "internal",
+            "confidential": true
+          }
+        },
+        {
+          "id": "beta-doc2",
+          "text": "Beta LLC customer onboarding checklist and procedures",
+          "metadata": {
+            "title": "Onboarding Checklist",
+            "category": "operations",
+            "version": "2.1"
+          }
+        },
+        {
+          "id": "beta-doc3",
+          "text": "Beta LLC engineering best practices for code reviews",
+          "metadata": {
+            "title": "Code Review Guidelines",
+            "category": "engineering",
+            "version": "1.5"
+          }
+        }
+      ]
+    },
+    {
+      "tenant_id": "tenant-003",
+      "tenant_name": "Enterprise Inc",
+      "tier": "enterprise",
+      "documents": [
+        {
+          "id": "ent-doc1",
+          "text": "Enterprise Inc confidential merger and acquisition strategy documents",
+          "metadata": {
+            "title": "M&A Strategy 2024",
+            "category": "confidential",
+            "classification": "top-secret"
+          }
+        },
+        {
+          "id": "ent-doc2",
+          "text": "Enterprise Inc HIPAA compliance documentation and audit logs",
+          "metadata": {
+            "title": "HIPAA Compliance",
+            "category": "compliance",
+            "regulation": "HIPAA"
+          }
+        },
+        {
+          "id": "ent-doc3",
+          "text": "Enterprise Inc financial reports Q1 2024 with revenue projections",
+          "metadata": {
+            "title": "Q1 2024 Financials",
+            "category": "finance",
+            "quarter": "Q1-2024"
+          }
+        }
+      ]
+    }
+  ],
+  "sample_queries": [
+    {
+      "tenant_id": "tenant-001",
+      "query": "How do I troubleshoot widget A?",
+      "expected_docs": ["acme-doc2"]
+    },
+    {
+      "tenant_id": "tenant-002",
+      "query": "What are our security policies?",
+      "expected_docs": ["beta-doc1"]
+    },
+    {
+      "tenant_id": "tenant-003",
+      "query": "Show me HIPAA compliance documentation",
+      "expected_docs": ["ent-doc2"]
+    }
+  ],
+  "isolation_tests": [
+    {
+      "description": "Tenant B attempts to access Tenant A data",
+      "attacker_tenant_id": "tenant-002",
+      "target_tenant_id": "tenant-001",
+      "query": "widget A documentation",
+      "should_succeed": false,
+      "expected_result": "No results or only tenant-002 data"
+    },
+    {
+      "description": "Tenant A attempts to access Enterprise data",
+      "attacker_tenant_id": "tenant-001",
+      "target_tenant_id": "tenant-003",
+      "query": "HIPAA compliance",
+      "should_succeed": false,
+      "expected_result": "No results or only tenant-001 data"
+    }
+  ]
+}

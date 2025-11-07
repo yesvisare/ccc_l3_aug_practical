@@ -1,0 +1,32 @@
+# Core dependencies for Module 11.1: Tenant Isolation Strategies
+
+# Environment management
+python-dotenv==1.0.0
+
+# Vector database
+pinecone-client==3.0.3
+
+# OpenAI for embeddings and LLM
+openai==1.12.0
+
+# PostgreSQL with Row-Level Security
+psycopg2-binary==2.9.9
+
+# Web framework
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+pydantic==2.6.1
+
+# Data handling
+numpy==1.26.4
+
+# Monitoring (optional)
+prometheus-client==0.20.0
+
+# Jupyter for notebook
+jupyter==1.0.0
+ipykernel==6.29.2
+nbformat==5.9.2
+
+# Testing
+pytest==8.0.1
