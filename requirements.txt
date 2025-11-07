@@ -1,0 +1,36 @@
+# Web Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+python-multipart==0.0.6
+
+# Async Task Queue
+celery==5.3.4
+redis==5.0.1
+
+# Database
+sqlalchemy==2.0.25
+alembic==1.13.1
+
+# External Services
+stripe==7.11.0
+pinecone-client==3.0.2
+sendgrid==6.11.0
+
+# Security & Auth
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.0
+
+# Monitoring (optional)
+prometheus-client==0.19.0
+
+# Development & Testing
+pytest==7.4.4
+pytest-asyncio==0.23.3
+httpx==0.26.0
+
+# Jupyter
+jupyter==1.0.0
+ipykernel==6.29.0
+nbformat==5.9.2

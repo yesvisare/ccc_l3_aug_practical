@@ -1,0 +1,79 @@
+{
+  "sample_signups": [
+    {
+      "email": "alice@startup.com",
+      "company_name": "Startup Inc",
+      "password": "SecurePass123!",
+      "plan": "starter"
+    },
+    {
+      "email": "bob@techcorp.io",
+      "company_name": "TechCorp",
+      "password": "AnotherSecure456!",
+      "plan": "pro"
+    },
+    {
+      "email": "carol@enterprise.com",
+      "company_name": "Enterprise Solutions",
+      "password": "EnterprisePass789!",
+      "plan": "enterprise"
+    }
+  ],
+  "sample_documents": [
+    {
+      "id": "doc_1",
+      "title": "Getting Started Guide",
+      "content": "Welcome to our platform! This guide will help you get started with your first integration.",
+      "metadata": {
+        "category": "documentation",
+        "author": "System"
+      }
+    },
+    {
+      "id": "doc_2",
+      "title": "API Reference",
+      "content": "Our REST API provides endpoints for tenant management, document ingestion, and query execution.",
+      "metadata": {
+        "category": "api",
+        "author": "System"
+      }
+    },
+    {
+      "id": "doc_3",
+      "title": "Best Practices",
+      "content": "Follow these best practices to optimize your usage: batch uploads, use filters, monitor quota.",
+      "metadata": {
+        "category": "guides",
+        "author": "System"
+      }
+    }
+  ],
+  "activation_events": [
+    "signup_completed",
+    "payment_confirmed",
+    "first_login",
+    "first_document_upload",
+    "first_query_executed",
+    "integration_configured"
+  ],
+  "plan_configs": {
+    "starter": {
+      "max_documents": 1000,
+      "max_queries_per_month": 10000,
+      "max_users": 3,
+      "price_monthly": 49
+    },
+    "pro": {
+      "max_documents": 10000,
+      "max_queries_per_month": 100000,
+      "max_users": 10,
+      "price_monthly": 199
+    },
+    "enterprise": {
+      "max_documents": -1,
+      "max_queries_per_month": -1,
+      "max_users": -1,
+      "price_monthly": 999
+    }
+  }
+}
