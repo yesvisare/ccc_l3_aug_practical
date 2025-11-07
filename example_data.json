@@ -1,0 +1,63 @@
+{
+  "tenants": [
+    {
+      "tenant_id": "tenant-001",
+      "name": "Acme Corp",
+      "documents": [
+        {
+          "id": "doc1",
+          "text": "Vector databases enable semantic search over large document collections using embeddings.",
+          "metadata": {"category": "technology", "source": "blog"}
+        },
+        {
+          "id": "doc2",
+          "text": "Sharding distributes data across multiple indexes to overcome single-index limitations.",
+          "metadata": {"category": "architecture", "source": "whitepaper"}
+        }
+      ]
+    },
+    {
+      "tenant_id": "tenant-002",
+      "name": "TechStart Inc",
+      "documents": [
+        {
+          "id": "doc3",
+          "text": "Consistent hashing ensures tenants always route to the same shard for deterministic queries.",
+          "metadata": {"category": "distributed-systems", "source": "docs"}
+        },
+        {
+          "id": "doc4",
+          "text": "Hot shard problems occur when large tenants concentrate on a single index.",
+          "metadata": {"category": "operations", "source": "runbook"}
+        }
+      ]
+    },
+    {
+      "tenant_id": "tenant-003",
+      "name": "DataCo",
+      "documents": [
+        {
+          "id": "doc5",
+          "text": "Monitor P95 query latency and rebalance when exceeding 500ms threshold.",
+          "metadata": {"category": "monitoring", "source": "sla"}
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "tenant_id": "tenant-001",
+      "query_text": "How does semantic search work?",
+      "description": "Single-tenant query - hits one shard only"
+    },
+    {
+      "tenant_id": "tenant-002",
+      "query_text": "What causes hot shard issues?",
+      "description": "Single-tenant query - fast routing"
+    },
+    {
+      "query_text": "Best practices for monitoring",
+      "description": "Cross-shard admin query - slower, aggregates results"
+    }
+  ]
+}
