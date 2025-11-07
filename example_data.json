@@ -1,0 +1,117 @@
+{
+  "test_queries": {
+    "conceptual": [
+      {
+        "query": "What are the tax implications of stock options?",
+        "type": "conceptual",
+        "expected_hyde": true,
+        "description": "Vocabulary mismatch - user uses informal terms, docs use formal legal language"
+      },
+      {
+        "query": "How does ISO taxation differ from NSO taxation?",
+        "type": "conceptual",
+        "expected_hyde": true,
+        "description": "Conceptual comparison requiring formal explanation"
+      },
+      {
+        "query": "What are the implications of equity compensation for employees?",
+        "type": "conceptual",
+        "expected_hyde": true,
+        "description": "Broad conceptual question requiring domain expertise"
+      },
+      {
+        "query": "Explain the relationship between holding period and capital gains",
+        "type": "conceptual",
+        "expected_hyde": true,
+        "description": "Explanatory question with technical domain terminology"
+      },
+      {
+        "query": "Why do companies offer stock options instead of bonuses?",
+        "type": "conceptual",
+        "expected_hyde": true,
+        "description": "Why question requiring reasoning and explanation"
+      }
+    ],
+    "factoid": [
+      {
+        "query": "When was the 2023 tax filing deadline?",
+        "type": "factoid",
+        "expected_hyde": false,
+        "description": "Date-specific factoid query"
+      },
+      {
+        "query": "Who is the current IRS commissioner?",
+        "type": "factoid",
+        "expected_hyde": false,
+        "description": "Person-specific factoid query"
+      },
+      {
+        "query": "How many employees does the company have?",
+        "type": "factoid",
+        "expected_hyde": false,
+        "description": "Number-specific factoid query"
+      },
+      {
+        "query": "What year was IRC Section 422 enacted?",
+        "type": "factoid",
+        "expected_hyde": false,
+        "description": "Historical date query"
+      },
+      {
+        "query": "List all required tax forms for equity compensation",
+        "type": "factoid",
+        "expected_hyde": false,
+        "description": "List/enumeration query"
+      }
+    ]
+  },
+  "evaluation_data": [
+    {
+      "query": "What are the tax implications of stock options?",
+      "relevant_doc_ids": ["doc_tax_iso", "doc_tax_nso", "doc_equity_comp"],
+      "domain": "finance"
+    },
+    {
+      "query": "How do I report ISO exercise on my tax return?",
+      "relevant_doc_ids": ["doc_tax_iso", "doc_form_3291", "doc_amt"],
+      "domain": "finance"
+    },
+    {
+      "query": "When was the 2023 tax deadline?",
+      "relevant_doc_ids": ["doc_2023_deadlines", "doc_tax_calendar"],
+      "domain": "finance"
+    }
+  ],
+  "example_documents": [
+    {
+      "id": "doc_tax_iso",
+      "text": "Incentive Stock Options (ISOs) under IRC Section 422 provide favorable tax treatment when specific holding period requirements are met. Exercise of ISOs does not trigger ordinary income tax but may trigger Alternative Minimum Tax (AMT). Upon sale, if holding periods are satisfied (1 year from exercise, 2 years from grant), gains are taxed as long-term capital gains.",
+      "metadata": {
+        "category": "taxation",
+        "subcategory": "equity_compensation"
+      }
+    },
+    {
+      "id": "doc_tax_nso",
+      "text": "Non-Qualified Stock Options (NSOs) are governed by IRC Section 83. Upon exercise, the spread between exercise price and fair market value is taxed as ordinary income subject to withholding. Subsequent gains or losses upon sale are treated as capital gains or losses.",
+      "metadata": {
+        "category": "taxation",
+        "subcategory": "equity_compensation"
+      }
+    },
+    {
+      "id": "doc_equity_comp",
+      "text": "Equity compensation encompasses various instruments including stock options (ISO and NSO), restricted stock units (RSUs), and employee stock purchase plans (ESPPs). Each has distinct tax implications and regulatory requirements under federal and state law.",
+      "metadata": {
+        "category": "compensation",
+        "subcategory": "equity"
+      }
+    }
+  ],
+  "domain_contexts": {
+    "finance": "Financial documents use formal terminology including IRC sections, tax treatment classifications, and regulatory framework references.",
+    "legal": "Legal documents employ precise statutory language, case citations, and formal legal constructs.",
+    "technical": "Technical documentation uses industry-specific terminology, API references, and implementation details.",
+    "hr": "HR policies use formal employment terminology, policy frameworks, and compliance language."
+  }
+}

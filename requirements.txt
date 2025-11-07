@@ -1,0 +1,30 @@
+# Module 9: Hypothetical Document Embeddings (HyDE)
+# Pin to latest stable versions as of January 2025
+
+# Core dependencies
+openai>=1.58.1
+pinecone-client>=5.0.1
+
+# Optional: For query classification (if using sklearn)
+scikit-learn>=1.5.2
+
+# FastAPI and server
+fastapi>=0.115.5
+uvicorn[standard]>=0.32.1
+pydantic>=2.10.3
+
+# Utilities
+python-dotenv>=1.0.1
+redis>=5.2.0
+
+# Jupyter notebook support
+jupyter>=1.1.1
+notebook>=7.3.1
+ipykernel>=6.29.5
+
+# Optional: Prometheus metrics
+prometheus-client>=0.21.0
+
+# Testing
+pytest>=8.3.4
+pytest-asyncio>=0.24.0
