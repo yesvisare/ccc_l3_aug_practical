@@ -1,0 +1,75 @@
+{
+  "sample_events": [
+    {
+      "event_id": "evt_001",
+      "tenant_id": "tenant_acme",
+      "event_type": "query",
+      "quantity": 1,
+      "timestamp": "2025-11-07T10:00:00Z",
+      "metadata": {"endpoint": "/api/search", "latency_ms": 245}
+    },
+    {
+      "event_id": "evt_002",
+      "tenant_id": "tenant_acme",
+      "event_type": "token_input",
+      "quantity": 1500,
+      "timestamp": "2025-11-07T10:00:00Z",
+      "metadata": {"model": "claude-3-sonnet", "request_id": "req_123"}
+    },
+    {
+      "event_id": "evt_003",
+      "tenant_id": "tenant_acme",
+      "event_type": "token_output",
+      "quantity": 800,
+      "timestamp": "2025-11-07T10:00:01Z",
+      "metadata": {"model": "claude-3-sonnet", "request_id": "req_123"}
+    },
+    {
+      "event_id": "evt_004",
+      "tenant_id": "tenant_techcorp",
+      "event_type": "query",
+      "quantity": 1,
+      "timestamp": "2025-11-07T10:05:00Z",
+      "metadata": {"endpoint": "/api/search", "latency_ms": 189}
+    },
+    {
+      "event_id": "evt_005",
+      "tenant_id": "tenant_techcorp",
+      "event_type": "storage",
+      "quantity": 2.5,
+      "timestamp": "2025-11-07T10:10:00Z",
+      "metadata": {"document_count": 1250, "index_size_gb": 2.5}
+    }
+  ],
+  "sample_quotas": [
+    {
+      "tenant_id": "tenant_acme",
+      "queries_per_day": 1000,
+      "tokens_per_day": 100000,
+      "storage_gb": 10.0,
+      "overage_allowed": true
+    },
+    {
+      "tenant_id": "tenant_techcorp",
+      "queries_per_day": 5000,
+      "tokens_per_day": 500000,
+      "storage_gb": 50.0,
+      "overage_allowed": true
+    }
+  ],
+  "pricing_config": {
+    "query": 0.01,
+    "token_input_per_1k": 0.003,
+    "token_output_per_1k": 0.015,
+    "storage_gb": 0.10
+  },
+  "expected_costs": {
+    "evt_001": 0.01,
+    "evt_002": 0.0045,
+    "evt_003": 0.012,
+    "evt_004": 0.01,
+    "evt_005": 0.25,
+    "total_acme": 0.0265,
+    "total_techcorp": 0.26
+  }
+}
