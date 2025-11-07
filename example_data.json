@@ -1,0 +1,128 @@
+{
+  "description": "Sample conversation data for testing conversational RAG with memory",
+  "scenarios": [
+    {
+      "name": "simple_reference_resolution",
+      "description": "Basic pronoun resolution across turns",
+      "turns": [
+        {
+          "user": "Tell me about the Eiffel Tower",
+          "expected_entities": ["Eiffel Tower"]
+        },
+        {
+          "user": "How tall is it?",
+          "should_resolve_to": "How tall is the Eiffel Tower?",
+          "expected_reference": "it -> Eiffel Tower"
+        },
+        {
+          "user": "When was it built?",
+          "should_resolve_to": "When was the Eiffel Tower built?",
+          "expected_reference": "it -> Eiffel Tower"
+        }
+      ]
+    },
+    {
+      "name": "multi_entity_tracking",
+      "description": "Track multiple entities and resolve to most recent",
+      "turns": [
+        {
+          "user": "Compare Python and JavaScript",
+          "expected_entities": ["Python", "JavaScript"]
+        },
+        {
+          "user": "Which one is better for web development?",
+          "context_needed": "Python, JavaScript"
+        },
+        {
+          "user": "What about machine learning?",
+          "context_needed": "previous comparison"
+        }
+      ]
+    },
+    {
+      "name": "long_conversation_summarization",
+      "description": "Test memory compression after 5+ turns",
+      "turns": [
+        {"user": "What is photosynthesis?"},
+        {"user": "Which organisms perform it?"},
+        {"user": "What are the products?"},
+        {"user": "How does chlorophyll work?"},
+        {"user": "What wavelengths does it absorb?"},
+        {"user": "Tell me about the light-dependent reactions"},
+        {
+          "user": "Summarize what we discussed",
+          "should_include_summary": true
+        }
+      ]
+    },
+    {
+      "name": "ambiguous_reference_failure",
+      "description": "Case where reference resolution fails (60-70% accuracy)",
+      "turns": [
+        {
+          "user": "Compare the iPhone 15 and Samsung Galaxy S24",
+          "expected_entities": ["iPhone 15", "Samsung Galaxy S24"]
+        },
+        {
+          "user": "Which one has better battery?",
+          "ambiguity": "unclear which 'one' refers to"
+        },
+        {
+          "user": "What about it?",
+          "ambiguity": "highly ambiguous - could refer to battery, iPhone, or Samsung"
+        }
+      ]
+    },
+    {
+      "name": "session_persistence_test",
+      "description": "Test session save/load with Redis",
+      "session_id": "test-session-001",
+      "turns": [
+        {"user": "My favorite color is blue"},
+        {"user": "I also like mountains"},
+        {"user": "What do you know about me?", "should_recall": ["blue", "mountains"]}
+      ]
+    }
+  ],
+  "failure_cases": {
+    "memory_overflow": {
+      "description": "Token limit exceeded after 20+ turns",
+      "simulation": "Generate 25 turns of 200 tokens each",
+      "expected_behavior": "Automatic summarization triggered"
+    },
+    "wrong_antecedent": {
+      "description": "Reference resolves to incorrect entity",
+      "example": {
+        "context": "Tesla and Ford both make electric vehicles. Ford has a long history.",
+        "query": "Tell me about its founder",
+        "wrong_resolution": "its -> Ford (should be context-dependent)",
+        "correct_resolution": "depends on which company was discussed last"
+      }
+    },
+    "session_expiry": {
+      "description": "Redis session expires during conversation",
+      "simulation": "Set TTL to 5 seconds, wait, then query",
+      "expected_behavior": "New session created gracefully"
+    },
+    "cross_contamination": {
+      "description": "User session isolation failure",
+      "test": "Create two sessions, verify they don't share memory"
+    }
+  },
+  "entity_examples": {
+    "named_entities": [
+      "Barack Obama",
+      "Google",
+      "New York City",
+      "Python",
+      "Machine Learning"
+    ],
+    "noun_chunks": [
+      "the latest smartphone",
+      "renewable energy sources",
+      "deep learning algorithms",
+      "quantum computing research"
+    ],
+    "pronouns_to_test": ["it", "that", "this", "these", "those", "them", "they"]
+  }
+}
