@@ -1,0 +1,147 @@
+{
+  "sample_queries": [
+    {
+      "id": "complex_1",
+      "query": "What are the performance differences between PostgreSQL and MySQL, and which one has better JSON support?",
+      "complexity": "high",
+      "expected_sub_queries": 3,
+      "description": "Multi-part comparison query requiring separate lookups for performance metrics and JSON capabilities"
+    },
+    {
+      "id": "complex_2",
+      "query": "Compare the security features of AWS Lambda and Azure Functions, then recommend which is better for HIPAA compliance.",
+      "complexity": "high",
+      "expected_sub_queries": 3,
+      "description": "Sequential dependency - recommendation depends on comparison results"
+    },
+    {
+      "id": "complex_3",
+      "query": "What is Kubernetes horizontal pod autoscaling, how does it differ from vertical scaling, and what metrics should I monitor for each approach?",
+      "complexity": "high",
+      "expected_sub_queries": 4,
+      "description": "Multiple independent concepts with follow-up practical requirements"
+    },
+    {
+      "id": "complex_4",
+      "query": "Explain how OAuth 2.0 works, what are the common vulnerabilities, and how does it compare to JWT for API authentication?",
+      "complexity": "high",
+      "expected_sub_queries": 3,
+      "description": "Conceptual explanation with security analysis and technology comparison"
+    },
+    {
+      "id": "simple_1",
+      "query": "What is Docker?",
+      "complexity": "low",
+      "expected_sub_queries": 1,
+      "description": "Simple direct question - decomposition adds unnecessary overhead"
+    },
+    {
+      "id": "simple_2",
+      "query": "How do I install Python on Ubuntu?",
+      "complexity": "low",
+      "expected_sub_queries": 1,
+      "description": "Single-step procedural query - no decomposition needed"
+    },
+    {
+      "id": "edge_case_1",
+      "query": "Compare React, Vue, Angular, Svelte, and Solid.js frameworks in terms of performance, bundle size, learning curve, community support, and ecosystem maturity, then analyze which is best for micro-frontends, enterprise applications, and mobile-first PWAs.",
+      "complexity": "too_high",
+      "expected_sub_queries": 10,
+      "description": "Too granular - will exceed MAX_SUB_QUERIES limit (6)"
+    }
+  ],
+  "expected_decompositions": {
+    "complex_1": {
+      "sub_queries": [
+        {
+          "id": "q1",
+          "query": "What are the performance characteristics and benchmarks of PostgreSQL?",
+          "dependencies": []
+        },
+        {
+          "id": "q2",
+          "query": "What are the performance characteristics and benchmarks of MySQL?",
+          "dependencies": []
+        },
+        {
+          "id": "q3",
+          "query": "Compare JSON support capabilities in PostgreSQL vs MySQL",
+          "dependencies": []
+        }
+      ],
+      "synthesis_strategy": "parallel"
+    },
+    "complex_2": {
+      "sub_queries": [
+        {
+          "id": "q1",
+          "query": "What security features does AWS Lambda provide?",
+          "dependencies": []
+        },
+        {
+          "id": "q2",
+          "query": "What security features does Azure Functions provide?",
+          "dependencies": []
+        },
+        {
+          "id": "q3",
+          "query": "Based on AWS Lambda and Azure Functions security features, which is better for HIPAA compliance?",
+          "dependencies": ["q1", "q2"]
+        }
+      ],
+      "synthesis_strategy": "sequential"
+    }
+  },
+  "failure_scenarios": [
+    {
+      "scenario": "too_granular_decomposition",
+      "query": "Compare React, Vue, Angular, Svelte, and Solid.js...",
+      "expected_error": "DecompositionError",
+      "reason": "Exceeds MAX_SUB_QUERIES=6"
+    },
+    {
+      "scenario": "circular_dependency",
+      "decomposition": {
+        "sub_queries": [
+          {"id": "q1", "query": "...", "dependencies": ["q2"]},
+          {"id": "q2", "query": "...", "dependencies": ["q1"]}
+        ]
+      },
+      "expected_error": "DependencyError",
+      "reason": "Circular dependencies detected"
+    },
+    {
+      "scenario": "context_overflow",
+      "description": "Multiple large document retrievals exceeding 4K token limit",
+      "expected_error": "SynthesisError",
+      "reason": "Context overflow in synthesis"
+    },
+    {
+      "scenario": "timeout",
+      "description": "Retrieval taking >30 seconds",
+      "expected_error": "TimeoutError",
+      "reason": "Retrieval timeout exceeded"
+    }
+  ],
+  "performance_metrics": {
+    "simple_query_baseline": {
+      "latency_ms": 200,
+      "quality_score": 4.2
+    },
+    "complex_query_without_decomposition": {
+      "latency_ms": 250,
+      "quality_score": 2.1
+    },
+    "complex_query_with_decomposition": {
+      "latency_ms": 800,
+      "quality_score": 4.0,
+      "overhead_ms": 500
+    }
+  },
+  "cost_estimates": {
+    "decomposition_per_query": 0.015,
+    "retrieval_multiplier": 3.5,
+    "synthesis_per_query": 0.005,
+    "total_per_complex_query": 0.02
+  }
+}
