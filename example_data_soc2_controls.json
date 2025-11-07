@@ -1,0 +1,70 @@
+{
+  "company": "YourCompany Inc.",
+  "last_updated": "2025-11-07",
+  "total_controls": 64,
+  "controls": [
+    {
+      "control_id": "CC1.4",
+      "control_name": "Security Awareness Training",
+      "description": "Personnel receive security awareness training",
+      "implementation": "Quarterly security training via online platform. All employees complete within 30 days of hire. Topics: phishing, password security, data handling.",
+      "evidence_location": "evidence/training_completion.json",
+      "responsible_party": "CTO",
+      "status": "implemented"
+    },
+    {
+      "control_id": "CC5.1",
+      "control_name": "Logical Access Controls",
+      "description": "Access to customer data restricted to authorized personnel only",
+      "implementation": "RBAC via Casbin. Roles: Admin (2), Support (read-only), Engineer (dev/staging), Tenant User (own data). MFA encouraged.",
+      "evidence_location": "evidence/user_access_matrix.csv",
+      "responsible_party": "CTO",
+      "status": "implemented"
+    },
+    {
+      "control_id": "CC6.7",
+      "control_name": "Encryption",
+      "description": "Data encrypted in transit and at rest",
+      "implementation": "TLS 1.3 (transit), AES-256 (at rest on RDS, S3, EBS). AWS KMS for key management with automatic rotation.",
+      "evidence_location": "evidence/encryption_status.json",
+      "responsible_party": "DevOps Lead",
+      "status": "implemented"
+    },
+    {
+      "control_id": "CC7.2",
+      "control_name": "System Monitoring",
+      "description": "Systems monitored for performance and availability",
+      "implementation": "Datadog monitors all services. Alerts: >5% error rate, >3s latency, <99% uptime. 24/7 on-call rotation.",
+      "evidence_location": "evidence/monitoring_uptime.json",
+      "responsible_party": "DevOps Lead",
+      "status": "implemented"
+    },
+    {
+      "control_id": "CC7.4",
+      "control_name": "Backup and Recovery",
+      "description": "Regular backups with tested recovery procedures",
+      "implementation": "Daily automated backups at 2 AM UTC. 90-day retention. Quarterly recovery tests. Last test: 2025-09-22 (PASSED).",
+      "evidence_location": "evidence/backup_logs.json",
+      "responsible_party": "DevOps Lead",
+      "status": "implemented"
+    },
+    {
+      "control_id": "CC8.1",
+      "control_name": "Change Management",
+      "description": "Changes follow controlled process",
+      "implementation": "All changes via GitHub PR. Required: code review + CI pass. Prod deploys: CTO approval. Rollback plan required.",
+      "evidence_location": "evidence/change_management.json",
+      "responsible_party": "CTO",
+      "status": "implemented"
+    },
+    {
+      "control_id": "CC9.2",
+      "control_name": "Incident Response",
+      "description": "Documented incident response procedures",
+      "implementation": "Incident response playbook with 4 severity levels (P0-P3). Team defined. Last drill: 2025-08-15 (tabletop exercise).",
+      "evidence_location": "docs/incident_response_playbook.md",
+      "responsible_party": "CTO",
+      "status": "implemented"
+    }
+  ]
+}

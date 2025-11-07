@@ -1,0 +1,13 @@
+user_id,email,role,mfa_enabled,last_access,status,created_date
+user_001,admin@company.com,admin,true,2025-11-07T10:30:00Z,active,2025-01-15
+user_002,cto@company.com,admin,true,2025-11-07T09:15:00Z,active,2025-01-15
+user_003,support1@company.com,support,true,2025-11-07T08:45:00Z,active,2025-02-01
+user_004,support2@company.com,support,false,2025-11-06T16:20:00Z,active,2025-02-15
+user_005,support3@company.com,support,true,2025-11-07T07:30:00Z,active,2025-03-01
+user_006,dev1@company.com,engineer,true,2025-11-07T11:00:00Z,active,2025-01-20
+user_007,dev2@company.com,engineer,true,2025-11-07T10:45:00Z,active,2025-01-25
+user_008,dev3@company.com,engineer,false,2025-11-06T18:30:00Z,active,2025-02-10
+user_009,dev4@company.com,engineer,true,2025-11-07T09:30:00Z,active,2025-03-05
+user_010,dev5@company.com,engineer,false,2025-11-05T14:00:00Z,active,2025-03-15
+user_011,customer1@acmecorp.com,tenant_user,true,2025-11-07T10:00:00Z,active,2025-04-01
+user_012,customer2@techstart.com,tenant_user,false,2025-11-06T15:30:00Z,active,2025-04-15

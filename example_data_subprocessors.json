@@ -1,0 +1,34 @@
+[
+  {
+    "name": "AWS",
+    "purpose": "Infrastructure hosting and cloud services",
+    "data_shared": "All customer data, application data",
+    "location": "US-East-1",
+    "dpa_status": true,
+    "added_date": "2025-01-15"
+  },
+  {
+    "name": "Pinecone",
+    "purpose": "Vector database for embeddings storage",
+    "data_shared": "Document embeddings (no raw text)",
+    "location": "US-East-1",
+    "dpa_status": true,
+    "added_date": "2025-01-15"
+  },
+  {
+    "name": "OpenAI",
+    "purpose": "Embedding generation and LLM processing",
+    "data_shared": "Text snippets for embeddings (no PII)",
+    "location": "US",
+    "dpa_status": true,
+    "added_date": "2025-01-15"
+  },
+  {
+    "name": "Datadog",
+    "purpose": "Application monitoring and logging",
+    "data_shared": "System logs (PII redacted)",
+    "location": "US/EU",
+    "dpa_status": true,
+    "added_date": "2025-02-01"
+  }
+]
