@@ -1,0 +1,110 @@
+{
+  "customers": [
+    {
+      "tenant_id": "tenant_001",
+      "email": "startup@example.com",
+      "name": "Startup Co",
+      "plan_type": "starter"
+    },
+    {
+      "tenant_id": "tenant_002",
+      "email": "growth@example.com",
+      "name": "Growth Inc",
+      "plan_type": "pro"
+    },
+    {
+      "tenant_id": "tenant_003",
+      "email": "enterprise@example.com",
+      "name": "Enterprise Corp",
+      "plan_type": "enterprise"
+    }
+  ],
+  "usage_data": [
+    {
+      "tenant_id": "tenant_001",
+      "subscription_id": "sub_starter123",
+      "query_count": 8500,
+      "date": "2025-11-01"
+    },
+    {
+      "tenant_id": "tenant_002",
+      "subscription_id": "sub_pro456",
+      "query_count": 125000,
+      "date": "2025-11-01"
+    },
+    {
+      "tenant_id": "tenant_003",
+      "subscription_id": "sub_enterprise789",
+      "query_count": 850000,
+      "date": "2025-11-01"
+    }
+  ],
+  "pricing_plans": {
+    "starter": {
+      "base_price_monthly": 29.00,
+      "included_queries": 10000,
+      "overage_price_per_query": 0.001,
+      "description": "Perfect for small projects"
+    },
+    "pro": {
+      "base_price_monthly": 99.00,
+      "included_queries": 100000,
+      "overage_price_per_query": 0.0008,
+      "description": "For growing businesses"
+    },
+    "enterprise": {
+      "base_price_monthly": 499.00,
+      "included_queries": 1000000,
+      "overage_price_per_query": 0.0005,
+      "description": "For large-scale operations"
+    }
+  },
+  "webhook_events": [
+    {
+      "type": "invoice.payment_succeeded",
+      "tenant_id": "tenant_001",
+      "amount": 29.00,
+      "description": "Payment succeeded for starter plan"
+    },
+    {
+      "type": "invoice.payment_failed",
+      "tenant_id": "tenant_002",
+      "amount": 119.00,
+      "attempt_count": 1,
+      "description": "Payment failed - card declined"
+    },
+    {
+      "type": "customer.subscription.updated",
+      "tenant_id": "tenant_001",
+      "old_plan": "starter",
+      "new_plan": "pro",
+      "description": "Customer upgraded plan"
+    }
+  ],
+  "dunning_scenarios": [
+    {
+      "tenant_id": "tenant_002",
+      "failure_count": 1,
+      "action": "reminder_sent",
+      "description": "First payment failure - soft reminder"
+    },
+    {
+      "tenant_id": "tenant_002",
+      "failure_count": 2,
+      "action": "warning_sent",
+      "description": "Second failure - warning email"
+    },
+    {
+      "tenant_id": "tenant_002",
+      "failure_count": 3,
+      "action": "rate_limit_reduced",
+      "description": "Third failure - reduce service"
+    },
+    {
+      "tenant_id": "tenant_002",
+      "failure_count": 4,
+      "action": "service_suspended",
+      "description": "Fourth failure - suspend service"
+    }
+  ]
+}
