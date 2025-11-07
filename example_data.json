@@ -1,0 +1,102 @@
+{
+  "query": "latest machine learning frameworks for production",
+  "documents": [
+    {
+      "id": "doc1",
+      "text": "PyTorch 2.0 was released in March 2023 with significant performance improvements through torch.compile. The framework now supports eager mode compilation and distributed training enhancements.",
+      "metadata": {
+        "source": "technical_blog",
+        "timestamp": "2023-03-15T10:00:00Z",
+        "length": 180,
+        "doc_type": "tutorial",
+        "technical_depth": 0.8
+      }
+    },
+    {
+      "id": "doc2",
+      "text": "TensorFlow remains the most popular deep learning framework as of 2022, with strong enterprise adoption and extensive ecosystem support for production deployments.",
+      "metadata": {
+        "source": "research_paper",
+        "timestamp": "2022-06-10T14:30:00Z",
+        "length": 165,
+        "doc_type": "research",
+        "technical_depth": 0.9
+      }
+    },
+    {
+      "id": "doc3",
+      "text": "JAX is gaining traction for research applications in 2024, offering functional programming paradigms and automatic differentiation with XLA compilation for high-performance computing.",
+      "metadata": {
+        "source": "technical_blog",
+        "timestamp": "2024-01-20T09:15:00Z",
+        "length": 195,
+        "doc_type": "tutorial",
+        "technical_depth": 0.85
+      }
+    },
+    {
+      "id": "doc4",
+      "text": "PyTorch's ecosystem includes libraries like torchvision, torchaudio, and transformers from Hugging Face, making it ideal for production ML systems requiring flexibility and research agility.",
+      "metadata": {
+        "source": "documentation",
+        "timestamp": "2023-11-05T16:45:00Z",
+        "length": 210,
+        "doc_type": "reference",
+        "technical_depth": 0.7
+      }
+    },
+    {
+      "id": "doc5",
+      "text": "Modern machine learning frameworks must support distributed training, mixed precision, and efficient inference for production deployments at scale.",
+      "metadata": {
+        "source": "technical_blog",
+        "timestamp": "2023-08-12T11:20:00Z",
+        "length": 145,
+        "doc_type": "opinion",
+        "technical_depth": 0.75
+      }
+    },
+    {
+      "id": "doc6",
+      "text": "MLflow provides experiment tracking and model registry capabilities that integrate seamlessly with PyTorch, TensorFlow, and other frameworks for production ML pipelines.",
+      "metadata": {
+        "source": "documentation",
+        "timestamp": "2024-02-01T13:00:00Z",
+        "length": 175,
+        "doc_type": "tutorial",
+        "technical_depth": 0.65
+      }
+    },
+    {
+      "id": "doc7",
+      "text": "In 2021, ONNX Runtime became a critical tool for deploying models across different frameworks, enabling cross-platform inference optimization.",
+      "metadata": {
+        "source": "technical_blog",
+        "timestamp": "2021-05-18T08:30:00Z",
+        "length": 155,
+        "doc_type": "tutorial",
+        "technical_depth": 0.8
+      }
+    },
+    {
+      "id": "doc8",
+      "text": "Lightning AI's PyTorch Lightning simplifies production ML workflows with built-in best practices for training, validation, and deployment since its 2024 update.",
+      "metadata": {
+        "source": "technical_blog",
+        "timestamp": "2024-03-10T15:20:00Z",
+        "length": 170,
+        "doc_type": "tutorial",
+        "technical_depth": 0.7
+      }
+    }
+  ],
+  "user_profile": {
+    "user_id": "user_123",
+    "interaction_count": 150,
+    "preferences": {
+      "preferred_sources": ["technical_blog", "tutorial"],
+      "preferred_depth": 0.75,
+      "preferred_length_range": [150, 200]
+    }
+  }
+}
