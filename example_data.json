@@ -1,0 +1,134 @@
+{
+  "tenants": [
+    {
+      "tenant_id": "acme_corp",
+      "name": "Acme Corporation",
+      "tier": "enterprise",
+      "model_tier": "gpt-4",
+      "retrieval_mode": "hybrid",
+      "resource_limits": {
+        "max_queries_per_hour": 500,
+        "max_tokens_per_query": 8192,
+        "max_concurrent_requests": 10,
+        "max_documents_per_tenant": 50000
+      }
+    },
+    {
+      "tenant_id": "beta_inc",
+      "name": "Beta Industries",
+      "tier": "professional",
+      "model_tier": "gpt-3.5-turbo",
+      "retrieval_mode": "basic",
+      "resource_limits": {
+        "max_queries_per_hour": 200,
+        "max_tokens_per_query": 4096,
+        "max_concurrent_requests": 5,
+        "max_documents_per_tenant": 10000
+      }
+    },
+    {
+      "tenant_id": "gamma_labs",
+      "name": "Gamma Research Labs",
+      "tier": "starter",
+      "model_tier": "gpt-3.5-turbo",
+      "retrieval_mode": "basic",
+      "resource_limits": {
+        "max_queries_per_hour": 100,
+        "max_tokens_per_query": 2048,
+        "max_concurrent_requests": 3,
+        "max_documents_per_tenant": 5000
+      }
+    }
+  ],
+  "sample_documents": {
+    "acme_corp": [
+      {
+        "id": "acme_doc_1",
+        "text": "ACME Corporation Data Protection Policy: All customer data must be encrypted at rest and in transit. Personal identifiable information (PII) requires additional access controls and audit logging.",
+        "metadata": {
+          "source": "internal_policy",
+          "category": "data_protection",
+          "last_updated": "2024-01-15"
+        }
+      },
+      {
+        "id": "acme_doc_2",
+        "text": "ACME Incident Response Procedure: Security incidents must be reported within 2 hours of detection. The incident response team will assess severity and initiate appropriate containment measures.",
+        "metadata": {
+          "source": "internal_policy",
+          "category": "security",
+          "last_updated": "2024-02-01"
+        }
+      },
+      {
+        "id": "acme_doc_3",
+        "text": "ACME GDPR Compliance Requirements: User consent must be obtained before processing personal data. Data subjects have the right to access, rectify, and delete their data.",
+        "metadata": {
+          "source": "regulatory",
+          "category": "gdpr",
+          "last_updated": "2024-01-20"
+        }
+      }
+    ],
+    "beta_inc": [
+      {
+        "id": "beta_doc_1",
+        "text": "Beta Industries Access Control Policy: User access is granted based on role-based permissions. All access requests must be approved by a manager and logged for audit purposes.",
+        "metadata": {
+          "source": "internal_policy",
+          "category": "access_control",
+          "last_updated": "2023-12-10"
+        }
+      },
+      {
+        "id": "beta_doc_2",
+        "text": "Beta Industries Data Retention: Customer transaction data must be retained for 7 years. Backup data should be encrypted and stored in geographically diverse locations.",
+        "metadata": {
+          "source": "internal_policy",
+          "category": "data_retention",
+          "last_updated": "2024-01-05"
+        }
+      }
+    ],
+    "gamma_labs": [
+      {
+        "id": "gamma_doc_1",
+        "text": "Gamma Labs Research Data Policy: All research data must be anonymized before sharing. Publication of research findings requires ethics committee approval.",
+        "metadata": {
+          "source": "internal_policy",
+          "category": "research_ethics",
+          "last_updated": "2023-11-30"
+        }
+      }
+    ]
+  },
+  "sample_queries": [
+    {
+      "tenant_id": "acme_corp",
+      "query": "What are our data encryption requirements?",
+      "expected_topics": ["encryption", "data protection", "security"]
+    },
+    {
+      "tenant_id": "acme_corp",
+      "query": "How long do we have to report security incidents?",
+      "expected_topics": ["incident response", "reporting", "timeline"]
+    },
+    {
+      "tenant_id": "beta_inc",
+      "query": "What is our data retention policy for customer transactions?",
+      "expected_topics": ["data retention", "compliance", "backup"]
+    },
+    {
+      "tenant_id": "gamma_labs",
+      "query": "Do we need approval before publishing research findings?",
+      "expected_topics": ["research ethics", "publication", "approval"]
+    }
+  ],
+  "load_test_config": {
+    "total_requests": 1000,
+    "concurrent_tenants": 100,
+    "requests_per_hour": 1000,
+    "test_duration_minutes": 60,
+    "expected_p95_latency_ms": 500
+  }
+}
