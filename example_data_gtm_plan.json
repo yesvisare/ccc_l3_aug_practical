@@ -1,0 +1,203 @@
+{
+  "gtm_plan": {
+    "overview": {
+      "product": "Compliance Copilot - AI-powered regulatory document search",
+      "target_segment": "Financial services compliance teams",
+      "gtm_motion": "Self-service (Product-Led Growth)",
+      "launch_date": "2024-Q1",
+      "goal": "$5,000 MRR by Month 3"
+    },
+    "customer_acquisition_channels": {
+      "tier_1": {
+        "description": "Primary channels - start here",
+        "channels": [
+          {
+            "name": "LinkedIn Organic",
+            "type": "organic",
+            "target": "Compliance officers, CCOs at financial firms",
+            "strategy": "Post case studies, compliance tips, product updates 3x/week",
+            "time_per_week": 5,
+            "monthly_cost": 0,
+            "expected_leads_per_month": 10,
+            "expected_conversion_rate": 0.10,
+            "priority": 1
+          },
+          {
+            "name": "Cold Email Outreach",
+            "type": "outbound",
+            "target": "Same ICP as LinkedIn",
+            "strategy": "Personalized outreach highlighting specific pain points",
+            "tool": "Lemlist or Apollo",
+            "time_per_week": 10,
+            "monthly_cost": 50,
+            "volume": "50 emails per week (200/month)",
+            "expected_reply_rate": 0.20,
+            "expected_demo_bookings": 8,
+            "expected_conversion_rate": 0.25,
+            "priority": 1
+          },
+          {
+            "name": "Product Hunt Launch",
+            "type": "community",
+            "target": "Early adopters, tech-savvy compliance teams",
+            "strategy": "1-day intensive launch with demo video and founder story",
+            "time_investment": "20 hours prep + 1 day live engagement",
+            "monthly_cost": 200,
+            "expected_visitors": 750,
+            "expected_signups": 75,
+            "expected_conversions": 7,
+            "priority": 1,
+            "timing": "Week 3 of launch timeline"
+          }
+        ]
+      },
+      "tier_2": {
+        "description": "Add after first customers",
+        "channels": [
+          {
+            "name": "Google Ads",
+            "type": "paid",
+            "keywords": [
+              "compliance document management",
+              "regulatory search software",
+              "audit documentation system"
+            ],
+            "monthly_budget": 1500,
+            "expected_clicks": 100,
+            "expected_signups": 10,
+            "expected_conversions": 2,
+            "cost_per_customer": 750,
+            "note": "Only profitable if LTV > $3,000"
+          },
+          {
+            "name": "SEO Content Marketing",
+            "type": "organic",
+            "strategy": "Weekly 'How to...' guides for compliance topics",
+            "time_per_week": 20,
+            "timeline": "3-6 months to see organic traffic",
+            "expected_monthly_traffic_m6": 500,
+            "best_for": "Long-term sustainable growth"
+          }
+        ]
+      },
+      "tier_3": {
+        "description": "Don't start here - add later at scale",
+        "channels": [
+          {
+            "name": "Conferences/Events",
+            "cost_per_event": 7500,
+            "lead_time": "6+ months",
+            "best_for": "After product-market fit proven"
+          },
+          {
+            "name": "Partnership Channel",
+            "target": "Compliance consulting firms, audit software companies",
+            "timeline": "6-12 months to close partnerships",
+            "best_for": "After 20+ happy customers to reference"
+          }
+        ]
+      }
+    },
+    "90_day_timeline": {
+      "week_1_2": {
+        "phase": "Pre-Launch Preparation",
+        "tasks": [
+          "Finalize landing page copy and design",
+          "Create demo video (5 minutes showing core workflow)",
+          "Write 10 LinkedIn posts (schedule in advance)",
+          "Build list of 200 target companies (LinkedIn Sales Navigator)",
+          "Set up analytics (GA4, Mixpanel, UTM tracking)"
+        ]
+      },
+      "week_3": {
+        "phase": "Launch Week",
+        "tasks": [
+          "Day 1: Product Hunt launch",
+          "Day 2-3: LinkedIn/Twitter promotion of PH launch",
+          "Day 4-5: Monitor trial signups, respond to comments/questions",
+          "Goal: 50+ trial signups"
+        ]
+      },
+      "week_4_6": {
+        "phase": "Initial Outreach",
+        "tasks": [
+          "Send 50 personalized cold emails per week (150 total)",
+          "Post 3x/week on LinkedIn",
+          "Book demos with interested prospects",
+          "Goal: 10 demos booked"
+        ]
+      },
+      "week_7_10": {
+        "phase": "Conversion Focus",
+        "tasks": [
+          "Run demos with qualified leads",
+          "Iterate demo script based on feedback",
+          "Send follow-up sequences",
+          "Launch Google Ads with $500/month test budget",
+          "Goal: First 5 paying customers"
+        ]
+      },
+      "week_11_12": {
+        "phase": "Iterate & Optimize",
+        "tasks": [
+          "Analyze conversion data (landing page, trial activation, demos)",
+          "Optimize lowest-performing funnel step",
+          "Double down on best-performing channel",
+          "Goal: $2,000-$5,000 MRR"
+        ]
+      }
+    },
+    "success_metrics": {
+      "weekly": {
+        "landing_page_visitors": "Track trend",
+        "trial_signup_rate": {
+          "target": 0.10,
+          "description": "10% of visitors sign up"
+        },
+        "trial_activation_rate": {
+          "target": 0.50,
+          "description": "50% of signups run first query"
+        },
+        "trial_to_paid_rate": {
+          "target": 0.20,
+          "description": "20% of activated users convert"
+        },
+        "demos_booked": {
+          "target": 2,
+          "description": "Minimum 2 demos per week"
+        },
+        "demo_close_rate": {
+          "target": 0.30,
+          "description": "30% of demos convert to customers"
+        }
+      },
+      "monthly": {
+        "new_mrr": {
+          "month_1": 2000,
+          "month_3": 5000,
+          "description": "Monthly Recurring Revenue growth"
+        },
+        "churn_rate": {
+          "target": 0.05,
+          "description": "Less than 5% monthly churn"
+        },
+        "cac": {
+          "target": 500,
+          "description": "Customer Acquisition Cost under $500"
+        },
+        "ltv_cac_ratio": {
+          "target": 3.0,
+          "description": "LTV:CAC ratio above 3:1"
+        }
+      },
+      "red_flags": {
+        "pivot_triggers": [
+          "After 50 trials, <5% convert → pricing or value prop problem",
+          "After 20 demos, 0 conversions → wrong ICP or product gaps",
+          "After $2,000 in ads, <2 conversions → channel doesn't work",
+          "Churn >10% monthly → product-market fit issue"
+        ]
+      }
+    }
+  }
+}

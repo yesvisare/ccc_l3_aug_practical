@@ -1,0 +1,44 @@
+# Module 13.3: Launch Preparation & Marketing
+# Core dependencies for launch strategy, pricing, and analytics
+
+# Core Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Environment & Configuration
+python-dotenv==1.0.1
+
+# Data Processing
+pandas==2.2.0
+numpy==1.26.3
+
+# Optional: Analytics SDKs (uncomment to use)
+# mixpanel==4.10.1              # Mixpanel event tracking
+# mailchimp-marketing==3.0.80   # Mailchimp email marketing
+# hubspot-api-client==8.3.0     # HubSpot CRM
+
+# Optional: Error Tracking (recommended for production)
+# sentry-sdk[fastapi]==1.40.0   # Error tracking for signup flow
+
+# Optional: Metrics (if using Prometheus)
+# prometheus-client==0.19.0     # Metrics for conversion tracking
+
+# Testing
+pytest==7.4.4
+pytest-asyncio==0.23.3
+httpx==0.26.0
+
+# Jupyter (for notebook)
+jupyter==1.0.0
+ipykernel==6.29.0
+matplotlib==3.8.2
+seaborn==0.13.1
+
+# Utilities
+requests==2.31.0
+
+# Note: This module focuses on business logic (pricing, GTM strategy, funnel analysis)
+# Most analytics integrations are client-side (GA4, Mixpanel via JavaScript)
+# Server-side tracking is optional and can be added as needed

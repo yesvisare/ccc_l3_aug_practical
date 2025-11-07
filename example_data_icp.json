@@ -1,0 +1,67 @@
+{
+  "ideal_customer_profile": {
+    "industry": "Financial services (banking, wealth management, insurance)",
+    "company_size": {
+      "min": 50,
+      "max": 5000,
+      "description": "50-5,000 employees"
+    },
+    "geography": ["United States", "Canada", "United Kingdom"],
+    "buyer_persona": {
+      "job_titles": [
+        "Chief Compliance Officer",
+        "Head of Compliance",
+        "VP Regulatory Affairs",
+        "Director of Compliance",
+        "Compliance Manager"
+      ],
+      "department": "Compliance, Risk, Legal",
+      "seniority": "Manager+",
+      "decision_process": "30-60 day sales cycle, requires manager approval"
+    },
+    "pain_point": {
+      "description": "Manual regulatory document search consuming 15+ hours/week per person",
+      "intensity": "High - direct impact on audit response times and compliance costs",
+      "current_solution": "Manual search through SharePoint, file shares, email attachments"
+    },
+    "budget": {
+      "annual_range": {
+        "min": 10000,
+        "max": 50000
+      },
+      "description": "$10,000-$50,000/year for compliance tools",
+      "procurement_process": "Budget approval required, may need vendor evaluation"
+    },
+    "tech_maturity": {
+      "level": "Medium to High",
+      "indicators": [
+        "Using cloud tools (Office 365, Box, Salesforce)",
+        "Open to AI solutions",
+        "Has existing compliance software stack"
+      ]
+    },
+    "red_flags": {
+      "do_not_pursue": [
+        "Company <10 employees (too small for recurring spend)",
+        "Compliance team <2 people (insufficient pain intensity)",
+        "No budget for software (will churn after trial)",
+        "Looking for 'free forever' option (wrong segment)",
+        "Company in distress or frequent leadership turnover"
+      ]
+    },
+    "qualification_questions": [
+      "How many people are on your compliance team?",
+      "How much time per week does your team spend searching for regulatory documents?",
+      "What tools are you currently using for compliance document management?",
+      "What is your budget for compliance software this year?",
+      "When is your next regulatory audit scheduled?"
+    ]
+  },
+  "example_target_companies": [
+    "Regional banks (50-500 employees)",
+    "Mid-market wealth management firms",
+    "Insurance agencies with compliance departments",
+    "Credit unions with regulatory requirements",
+    "Fintech companies navigating FINRA/SEC compliance"
+  ]
+}

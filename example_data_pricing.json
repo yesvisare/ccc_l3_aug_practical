@@ -1,0 +1,168 @@
+{
+  "pricing_strategy": {
+    "overview": {
+      "pricing_model": "Value-based pricing with tiered structure",
+      "value_metric": "Queries per month (correlates with usage intensity)",
+      "pricing_philosophy": "Capture 20-30% of value delivered to customer",
+      "target_gross_margin": 0.67
+    },
+    "cost_analysis": {
+      "cogs_per_customer_monthly": {
+        "pinecone_serverless": 25,
+        "openai_api": 20,
+        "infrastructure": 15,
+        "support_allocation": 10,
+        "total": 70
+      },
+      "minimum_price_calculation": {
+        "cogs": 70,
+        "target_margin": 0.67,
+        "minimum_price": 212,
+        "formula": "COGS / (1 - target_margin)"
+      }
+    },
+    "tiers": [
+      {
+        "name": "Starter",
+        "monthly_price": 199,
+        "annual_price": 1990,
+        "annual_discount": "17% (save 2 months)",
+        "target_customer": "Small compliance teams (1-3 people)",
+        "limits": {
+          "queries_per_month": 500,
+          "documents": 5000,
+          "users": 2,
+          "storage_gb": 10
+        },
+        "support": "Email support (48-hour response)",
+        "features": [
+          "Basic semantic search",
+          "Natural language queries",
+          "Email support",
+          "Standard integrations (Box, SharePoint)",
+          "Audit-ready citations"
+        ],
+        "value_justification": {
+          "hours_saved_per_week": 2,
+          "hourly_labor_cost": 100,
+          "monthly_value_delivered": 800,
+          "roi_multiplier": 4.0,
+          "annual_savings": 7608
+        }
+      },
+      {
+        "name": "Professional",
+        "monthly_price": 499,
+        "annual_price": 4990,
+        "annual_discount": "17% (save 2 months)",
+        "target_customer": "Mid-size compliance teams (4-10 people)",
+        "limits": {
+          "queries_per_month": 2500,
+          "documents": 25000,
+          "users": 10,
+          "storage_gb": 50
+        },
+        "support": "Priority email + chat support (24-hour response)",
+        "features": [
+          "Advanced retrieval (HyDE, multi-hop)",
+          "Priority support",
+          "Custom integrations",
+          "API access",
+          "Advanced analytics dashboard",
+          "Custom compliance reports",
+          "SSO (SAML/OAuth)"
+        ],
+        "is_most_popular": true,
+        "value_justification": {
+          "hours_saved_per_week": 10,
+          "hourly_labor_cost": 100,
+          "monthly_value_delivered": 4000,
+          "roi_multiplier": 8.0,
+          "annual_savings": 42012
+        }
+      },
+      {
+        "name": "Enterprise",
+        "monthly_price": 1499,
+        "annual_price": 14990,
+        "annual_discount": "17% (save 2 months)",
+        "target_customer": "Large compliance departments (10+ people)",
+        "limits": {
+          "queries_per_month": "Unlimited",
+          "documents": "Unlimited",
+          "users": "Unlimited",
+          "storage_gb": "Unlimited"
+        },
+        "support": "Dedicated account manager + SLA (4-hour response)",
+        "features": [
+          "All Professional features",
+          "Unlimited queries and documents",
+          "Dedicated account manager",
+          "Custom SLA guarantees (99.9% uptime)",
+          "White-glove onboarding",
+          "Custom compliance workflows",
+          "Advanced security (HIPAA, SOC2)",
+          "Custom integrations",
+          "Priority feature requests"
+        ],
+        "value_justification": {
+          "hours_saved_per_week": 40,
+          "hourly_labor_cost": 100,
+          "monthly_value_delivered": 16000,
+          "roi_multiplier": 10.7,
+          "annual_savings": 174012
+        },
+        "note": "Custom pricing available for high-volume enterprise needs"
+      }
+    ],
+    "pricing_psychology": {
+      "principles_applied": [
+        "Anchoring: Enterprise tier makes Professional look affordable",
+        "Most Popular tag: Nudges middle tier (where you want most customers)",
+        "Clear differentiation: Each tier has obvious next-level features",
+        "Value-based limits: Query limits align with value delivery",
+        "10x ROI minimum: Every tier delivers 4-10x return on investment"
+      ]
+    },
+    "competitive_positioning": {
+      "vs_manual_process": {
+        "cost_of_status_quo": "15 hours/week × $100/hour × 52 weeks = $78,000/year",
+        "our_price_professional": "$5,988/year",
+        "savings": "$72,012/year",
+        "roi": "12x"
+      },
+      "vs_generic_search": {
+        "why_customers_upgrade": [
+          "Google Drive search lacks semantic understanding",
+          "No audit-ready citations",
+          "No compliance-specific features",
+          "Can't handle regulatory document complexity"
+        ]
+      }
+    },
+    "expansion_revenue": {
+      "add_ons": [
+        {
+          "name": "Additional Users",
+          "price_per_user": 49,
+          "description": "For teams exceeding tier user limits"
+        },
+        {
+          "name": "Extra Query Capacity",
+          "price_per_1000": 39,
+          "description": "Overage pricing for queries beyond tier limit"
+        },
+        {
+          "name": "Premium Integrations",
+          "price_monthly": 199,
+          "description": "Custom integrations with proprietary systems"
+        },
+        {
+          "name": "Dedicated Training",
+          "price_session": 500,
+          "description": "2-hour live training session for team"
+        }
+      ]
+    }
+  }
+}
