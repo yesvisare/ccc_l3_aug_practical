@@ -1,0 +1,178 @@
+{
+  "tenants": [
+    {
+      "tenant_id": "tenant_001",
+      "name": "Acme Corp",
+      "email": "admin@acme.com",
+      "current_plan": "starter",
+      "state": "active",
+      "stripe_customer_id": "cus_example123",
+      "stripe_subscription_id": "sub_example123",
+      "current_usage": {
+        "users": 15,
+        "storage_gb": 8,
+        "api_calls_per_day": 750
+      },
+      "created_at": "2024-01-15T10:00:00Z",
+      "updated_at": "2024-11-01T14:30:00Z"
+    },
+    {
+      "tenant_id": "tenant_002",
+      "name": "TechStart Inc",
+      "email": "contact@techstart.io",
+      "current_plan": "free",
+      "state": "active",
+      "stripe_customer_id": "cus_example456",
+      "stripe_subscription_id": null,
+      "current_usage": {
+        "users": 4,
+        "storage_gb": 0.5,
+        "api_calls_per_day": 85
+      },
+      "created_at": "2024-10-01T09:00:00Z",
+      "updated_at": "2024-11-05T11:20:00Z"
+    },
+    {
+      "tenant_id": "tenant_003",
+      "name": "Enterprise Solutions LLC",
+      "email": "it@enterprise-sol.com",
+      "current_plan": "professional",
+      "state": "active",
+      "stripe_customer_id": "cus_example789",
+      "stripe_subscription_id": "sub_example789",
+      "current_usage": {
+        "users": 85,
+        "storage_gb": 75,
+        "api_calls_per_day": 8500
+      },
+      "created_at": "2023-06-20T08:00:00Z",
+      "updated_at": "2024-11-06T16:45:00Z"
+    },
+    {
+      "tenant_id": "tenant_004",
+      "name": "Suspended Co",
+      "email": "billing@suspended.co",
+      "current_plan": "starter",
+      "state": "suspended",
+      "stripe_customer_id": "cus_example999",
+      "stripe_subscription_id": "sub_example999",
+      "current_usage": {
+        "users": 10,
+        "storage_gb": 5,
+        "api_calls_per_day": 0
+      },
+      "suspended_at": "2024-10-15T00:00:00Z",
+      "created_at": "2024-05-10T12:00:00Z",
+      "updated_at": "2024-10-15T00:00:00Z"
+    }
+  ],
+  "lifecycle_events": [
+    {
+      "event_id": "evt_001",
+      "tenant_id": "tenant_001",
+      "event_type": "upgrade",
+      "from_plan": "free",
+      "to_plan": "starter",
+      "initiated_by": "user_acme_admin",
+      "timestamp": "2024-03-15T14:00:00Z",
+      "status": "completed",
+      "metadata": {
+        "proration_amount": 15.00,
+        "next_billing_date": "2024-04-15"
+      }
+    },
+    {
+      "event_id": "evt_002",
+      "tenant_id": "tenant_003",
+      "event_type": "upgrade",
+      "from_plan": "starter",
+      "to_plan": "professional",
+      "initiated_by": "user_enterprise_admin",
+      "timestamp": "2024-08-20T10:30:00Z",
+      "status": "completed",
+      "metadata": {
+        "proration_amount": 80.00,
+        "next_billing_date": "2024-09-20"
+      }
+    },
+    {
+      "event_id": "evt_003",
+      "tenant_id": "tenant_004",
+      "event_type": "suspend",
+      "from_plan": "starter",
+      "to_plan": "starter",
+      "initiated_by": "system_payment_failure",
+      "timestamp": "2024-10-15T00:00:00Z",
+      "status": "completed",
+      "metadata": {
+        "reason": "payment_failed",
+        "attempts": 3
+      }
+    }
+  ],
+  "export_requests": [
+    {
+      "export_id": "export_001",
+      "tenant_id": "tenant_001",
+      "requested_by": "admin@acme.com",
+      "requested_at": "2024-11-01T09:00:00Z",
+      "status": "completed",
+      "export_type": "full",
+      "file_size_mb": 42,
+      "download_url": "https://example.com/exports/tenant_001_20241101.zip",
+      "url_expires_at": "2024-11-08T09:00:00Z",
+      "checksum": "sha256:abc123def456"
+    },
+    {
+      "export_id": "export_002",
+      "tenant_id": "tenant_003",
+      "requested_by": "it@enterprise-sol.com",
+      "requested_at": "2024-11-05T14:30:00Z",
+      "status": "in_progress",
+      "export_type": "incremental",
+      "estimated_completion": "2024-11-05T15:00:00Z"
+    }
+  ],
+  "deletion_requests": [
+    {
+      "deletion_id": "del_001",
+      "tenant_id": "tenant_005",
+      "requested_by": "admin@oldcompany.com",
+      "requested_at": "2024-10-10T08:00:00Z",
+      "soft_deleted_at": "2024-10-10T08:05:00Z",
+      "hard_delete_scheduled_at": "2024-11-09T08:05:00Z",
+      "status": "soft_deleted",
+      "retention_days": 30,
+      "can_reactivate": true
+    }
+  ],
+  "plan_change_scenarios": [
+    {
+      "scenario": "upgrade_success",
+      "tenant_id": "tenant_002",
+      "action": "upgrade",
+      "from_plan": "free",
+      "to_plan": "starter",
+      "expected_outcome": "success",
+      "notes": "User count within limits, sufficient budget"
+    },
+    {
+      "scenario": "downgrade_blocked",
+      "tenant_id": "tenant_003",
+      "action": "downgrade",
+      "from_plan": "professional",
+      "to_plan": "starter",
+      "expected_outcome": "failure",
+      "notes": "Current usage (85 users) exceeds starter limit (20 users)"
+    },
+    {
+      "scenario": "reactivation_after_suspension",
+      "tenant_id": "tenant_004",
+      "action": "reactivate",
+      "from_plan": "starter",
+      "to_plan": "starter",
+      "expected_outcome": "success",
+      "notes": "Payment method updated, ready to resume service"
+    }
+  ]
+}
