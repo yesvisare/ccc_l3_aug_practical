@@ -1,0 +1,100 @@
+{
+  "tenants": [
+    {
+      "tenant_id": "tenant_startup_co",
+      "name": "Startup Co",
+      "config": {
+        "model": "gpt-3.5-turbo",
+        "temperature": 0.7,
+        "top_k": 5,
+        "alpha": 0.5,
+        "max_tokens": 500,
+        "prompt_template": "You are a helpful assistant for {company_name}. Answer the following question: {query}",
+        "prompt_variables": {
+          "company_name": "Startup Co"
+        },
+        "branding": {
+          "primary_color": "#3B82F6",
+          "secondary_color": "#10B981"
+        },
+        "enable_reranking": false
+      }
+    },
+    {
+      "tenant_id": "tenant_enterprise_corp",
+      "name": "Enterprise Corp",
+      "config": {
+        "model": "gpt-4-turbo",
+        "temperature": 0.5,
+        "top_k": 10,
+        "alpha": 0.7,
+        "max_tokens": 1000,
+        "prompt_template": "As an expert AI assistant for {company_name}, provide detailed analysis for: {query}",
+        "prompt_variables": {
+          "company_name": "Enterprise Corp",
+          "domain": "financial services"
+        },
+        "branding": {
+          "primary_color": "#1E40AF",
+          "secondary_color": "#DC2626"
+        },
+        "enable_reranking": true
+      }
+    },
+    {
+      "tenant_id": "tenant_ai_research_lab",
+      "name": "AI Research Lab",
+      "config": {
+        "model": "claude-3-opus",
+        "temperature": 0.9,
+        "top_k": 15,
+        "alpha": 0.6,
+        "max_tokens": 2000,
+        "prompt_template": "Research assistant for {company_name}. Provide comprehensive technical response to: {query}",
+        "prompt_variables": {
+          "company_name": "AI Research Lab",
+          "focus_area": "machine learning research"
+        },
+        "branding": {
+          "primary_color": "#7C3AED",
+          "secondary_color": "#F59E0B"
+        },
+        "enable_reranking": true
+      }
+    },
+    {
+      "tenant_id": "tenant_budget_saas",
+      "name": "Budget SaaS",
+      "config": {
+        "model": "gpt-3.5-turbo",
+        "temperature": 0.6,
+        "top_k": 3,
+        "alpha": 0.4,
+        "max_tokens": 300,
+        "prompt_template": "Quick answer for {company_name}: {query}",
+        "prompt_variables": {
+          "company_name": "Budget SaaS"
+        },
+        "branding": {
+          "primary_color": "#059669",
+          "secondary_color": "#0891B2"
+        },
+        "enable_reranking": false
+      }
+    }
+  ],
+  "default_config": {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0.7,
+    "top_k": 5,
+    "alpha": 0.5,
+    "max_tokens": 500,
+    "prompt_template": "Answer the following: {query}",
+    "prompt_variables": {},
+    "branding": {
+      "primary_color": "#6B7280",
+      "secondary_color": "#9CA3AF"
+    },
+    "enable_reranking": false
+  }
+}
