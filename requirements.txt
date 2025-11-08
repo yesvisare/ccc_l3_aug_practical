@@ -1,0 +1,40 @@
+# Module 13.4: Portfolio Showcase & Career Launch
+# Core dependencies for portfolio creation and career launch tools
+
+# Core Framework
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+pydantic==2.9.2
+
+# Configuration & Environment
+python-dotenv==1.0.1
+
+# Data Handling
+python-json-logger==2.0.7
+
+# Diagram Generation (for architecture documentation)
+diagrams==0.23.4
+graphviz==0.20.3
+
+# Markdown Processing
+markdown==3.7
+python-markdown-math==0.8
+
+# Testing
+pytest==8.3.3
+pytest-asyncio==0.24.0
+
+# Optional: Metrics & Monitoring
+prometheus-client==0.21.0
+
+# Optional: Publishing APIs (uncomment if needed)
+# google-api-python-client==2.149.0  # YouTube upload
+# requests==2.32.3  # For Medium, Dev.to APIs
+
+# Jupyter for notebook
+jupyter==1.1.1
+ipykernel==6.29.5
+nbformat==5.10.4
+
+# Type hints
+typing-extensions==4.12.2

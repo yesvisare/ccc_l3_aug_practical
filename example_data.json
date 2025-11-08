@@ -1,0 +1,174 @@
+{
+  "system_metrics": {
+    "tenants": 100,
+    "queries_per_day": 50000,
+    "p95_latency_seconds": 1.8,
+    "uptime_percentage": 99.5,
+    "time_reduction_percentage": 87,
+    "arr_usd": 50000,
+    "user_satisfaction": 4.8,
+    "cost_per_query_usd": 0.008,
+    "cost_savings_percentage": 60
+  },
+
+  "tech_stack": [
+    "FastAPI",
+    "PostgreSQL",
+    "Pinecone",
+    "OpenAI GPT-4",
+    "LangChain",
+    "OpenTelemetry",
+    "Prometheus",
+    "Grafana",
+    "Docker",
+    "AWS ECS"
+  ],
+
+  "tech_decisions": [
+    {
+      "choice": "Pinecone (Managed Vector DB)",
+      "alternatives_considered": ["Qdrant", "Weaviate", "Milvus", "Chroma"],
+      "rationale": "Managed service reduces operational overhead at <500K queries/day. Auto-scaling, backup, monitoring included. Team has no dedicated DevOps.",
+      "cost_monthly_usd": 200,
+      "when_to_choose_alternative": "Choose self-hosted Qdrant at >500K queries/day when managed costs ($20K/month) exceed self-hosted + ops ($12K total)"
+    },
+    {
+      "choice": "PostgreSQL with RLS",
+      "alternatives_considered": ["MongoDB", "DynamoDB", "Separate DB per tenant"],
+      "rationale": "Row-Level Security provides bulletproof tenant isolation at database level. ACID guarantees for billing data. Excellent performance with proper indexing.",
+      "cost_monthly_usd": 150,
+      "when_to_choose_alternative": "Choose separate DB per tenant at >1000 tenants with strict compliance requiring physical isolation"
+    },
+    {
+      "choice": "OpenAI GPT-4",
+      "alternatives_considered": ["Claude 3 Opus", "Self-hosted Llama 3", "Mistral"],
+      "rationale": "Best accuracy for compliance domain (legal text). $0.03/1K tokens acceptable at $0.008 per query target. Fast API response times.",
+      "cost_monthly_usd": 4500,
+      "when_to_choose_alternative": "Switch to Llama 3 fine-tuned if cost exceeds $10K/month or compliance requires on-prem"
+    }
+  ],
+
+  "implementation_timeline": [
+    {
+      "month": "Month 1",
+      "milestone": "MVP: Single-tenant RAG with FastAPI + PostgreSQL + OpenAI. Basic retrieval working for 1 regulation source."
+    },
+    {
+      "month": "Month 2",
+      "milestone": "Multi-tenancy: Added tenant isolation (RLS), authentication (JWT), and separate Pinecone namespaces. Onboarded first 3 pilot tenants."
+    },
+    {
+      "month": "Month 3",
+      "milestone": "Hybrid retrieval: Implemented BM25 + vector search with RRF. Recall improved from 70% to 91%. Added LLM re-ranking."
+    },
+    {
+      "month": "Month 4",
+      "milestone": "Observability: Integrated OpenTelemetry, Prometheus, Grafana. Discovered PostgreSQL connection pool bottleneck, migrated to read replicas."
+    },
+    {
+      "month": "Month 5",
+      "milestone": "Load testing: Discovered P95 latency spike at 10K concurrent. Optimized caching (60% hit rate), reduced cost per query by 60%."
+    },
+    {
+      "month": "Month 6",
+      "milestone": "Production: Scaled to 100+ tenants, 50K queries/day. Automated onboarding (2hrs → 10min). Achieved $50K ARR."
+    }
+  ],
+
+  "learnings_and_regrets": [
+    "Didn't load test until Month 5—discovered PostgreSQL bottlenecks late. Cost us 2 weeks scrambling to add connection pooling + read replicas.",
+    "Added OpenTelemetry in Month 4 when debugging latency spikes. Should have been Day 1. Wasted 30+ hours on blind debugging.",
+    "Manual tenant onboarding took 2 hours until Month 6. Automated scripts reduced to 10 minutes. Should have automated at tenant #3, not #30.",
+    "Chose Pinecone before evaluating Qdrant. Works fine now but would choose Qdrant for $800/month savings at current scale.",
+    "Didn't write design docs for first 3 months. Led to 5+ \"why did we do this?\" Slack threads. Now maintain decisions.md religiously."
+  ],
+
+  "scale_bottlenecks": {
+    "10x": "Vector DB query latency becomes bottleneck. Need 3-5 read replicas for Pinecone, request coalescing for duplicate queries, edge caching (CloudFlare Workers). Cost increase: $800/mo → $2,500/mo.",
+    "100x": "Managed Pinecone costs hit $20K/month. Migrate to self-hosted Qdrant cluster (4-6 nodes), dedicated Redis for embeddings cache, multi-region deployment. Cost: $20K managed → $12K total ($8K infra + $4K ops)."
+  },
+
+  "demo_scenes": [
+    {
+      "timestamp": "5:00-7:00",
+      "scene": "Scene 1: User Query",
+      "narrative": "Compliance analyst types: 'What are the latest AML requirements for fintech in India?' System processes in real-time, showing retrieval → re-ranking → generation pipeline. Response in 1.7 seconds with citations."
+    },
+    {
+      "timestamp": "7:00-10:00",
+      "scene": "Scene 2: Multi-Tenant Dashboard",
+      "narrative": "Admin view showing 100+ tenants on map, live query counter, latency histogram. Drill into single tenant showing their document count, query volume, P95 latency. Demonstrate tenant isolation."
+    },
+    {
+      "timestamp": "10:00-12:00",
+      "scene": "Scene 3: Observability",
+      "narrative": "Grafana dashboard with OpenTelemetry traces. Show distributed trace for single query: API (20ms) → Retrieval (300ms) → Re-rank (150ms) → Generation (1200ms) → Total (1.7s). Identify optimization opportunities."
+    }
+  ],
+
+  "application_metrics_examples": [
+    {
+      "scenario": "Healthy Portfolio",
+      "applications_sent": 50,
+      "callbacks_received": 8,
+      "interviews_completed": 6,
+      "offers_received": 2,
+      "expected_callback_rate": 16.0,
+      "expected_offer_rate": 33.3
+    },
+    {
+      "scenario": "Portfolio Needs Review",
+      "applications_sent": 25,
+      "callbacks_received": 1,
+      "interviews_completed": 1,
+      "offers_received": 0,
+      "expected_callback_rate": 4.0,
+      "expected_offer_rate": 0.0
+    },
+    {
+      "scenario": "Interview Practice Needed",
+      "applications_sent": 30,
+      "callbacks_received": 5,
+      "interviews_completed": 5,
+      "offers_received": 0,
+      "expected_callback_rate": 16.7,
+      "expected_offer_rate": 0.0
+    }
+  ],
+
+  "portfolio_decision_scenarios": [
+    {
+      "name": "Invest in Portfolio",
+      "target_companies": 60,
+      "current_callback_rate": 4.0,
+      "job_search_timeline_months": 4,
+      "referral_strength": "weak",
+      "target_level": "senior",
+      "expected_recommendation": "INVEST_IN_PORTFOLIO"
+    },
+    {
+      "name": "Skip Portfolio - Strong Referrals",
+      "target_companies": 8,
+      "current_callback_rate": 35.0,
+      "job_search_timeline_months": 2,
+      "referral_strength": "strong",
+      "target_level": "senior",
+      "expected_recommendation": "SKIP_PORTFOLIO"
+    },
+    {
+      "name": "Skip Portfolio - Staff Level",
+      "target_companies": 20,
+      "current_callback_rate": 12.0,
+      "job_search_timeline_months": 5,
+      "referral_strength": "weak",
+      "target_level": "staff",
+      "expected_recommendation": "SKIP_PORTFOLIO"
+    }
+  ],
+
+  "readme_examples": {
+    "good_example": "# Enterprise RAG SaaS\n\nCompliance teams spend 40 hours/week researching regulations. This multi-tenant RAG system reduces research time by 87% (40hrs → 15min).\n\n**Impact:** 100+ tenants, $50K ARR, 50,000 queries/day at <2s latency.\n\n**Tech Stack:** FastAPI, PostgreSQL, Pinecone, OpenAI GPT-4, LangChain",
+
+    "bad_example": "# Enterprise RAG SaaS\n\nA RAG system built with Python.\n\n## Installation\n```\npip install -r requirements.txt\npython app.py\n```\n\n## Features\n- Vector search\n- Multi-tenancy\n- API endpoints"
+  }
+}
