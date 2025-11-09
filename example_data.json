@@ -1,0 +1,121 @@
+{
+  "sample_queries": [
+    {
+      "query": "What are the compliance requirements for data retention?",
+      "user_id": "user_001",
+      "expected_topics": ["data retention", "compliance", "regulations"]
+    },
+    {
+      "query": "How do we handle GDPR deletion requests?",
+      "user_id": "user_002",
+      "expected_topics": ["GDPR", "data deletion", "privacy"]
+    },
+    {
+      "query": "What is the process for incident response?",
+      "user_id": "user_003",
+      "expected_topics": ["incident response", "security", "procedures"]
+    },
+    {
+      "query": "Explain the authentication requirements for our API",
+      "user_id": "user_004",
+      "expected_topics": ["authentication", "API", "security"]
+    },
+    {
+      "query": "What are the SLA requirements for production systems?",
+      "user_id": "user_005",
+      "expected_topics": ["SLA", "uptime", "performance"]
+    }
+  ],
+  "sample_documents": [
+    {
+      "id": "doc_001",
+      "title": "Data Retention Policy",
+      "content": "All customer data must be retained for a minimum of 7 years in compliance with financial regulations. Personal data should be deleted within 90 days of account closure unless legally required.",
+      "score": 0.95
+    },
+    {
+      "id": "doc_002",
+      "title": "GDPR Compliance Guide",
+      "content": "Under GDPR Article 17, users have the right to erasure. Deletion requests must be processed within 30 days. All personal data copies must be removed from production and backup systems.",
+      "score": 0.92
+    },
+    {
+      "id": "doc_003",
+      "title": "Incident Response Plan",
+      "content": "Critical incidents must be escalated within 15 minutes. P1 incidents require immediate notification to the security team. All incidents must be documented in the incident tracking system.",
+      "score": 0.88
+    },
+    {
+      "id": "doc_004",
+      "title": "API Authentication Standard",
+      "content": "All API endpoints must use OAuth 2.0 authentication. API keys should be rotated every 90 days. Rate limiting must be enforced at 1000 requests per hour per client.",
+      "score": 0.90
+    },
+    {
+      "id": "doc_005",
+      "title": "Production SLA Requirements",
+      "content": "Production systems must maintain 99.9% uptime. P95 latency must be under 500ms. All critical services require automated health checks with 1-minute intervals.",
+      "score": 0.87
+    }
+  ],
+  "apm_test_scenarios": [
+    {
+      "scenario": "Normal load",
+      "queries_per_second": 10,
+      "expected_p95_latency_ms": 800,
+      "sample_rate": 0.1
+    },
+    {
+      "scenario": "High load",
+      "queries_per_second": 100,
+      "expected_p95_latency_ms": 1500,
+      "sample_rate": 0.05
+    },
+    {
+      "scenario": "Stress test",
+      "queries_per_second": 500,
+      "expected_p95_latency_ms": 3000,
+      "sample_rate": 0.01
+    }
+  ],
+  "common_bottlenecks": [
+    {
+      "function": "_remove_overlapping_chunks",
+      "complexity": "O(n²)",
+      "typical_duration_ms": 1800,
+      "optimization": "Use set-based deduplication instead of nested loops"
+    },
+    {
+      "function": "_search_vectordb",
+      "complexity": "O(log n)",
+      "typical_duration_ms": 300,
+      "optimization": "Enable connection pooling and caching"
+    },
+    {
+      "function": "_generate_response",
+      "complexity": "O(1)",
+      "typical_duration_ms": 500,
+      "optimization": "Stream responses instead of waiting for completion"
+    }
+  ],
+  "memory_leak_patterns": [
+    {
+      "pattern": "Unbounded cache growth",
+      "symptom": "Memory grows linearly with requests",
+      "detection": "Monitor memory.growth_mb over time",
+      "fix": "Implement LRU cache with max size"
+    },
+    {
+      "pattern": "Circular references",
+      "symptom": "Memory not freed after request completion",
+      "detection": "Compare baseline vs current memory",
+      "fix": "Use weakref or explicit cleanup"
+    },
+    {
+      "pattern": "Large object retention",
+      "symptom": "Spikes in memory.allocated_mb",
+      "detection": "APM flame graphs show large allocations",
+      "fix": "Stream large objects instead of loading fully"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+Module 7.2: Application Performance Monitoring - Example Data
+==============================================================
+
+SAMPLE COMPLIANCE DOCUMENTS
+----------------------------
+
+Document 1: Data Retention Policy
+----------------------------------
+All customer data must be retained for a minimum of 7 years in compliance with
+financial regulations. Personal data should be deleted within 90 days of account
+closure unless legally required. Backup systems must implement automated retention
+policies to ensure compliance.
+
+Document 2: GDPR Compliance Guide
+----------------------------------
+Under GDPR Article 17, users have the right to erasure ("right to be forgotten").
+Deletion requests must be processed within 30 days. All personal data copies must
+be removed from production and backup systems. Data processors must be notified
+within 72 hours of deletion requests.
+
+Document 3: Incident Response Plan
+-----------------------------------
+Critical incidents (P1) must be escalated within 15 minutes of detection. All
+incidents require immediate notification to the security team via PagerDuty.
+Incident commanders must be assigned within 30 minutes. Post-mortems are required
+for all P1 and P2 incidents within 5 business days.
+
+Document 4: API Authentication Standard
+----------------------------------------
+All API endpoints must use OAuth 2.0 authentication with JWT tokens. API keys
+should be rotated every 90 days and stored in HashiCorp Vault. Rate limiting
+must be enforced at 1000 requests per hour per client. Failed authentication
+attempts must be logged and monitored for potential attacks.
+
+Document 5: Production SLA Requirements
+----------------------------------------
+Production systems must maintain 99.9% uptime (max 43 minutes downtime/month).
+P95 latency must be under 500ms for API endpoints. All critical services require
+automated health checks with 1-minute intervals. Database queries must complete
+within 100ms at P95.
+
+SAMPLE RAG QUERIES FOR APM TESTING
+-----------------------------------
+
+Query 1: What are the compliance requirements for data retention?
+Expected bottleneck: Document retrieval and ranking
+
+Query 2: How do we handle GDPR deletion requests?
+Expected bottleneck: Context processing and overlap removal
+
+Query 3: What is the process for incident response?
+Expected bottleneck: Embedding generation if cold start
+
+Query 4: Explain the authentication requirements for our API
+Expected bottleneck: LLM response generation
+
+Query 5: What are the SLA requirements for production systems?
+Expected bottleneck: Database query if uncached
+
+APM PERFORMANCE EXPECTATIONS
+-----------------------------
+
+Normal Load (10 QPS):
+- P50 latency: 400ms
+- P95 latency: 800ms
+- P99 latency: 1200ms
+- Memory: ~200MB steady state
+
+High Load (100 QPS):
+- P50 latency: 600ms
+- P95 latency: 1500ms
+- P99 latency: 3000ms
+- Memory: ~500MB steady state
+
+Stress Test (500 QPS):
+- P50 latency: 1000ms
+- P95 latency: 3000ms
+- P99 latency: 5000ms
+- Memory: ~1GB with potential leaks
+
+COMMON BOTTLENECKS TO DETECT WITH APM
+--------------------------------------
+
+1. O(n²) Overlap Removal:
+   - Function: _remove_overlapping_chunks()
+   - Expected duration: 1800ms for 10 documents
+   - APM should show nested loop as hotspot
+   - Fix: Use set-based deduplication
+
+2. Inefficient Vector Search:
+   - Function: _search_vectordb()
+   - Expected duration: 300ms
+   - APM should show network latency
+   - Fix: Connection pooling + caching
+
+3. Memory Leak in Document Cache:
+   - Function: cache_documents()
+   - Expected growth: ~10MB per 100 documents
+   - APM should show unbounded growth
+   - Fix: Implement LRU cache with max size
+
+4. Slow Database Queries:
+   - Function: fetch_user_documents()
+   - Expected duration: 2000ms without indexes
+   - APM should show sequential scan
+   - Fix: Add index on user_id, deleted_at
+
+MEMORY LEAK DETECTION PATTERNS
+-------------------------------
+
+Pattern 1: Linear Growth (Cache Leak)
+- Symptom: Memory grows 5-10MB per 100 requests
+- Detection: Plot memory.growth_mb over time
+- Fix: Clear cache after each request or use LRU
+
+Pattern 2: Spike and Hold (Object Retention)
+- Symptom: Memory spikes then stays elevated
+- Detection: Compare baseline vs current memory
+- Fix: Explicit cleanup in finally blocks
+
+Pattern 3: Slow Accumulation (Circular References)
+- Symptom: Gradual growth over hours/days
+- Detection: Long-running memory profiling
+- Fix: Use weakref or break circular refs
