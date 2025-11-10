@@ -1,0 +1,22 @@
+{
+  "queries": [
+    {
+      "id": "query_001",
+      "text": "What are the compliance requirements for data retention?",
+      "user_id": "user_001",
+      "tags": ["compliance", "data_retention"]
+    },
+    {
+      "id": "query_002",
+      "text": "How do we handle GDPR deletion requests?",
+      "user_id": "user_002",
+      "tags": ["gdpr", "privacy", "data_deletion"]
+    }
+  ],
+  "apm_config": {
+    "profiling_enabled": true,
+    "sample_rate": 0.1,
+    "profiling_capture_pct": 1,
+    "max_cpu_overhead_pct": 5.0
+  }
+}

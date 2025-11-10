@@ -9,10 +9,10 @@ import sys
 from pathlib import Path
 
 # Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import config
-from l2_m7_application_performance_monitoring import (
+from src.l3_m7_application_performance_monitoring import (
     ProfiledRAGPipeline,
     MemoryProfiledComponent,
     monitor_memory_leak,

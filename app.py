@@ -11,7 +11,7 @@ import logging
 import uvicorn
 
 # Import module functions
-from l2_m7_application_performance_monitoring import (
+from src.l3_m7_application_performance_monitoring import (
     ProfiledRAGPipeline,
     MemoryProfiledComponent,
     monitor_memory_leak,

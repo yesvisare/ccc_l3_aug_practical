@@ -54,10 +54,10 @@ cp .env.example .env
 
 ```bash
 # Run smoke tests
-python tests_smoke.py
+pytest tests/test_m7_application_performance_monitoring.py -v
 
-# Run demo pipeline
-python l2_m7_application_performance_monitoring.py
+# Run demo via API
+python app.py
 
 # Start FastAPI server
 python app.py
@@ -423,12 +423,18 @@ objgraph.show_growth(limit=10)  # Shows top 10 growing objects
 ├── requirements.txt                             # Dependencies
 ├── .env.example                                 # Environment template
 ├── config.py                                    # Configuration management
-├── l2_m7_application_performance_monitoring.py  # Core module
 ├── app.py                                       # FastAPI wrapper
-├── tests_smoke.py                               # Smoke tests
+├── src/
+│   └── l3_m7_application_performance_monitoring/
+│       └── __init__.py                          # Core module
+├── tests/
+│   └── test_m7_application_performance_monitoring.py  # Smoke tests
+├── notebooks/
+│   └── L3_M7_Application_Performance_Monitoring.ipynb  # Jupyter notebook
+├── configs/                                     # Configuration files
+├── scripts/                                     # Utility scripts
 ├── example_data.json                            # Sample data (JSON)
-├── example_data.txt                             # Sample data (text)
-└── L2_M7_Application_Performance_Monitoring.ipynb  # Jupyter notebook
+└── example_data.txt                             # Sample data (text)
 ```
 
 ---
@@ -437,13 +443,13 @@ objgraph.show_growth(limit=10)  # Shows top 10 growing objects
 
 ```bash
 # Run all tests
-pytest tests_smoke.py -v
+pytest tests/test_m7_application_performance_monitoring.py -v
 
 # Run specific test
-pytest tests_smoke.py::TestProfiledRAGPipeline::test_process_query_basic -v
+pytest tests/test_m7_application_performance_monitoring.py::TestProfiledRAGPipeline::test_process_query_basic -v
 
 # Run with coverage
-pytest tests_smoke.py --cov=l2_m7_application_performance_monitoring --cov-report=html
+pytest tests/ --cov=src.l3_m7_application_performance_monitoring --cov-report=html
 ```
 
 ---
