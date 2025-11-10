@@ -1,4 +1,4 @@
-# Module 12.1: Usage Metering & Analytics
+# Module 12: Usage Metering & Analytics
 
 **Production-grade usage metering for multi-tenant SaaS applications**
 
@@ -40,13 +40,26 @@ cp .env.example .env
 ### 3. Run Tests
 
 ```bash
-pytest tests_smoke.py -v
+# Windows PowerShell
+powershell -c "$env:PYTHONPATH='$PWD'; pytest -q"
+# or
+./scripts/run_tests.ps1
+
+# Linux/Mac
+export PYTHONPATH=$PWD && pytest -q
 ```
 
 ### 4. Start the API
 
 ```bash
-python app.py
+# Windows PowerShell
+powershell -c "$env:PYTHONPATH='$PWD'; uvicorn app:app --reload"
+# or
+./scripts/run_api.ps1
+
+# Linux/Mac
+export PYTHONPATH=$PWD && uvicorn app:app --reload
+
 # API available at http://localhost:8000
 # Docs at http://localhost:8000/docs
 ```
@@ -54,7 +67,51 @@ python app.py
 ### 5. Explore the Jupyter Notebook
 
 ```bash
-jupyter notebook L2_M12_Usage_Metering_Analytics.ipynb
+jupyter lab notebooks/L3_M12_Usage_Metering_Analytics.ipynb
+# or
+jupyter notebook notebooks/L3_M12_Usage_Metering_Analytics.ipynb
+```
+
+---
+
+## Environment Variables
+
+The module requires the following environment variables (see `.env.example`):
+
+```bash
+# ClickHouse Configuration
+CLICKHOUSE_HOST=localhost
+CLICKHOUSE_PORT=9000
+CLICKHOUSE_USER=default
+CLICKHOUSE_PASSWORD=
+CLICKHOUSE_DATABASE=metering
+
+# Buffering Configuration (for <5ms overhead)
+BUFFER_SIZE=100
+FLUSH_INTERVAL_SECONDS=1.0
+
+# Fallback Storage (when ClickHouse unavailable)
+FALLBACK_FILE_PATH=./usage_events_fallback.jsonl
+
+# Pricing Configuration (per-unit costs in USD)
+PRICE_PER_QUERY=0.01
+PRICE_PER_1K_INPUT_TOKENS=0.003
+PRICE_PER_1K_OUTPUT_TOKENS=0.015
+PRICE_PER_GB_STORAGE=0.10
+
+# Default Quotas (per tenant per day)
+DEFAULT_QUOTA_QUERIES=1000
+DEFAULT_QUOTA_TOKENS=100000
+
+# Retention Policy (months)
+RETENTION_MONTHS=36
+
+# Grafana (optional - for dashboards)
+GRAFANA_URL=http://localhost:3000
+GRAFANA_API_KEY=
+
+# Offline Mode (optional - for L3 notebook consistency)
+OFFLINE=false
 ```
 
 ---
@@ -98,26 +155,26 @@ jupyter notebook L2_M12_Usage_Metering_Analytics.ipynb
 
 ### Key Components
 
-**1. ClickHouse Schema** (`l2_m12_usage_metering_analytics.py:73`)
+**1. ClickHouse Schema** (`src/l3_m12_usage_metering_analytics/__init__.py`)
 - `usage_events`: Append-only event log, partitioned monthly
 - `usage_hourly`: Materialized view for real-time aggregations
 - `usage_daily`: Daily summaries per tenant
 - `tenant_quotas`: Quota limits and consumption tracking
 
-**2. Usage Tracker** (`l2_m12_usage_metering_analytics.py:159`)
+**2. Usage Tracker** (`src/l3_m12_usage_metering_analytics/__init__.py`)
 - Async buffering with <5ms overhead
 - Batch insertion (100 events or 1-second intervals)
 - Fallback to local JSONL files if ClickHouse unavailable
 
-**3. Cost Calculator** (`l2_m12_usage_metering_analytics.py:278`)
+**3. Cost Calculator** (`src/l3_m12_usage_metering_analytics/__init__.py`)
 - Maps usage quantities to billable amounts
 - Configurable pricing model (queries, tokens, storage)
 
-**4. Quota Manager** (`l2_m12_usage_metering_analytics.py:337`)
+**4. Quota Manager** (`src/l3_m12_usage_metering_analytics/__init__.py`)
 - Real-time quota checking
 - Overage detection with configurable enforcement
 
-**5. Billing Exporter** (`l2_m12_usage_metering_analytics.py:424`)
+**5. Billing Exporter** (`src/l3_m12_usage_metering_analytics/__init__.py`)
 - Monthly invoice generation
 - Line-item breakdown by event type
 
@@ -231,17 +288,14 @@ WARNING: Buffer size exceeds 500 events
 2. Reduce `FLUSH_INTERVAL_SECONDS` in `.env`
 3. Scale ClickHouse instance if needed
 
-### Quota Check Returns "no_quota_set"
+### Offline/Limited Mode
 
-```
-{"status": "no_quota_set"}
-```
+**Offline/Limited Mode**: The module runs in a limited mode if ClickHouse credentials are not set in `.env`. The `config.py` file will return `None` for the client, and the `UsageTracker` will automatically fall back to writing events to the local `usage_events_fallback.jsonl` file. API endpoints like `/quota/check` will return a 'skipped' response.
 
-**Fix:**
-```bash
-# Set default quota
-python l2_m12_usage_metering_analytics.py set-quota tenant_acme
-```
+**To enable full mode:**
+1. Set up ClickHouse (Docker: `docker run -d -p 9000:9000 clickhouse/clickhouse-server`)
+2. Configure credentials in `.env`
+3. Restart the API
 
 ### Invoice Generation Returns Empty
 
@@ -307,44 +361,31 @@ curl -X POST http://localhost:8000/invoice/generate \
 
 ---
 
-## CLI Usage
-
-### Initialize Schema
-```bash
-python l2_m12_usage_metering_analytics.py init-schema
-```
-
-### Set Quota
-```bash
-python l2_m12_usage_metering_analytics.py set-quota tenant_acme
-```
-
-### Check Quota
-```bash
-python l2_m12_usage_metering_analytics.py check-quota tenant_acme
-```
-
-### Generate Invoice
-```bash
-python l2_m12_usage_metering_analytics.py invoice tenant_acme 2025 11
-```
-
----
-
 ## File Structure
 
 ```
 .
-├── README.md                               # This file
-├── requirements.txt                        # Python dependencies
-├── .env.example                           # Environment variables template
-├── config.py                              # Configuration management
-├── l2_m12_usage_metering_analytics.py    # Core module (all business logic)
-├── app.py                                 # FastAPI wrapper (no business logic)
-├── tests_smoke.py                         # Smoke tests
-├── example_data.json                      # Sample events and quotas
-├── L2_M12_Usage_Metering_Analytics.ipynb # Interactive tutorial
-└── usage_events_fallback.jsonl           # Fallback storage (auto-created)
+├── README.md                                          # This file
+├── requirements.txt                                   # Python dependencies
+├── .env.example                                      # Environment variables template
+├── .gitignore                                        # Git ignore patterns
+├── config.py                                         # Configuration management (root)
+├── app.py                                            # FastAPI wrapper (root, no business logic)
+├── example_data.json                                 # Sample events and quotas
+├── LICENSE                                           # License file
+├── src/
+│   └── l3_m12_usage_metering_analytics/
+│       └── __init__.py                               # Core module (all business logic)
+├── notebooks/
+│   └── L3_M12_Usage_Metering_Analytics.ipynb        # Interactive tutorial
+├── tests/
+│   └── test_m12_usage_metering_analytics.py         # Smoke tests
+├── configs/
+│   └── example.json                                  # Configuration examples
+├── scripts/
+│   ├── run_api.ps1                                   # Windows: Start API
+│   └── run_tests.ps1                                 # Windows: Run tests
+└── usage_events_fallback.jsonl                       # Fallback storage (auto-created)
 ```
 
 ---
