@@ -1,0 +1,22 @@
+{
+  "plan_configs": {
+    "starter": {
+      "max_documents": 1000,
+      "max_queries_per_month": 10000,
+      "max_users": 3,
+      "price_monthly": 49
+    },
+    "pro": {
+      "max_documents": 10000,
+      "max_queries_per_month": 100000,
+      "max_users": 10,
+      "price_monthly": 199
+    },
+    "enterprise": {
+      "max_documents": -1,
+      "max_queries_per_month": -1,
+      "max_users": -1,
+      "price_monthly": 999
+    }
+  }
+}

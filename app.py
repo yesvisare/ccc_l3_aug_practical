@@ -19,7 +19,7 @@ import json
 from datetime import datetime
 
 # Import module functions
-from l2_m12_self_service_tenant_onboarding import (
+from src.l3_m12_self_service_tenant_onboarding import (
     create_skeleton_tenant,
     generate_stripe_checkout_url,
     verify_stripe_webhook,

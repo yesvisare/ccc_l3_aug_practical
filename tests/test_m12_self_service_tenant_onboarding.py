@@ -10,9 +10,9 @@ import sys
 import os
 
 # Add parent directory to path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from l2_m12_self_service_tenant_onboarding import (
+from src.l3_m12_self_service_tenant_onboarding import (
     create_skeleton_tenant,
     generate_tenant_id,
     hash_password,
