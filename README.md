@@ -1,4 +1,4 @@
-# Module 11.2: Tenant-Specific Customization
+# L3.M11.2: Tenant-Specific Customization
 
 Database-backed multi-tenant configuration management for RAG pipelines. Enables SaaS products to serve diverse customer needs without code deployments.
 
@@ -28,14 +28,50 @@ cp .env.example .env
 # Edit .env with your database and Redis URLs
 ```
 
+**Environment Variables:**
+```bash
+# Database Configuration
+DATABASE_URL=postgresql://user:password@localhost:5432/tenant_config_db
+
+# Redis Cache Configuration
+REDIS_URL=redis://localhost:6379/0
+REDIS_TTL=300
+
+# Application Settings
+LOG_LEVEL=INFO
+ENVIRONMENT=development
+
+# API Configuration (optional for LLM integration)
+OPENAI_API_KEY=sk-your-openai-key-here
+ANTHROPIC_API_KEY=sk-ant-your-anthropic-key-here
+
+# Default Tenant Configuration
+DEFAULT_MODEL=gpt-3.5-turbo
+DEFAULT_TEMPERATURE=0.7
+DEFAULT_TOP_K=5
+DEFAULT_ALPHA=0.5
+DEFAULT_MAX_TOKENS=500
+
+# Resource Limits
+MAX_TEMPERATURE=2.0
+MIN_TEMPERATURE=0.0
+MAX_TOP_K=20
+MIN_TOP_K=1
+```
+
+**Offline/Limited Mode:**
+The API runs in a limited mode if `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` are not set. The `/query` endpoint will return a `'skipped': true` mock response instead of making a live LLM call. This allows testing configuration management without requiring API credentials.
+
 ### 3. Run Examples
 
 ```bash
 # CLI examples
-python l2_m11_tenant_specific_customization.py
+python -m src.l3_m11_tenant_specific_customization
 
-# Start FastAPI server
-python app.py
+# Start FastAPI server (Windows PowerShell)
+powershell -c "$env:PYTHONPATH='$PWD'; uvicorn app:app --reload"
+# or use the script
+.\scripts\run_api.ps1
 
 # API docs: http://localhost:8000/docs
 ```
@@ -43,13 +79,19 @@ python app.py
 ### 4. Run Tests
 
 ```bash
-pytest tests_smoke.py -v
+# Run tests (Windows PowerShell)
+powershell -c "$env:PYTHONPATH='$PWD'; pytest -q tests/"
+# or use the script
+.\scripts\run_tests.ps1
+
+# Linux/Mac
+export PYTHONPATH=$PWD && pytest -q tests/
 ```
 
 ### 5. Explore Jupyter Notebook
 
 ```bash
-jupyter lab L2_M11_Tenant-Specific_Customization.ipynb
+jupyter lab notebooks/L3_M11_Tenant_Specific_Customization.ipynb
 ```
 
 ## How It Works
@@ -289,9 +331,9 @@ Execute RAG query with tenant config
 Add a new configuration field for `max_retries` and validate it prevents negative values.
 
 **Hints**:
-1. Add field to `TenantConfig` with `ge=0` validator
+1. Add field to `TenantConfig` with `ge=0` validator in `src/l3_m11_tenant_specific_customization/__init__.py`
 2. Update `example_data.json`
-3. Add test in `tests_smoke.py`
+3. Add test in `tests/test_m11_tenant_specific_customization.py`
 
 ### 🟡 Medium (2-3 hrs)
 Implement configuration versioning with rollback capability.
