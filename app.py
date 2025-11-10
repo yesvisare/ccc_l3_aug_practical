@@ -20,7 +20,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 # Import core functionality
-from l3_m13_complete_saas_build import (
+from src.l3_m13_complete_saas_build import (
     ComplianceCopilotSaaS,
     ConfigManager,
     UsageTracker,
