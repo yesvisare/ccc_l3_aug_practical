@@ -40,38 +40,87 @@ cp .env.example .env
 # Edit .env with your company information and AWS credentials (optional)
 ```
 
-### 3. Generate Compliance Documents
+### 3. Run REST API
 
-```bash
-# Generate all documents at once
-python l3_m13_gov_compliance_docu.py all
-
-# Or generate individually
-python l3_m13_gov_compliance_docu.py privacy    # Privacy policy
-python l3_m13_gov_compliance_docu.py soc2       # SOC 2 controls
-python l3_m13_gov_compliance_docu.py incident   # Incident playbook
-python l3_m13_gov_compliance_docu.py evidence   # Collect evidence
+**Windows (PowerShell):**
+```powershell
+.\scripts\run_api.ps1
+# or
+powershell -c "$env:PYTHONPATH='$PWD'; uvicorn app:app --reload"
 ```
 
-### 4. Run REST API
-
+**Linux/Mac (Bash):**
 ```bash
-python app.py
-# API available at http://localhost:8000
-# Documentation at http://localhost:8000/docs
+export PYTHONPATH=$PWD
+uvicorn app:app --reload
 ```
 
-### 5. Run Tests
+API available at http://localhost:8000
+Interactive docs at http://localhost:8000/docs
 
-```bash
-pytest tests_smoke.py -v
+### 4. Run Tests
+
+**Windows (PowerShell):**
+```powershell
+.\scripts\run_tests.ps1
+# or
+powershell -c "$env:PYTHONPATH='$PWD'; pytest -q"
 ```
 
-### 6. Explore the Notebook
+**Linux/Mac (Bash):**
+```bash
+export PYTHONPATH=$PWD
+pytest -q tests/
+```
+
+### 5. Explore the Notebook
 
 ```bash
-jupyter notebook L3_M13_Governance_Compliance_Documentation.ipynb
+jupyter lab notebooks/L3_M13_Governance_Compliance_Documentation.ipynb
 ```
+
+## Environment Variables
+
+Configure your `.env` file with the following variables (see `.env.example` for template):
+
+**Required (Company Information):**
+```bash
+COMPANY_NAME="YourCompany Inc."
+COMPANY_EMAIL="privacy@yourcompany.com"
+COMPLIANCE_CONTACT="compliance@yourcompany.com"
+INCIDENT_RESPONSE_EMAIL="incidents@yourcompany.com"
+```
+
+**Optional (AWS Evidence Collection):**
+```bash
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+AWS_REGION=us-east-1
+AWS_ACCOUNT_ID=123456789012
+EVIDENCE_BUCKET=compliance-evidence-bucket
+```
+
+**Optional (Database):**
+```bash
+DATABASE_URL=postgresql://user:password@localhost:5432/compliance_db
+```
+
+**Optional (SOC 2 Configuration):**
+```bash
+SOC2_AUDIT_FIRM="Audit Firm Name"
+SOC2_LAST_AUDIT_DATE=2025-01-15
+PENETRATION_TEST_DATE=2025-01-15
+```
+
+**Optional (API Configuration):**
+```bash
+API_PORT=8000
+API_HOST=0.0.0.0
+LOG_LEVEL=INFO
+SECRET_KEY=your-secret-key-change-in-production
+```
+
+**Note:** The module runs in a limited "degraded" mode if AWS credentials or database URL are not provided. API endpoints will return `{"skipped": true, "reason": "Service not initialized"}` for operations requiring these services.
 
 ## How It Works
 
@@ -265,6 +314,28 @@ Skip if pre-product-market-fit (<10 customers), revenue <$200K, or targeting con
   - Use Vanta/Drata for guided audit ($27K-55K all-in)
   - DIY minimal (basic privacy policy only, $2K-5K)
 
+### **Offline/Limited Mode**
+
+The module runs in a limited "degraded" mode if `DATABASE_URL` or `AWS_ACCESS_KEY_ID` are not set in `.env`.
+
+**What happens:**
+- The `config.py` file returns `None` for clients that require credentials
+- The `app.py` logic detects missing services and returns: `{"skipped": true, "reason": "Service not initialized (missing credentials)"}`
+- Evidence collection uses mock data instead of real AWS API calls
+- All core functionality (policy generation, SOC 2 documentation, incident planning) works normally
+
+**When to use:**
+- ✅ Local development without cloud dependencies
+- ✅ CI/CD environments running tests
+- ✅ Demonstrations without exposing credentials
+- ✅ Learning the module structure and API
+
+**To enable full mode:**
+1. Copy `.env.example` to `.env`
+2. Add your AWS credentials and database URL
+3. Restart the API server
+4. Set `OFFLINE=false` when running notebooks
+
 ## API Reference
 
 ### Health Check
@@ -314,18 +385,28 @@ GET /compliance/status
 
 ```
 .
-├── l3_m13_gov_compliance_docu.py    # Main implementation
-├── app.py                            # FastAPI REST API
-├── config.py                         # Configuration management
-├── requirements.txt                  # Dependencies
-├── .env.example                      # Environment template
-├── tests_smoke.py                    # Minimal tests
-├── README.md                         # This file
-├── L3_M13_Governance_Compliance_Documentation.ipynb  # Jupyter notebook
-├── example_data_subprocessors.json   # Sample subprocessors
-├── example_data_user_access_matrix.csv  # Sample access matrix
-├── example_data_soc2_controls.json   # Sample SOC 2 controls
-└── evidence/                         # Auto-generated evidence
+├── src/
+│   └── l3_m13_governance_compliance_rag/
+│       └── __init__.py              # Core business logic
+├── tests/
+│   └── test_m13_governance_compliance_rag.py  # Pytest tests
+├── notebooks/
+│   └── L3_M13_Governance_Compliance_Documentation.ipynb
+├── configs/
+│   └── example.json                 # Config templates
+├── scripts/
+│   ├── run_api.ps1                  # Windows API launcher
+│   └── run_tests.ps1                # Windows test runner
+├── app.py                           # FastAPI application (thin wrapper)
+├── config.py                        # Configuration management
+├── requirements.txt                 # Dependencies
+├── .env.example                     # Environment template
+├── .gitignore                       # Git ignore patterns
+├── README.md                        # This file
+├── example_data_subprocessors.json  # Sample data
+├── example_data_user_access_matrix.csv
+├── example_data_soc2_controls.json
+└── evidence/                        # Auto-generated (gitignored)
     └── 2025-11/
         ├── evidence_summary.json
         ├── user_access_matrix.json
