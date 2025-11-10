@@ -35,30 +35,129 @@ cp .env.example .env
 
 ### 2. Run the API
 
-```bash
-# Start FastAPI server
-python app.py
+```powershell
+# Windows (PowerShell) - recommended
+.\scripts\run_api.ps1
+
+# Or manually
+$env:PYTHONPATH = $PWD
+uvicorn app:app --reload
 
 # API available at: http://localhost:8000
 # Docs at: http://localhost:8000/docs
 ```
 
+```bash
+# Linux/Mac
+export PYTHONPATH=$PWD
+uvicorn app:app --reload
+```
+
 ### 3. Explore the Notebook
 
 ```bash
-# Launch Jupyter
-jupyter notebook L3_M13_Launch_Preparation_Marketing.ipynb
+# Launch Jupyter Lab (recommended for L3)
+jupyter lab notebooks/L3_M13_Launch_Preparation_Marketing.ipynb
+
+# Or Jupyter Notebook
+jupyter notebook notebooks/L3_M13_Launch_Preparation_Marketing.ipynb
 ```
 
 ### 4. Run Tests
 
-```bash
-# Smoke tests
-python tests_smoke.py
+```powershell
+# Windows (PowerShell) - recommended
+.\scripts\run_tests.ps1
 
-# Or with pytest
-pytest tests_smoke.py -v
+# Or manually
+$env:PYTHONPATH = $PWD
+pytest -q tests/
 ```
+
+```bash
+# Linux/Mac
+export PYTHONPATH=$PWD
+pytest -q tests/
+```
+
+---
+
+## File Structure
+
+```
+.
+├── src/
+│   └── l3_m13_launch_prep_marketing/
+│       └── __init__.py              # Core business logic (all classes)
+├── notebooks/
+│   └── L3_M13_Launch_Preparation_Marketing.ipynb
+├── tests/
+│   └── test_m13_launch_prep_marketing.py
+├── configs/
+│   └── example.json                 # Sample ICP/pricing config
+├── scripts/
+│   ├── run_api.ps1                  # Windows: Start API server
+│   └── run_tests.ps1                # Windows: Run tests
+├── app.py                           # FastAPI application (thin wrapper)
+├── config.py                        # Configuration management
+├── requirements.txt
+├── .env.example                     # Environment variables template
+├── .gitignore
+├── example_data_*.{json,csv}        # Sample data files
+├── LICENSE
+└── README.md
+```
+
+**Key Points:**
+- **Business logic:** All in `src/l3_m13_launch_prep_marketing/__init__.py`
+- **API layer:** Thin `app.py` that imports from `src/`
+- **Tests:** Standard `tests/` directory for pytest discovery
+- **Notebooks:** Organized in `notebooks/` subdirectory
+- **Scripts:** PowerShell scripts for Windows-first development
+
+---
+
+## Environment Variables
+
+The module works in **offline/limited mode** by default—no external API keys required for core functionality (pricing, CAC/LTV, funnels). Optional analytics integrations enhance tracking but aren't mandatory.
+
+**Optional Analytics Keys** (`.env` file):
+
+```bash
+# Google Analytics 4 (optional - for landing page tracking)
+GOOGLE_ANALYTICS_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# Mixpanel (optional - for funnel analysis)
+MIXPANEL_PROJECT_TOKEN=your_mixpanel_project_token_here
+MIXPANEL_API_SECRET=your_mixpanel_api_secret_here
+
+# Mailchimp (optional - for email campaigns)
+MAILCHIMP_API_KEY=your_mailchimp_api_key_here
+MAILCHIMP_SERVER_PREFIX=us19
+
+# HubSpot (optional - for CRM integration)
+HUBSPOT_API_KEY=your_hubspot_api_key_here
+
+# Landing page URLs
+LANDING_PAGE_URL=https://yourcompany.com
+PRODUCT_APP_URL=https://app.yourcompany.com
+
+# OFFLINE mode (set to "true" to disable external calls)
+OFFLINE=false
+```
+
+**What works without keys:**
+- ✅ Value proposition validation
+- ✅ Pricing calculations (COGS-based + value-based)
+- ✅ GTM strategy selection
+- ✅ Conversion funnel analysis
+- ✅ CAC/LTV calculations
+- ✅ UTM URL generation
+
+**What requires keys:**
+- ❌ Live analytics tracking (GA4, Mixpanel)
+- ❌ Email campaign automation (Mailchimp)
+- ❌ CRM integrations (HubSpot)
 
 ---
 
@@ -343,6 +442,41 @@ python config.py
 # ⚠️  Mixpanel not configured
 # This is OK for local development and planning
 ```
+
+---
+
+### Offline/Limited Mode
+
+**The module runs in a limited, "degraded" mode if analytics API keys are not set in `.env`.**
+
+The `config.py` file will return `None` for any unconfigured client, and the `app.py` logic will return a `{"skipped": True, "reason": "Service not initialized..."}` response for API endpoints that require external services.
+
+**Core functionality works completely offline:**
+- All pricing calculations (COGS-based, value-based, tier design)
+- Value proposition validation
+- GTM strategy recommendations
+- Conversion funnel analysis
+- CAC/LTV calculations
+- UTM URL generation
+
+**What's disabled in offline mode:**
+- Live analytics event tracking (GA4, Mixpanel)
+- Email campaign automation (Mailchimp)
+- CRM data sync (HubSpot)
+
+**To enable offline mode explicitly:**
+```bash
+# Set in .env file
+OFFLINE=true
+```
+
+Or run notebook/scripts with:
+```bash
+export OFFLINE=true
+jupyter lab notebooks/L3_M13_Launch_Preparation_Marketing.ipynb
+```
+
+The notebook will display: `⚠️ Running in OFFLINE mode — External API calls will be skipped`
 
 ---
 
