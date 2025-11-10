@@ -1,0 +1,11 @@
+{
+  "tenants": [
+    {
+      "tenant_id": "example_tenant",
+      "name": "Example Tenant",
+      "tier": "starter",
+      "model_tier": "gpt-3.5-turbo",
+      "retrieval_mode": "basic"
+    }
+  ]
+}
