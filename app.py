@@ -13,7 +13,7 @@ import logging
 from datetime import datetime
 
 # Import core functionality
-from l3_m13_launch_prep_marketing import (
+from src.l3_m13_launch_prep_marketing import (
     ValueProposition,
     PricingCalculator,
     ConversionFunnelAnalyzer,

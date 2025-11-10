@@ -14,9 +14,9 @@ import os
 from typing import Dict, Any
 
 # Add parent directory to path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from l3_m13_launch_prep_marketing import (
+from src.l3_m13_launch_prep_marketing import (
     ValueProposition,
     PricingTierConfig,
     PricingCalculator,

@@ -1,0 +1,27 @@
+{
+  "icp": {
+    "industry": "Financial services",
+    "company_size_min": 50,
+    "company_size_max": 5000,
+    "geography": ["United States"],
+    "buyer_titles": [
+      "Chief Compliance Officer",
+      "Head of Compliance",
+      "VP Regulatory Affairs"
+    ]
+  },
+  "pricing_tiers": {
+    "starter": {
+      "monthly_price": 199,
+      "query_limit": 500
+    },
+    "professional": {
+      "monthly_price": 499,
+      "query_limit": 2500
+    },
+    "enterprise": {
+      "monthly_price": 1499,
+      "query_limit": 999999
+    }
+  }
+}
