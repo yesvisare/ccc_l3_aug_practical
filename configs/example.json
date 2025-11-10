@@ -1,0 +1,26 @@
+{
+  "tenants": [],
+  "plan_hierarchy": ["free", "starter", "professional", "enterprise"],
+  "plan_limits": {
+    "free": {
+      "users": 5,
+      "storage_gb": 1,
+      "api_calls_per_day": 100
+    },
+    "starter": {
+      "users": 20,
+      "storage_gb": 10,
+      "api_calls_per_day": 1000
+    },
+    "professional": {
+      "users": 100,
+      "storage_gb": 100,
+      "api_calls_per_day": 10000
+    },
+    "enterprise": {
+      "users": -1,
+      "storage_gb": -1,
+      "api_calls_per_day": -1
+    }
+  }
+}

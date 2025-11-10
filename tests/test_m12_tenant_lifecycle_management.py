@@ -9,7 +9,7 @@ from pathlib import Path
 
 # Import modules to test
 import config
-import l2_m12_tenant_lifecycle_management as lifecycle
+import src.l3_m12_tenant_lifecycle_management as lifecycle
 
 
 class TestConfig:

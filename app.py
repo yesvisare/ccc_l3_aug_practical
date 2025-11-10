@@ -9,7 +9,7 @@ from typing import Optional, Dict, Any
 import logging
 
 from config import Config, get_stripe_client
-import l2_m12_tenant_lifecycle_management as lifecycle
+import src.l3_m12_tenant_lifecycle_management as lifecycle
 
 # Configure logging
 logging.basicConfig(level=Config.LOG_LEVEL)
