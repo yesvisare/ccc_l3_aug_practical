@@ -10,10 +10,10 @@ from typing import List
 import sys
 import os
 
-# Add parent directory to path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Add project root to path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from l2_m9_advanced_reranking_strategies import (
+from src.l3_m9_advanced_reranking.l3_m9_advanced_reranking_strategies import (
     Document,
     EnsembleReranker,
     MMRReranker,
@@ -22,7 +22,7 @@ from l2_m9_advanced_reranking_strategies import (
     AdvancedReranker,
     RerankResult
 )
-from config import RerankerConfig, get_config
+from src.l3_m9_advanced_reranking.config import RerankerConfig, get_config
 
 
 @pytest.fixture

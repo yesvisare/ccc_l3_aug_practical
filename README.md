@@ -34,7 +34,7 @@ cp .env.example .env
 ### Basic Usage
 
 ```python
-from l2_m9_advanced_reranking_strategies import (
+from src.l3_m9_advanced_reranking.l3_m9_advanced_reranking_strategies import (
     EnsembleReranker,
     MMRReranker,
     TemporalReranker,

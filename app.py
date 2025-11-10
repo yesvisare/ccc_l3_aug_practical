@@ -10,7 +10,7 @@ from typing import List, Optional, Dict, Any, Literal
 import logging
 import time
 
-from l2_m9_advanced_reranking_strategies import (
+from src.l3_m9_advanced_reranking.l3_m9_advanced_reranking_strategies import (
     Document,
     EnsembleReranker,
     MMRReranker,
@@ -18,7 +18,7 @@ from l2_m9_advanced_reranking_strategies import (
     PersonalizationReranker,
     AdvancedReranker
 )
-from config import get_config, has_models_available
+from src.l3_m9_advanced_reranking.config import get_config, has_models_available
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
