@@ -37,21 +37,22 @@ cp .env.example .env
 ### 3. Run Examples
 
 ```bash
-# CLI examples (requires OPENAI_API_KEY)
-python l2_m9_hypothetical_document_embeddings.py
-
-# Run smoke tests
-python tests_smoke.py
+# Run tests
+powershell -c "$env:PYTHONPATH='$PWD'; pytest -q"
+# or
+./scripts/run_tests.ps1
 
 # Start FastAPI server
-python app.py
+powershell -c "$env:PYTHONPATH='$PWD'; uvicorn app:app --reload"
+# or
+./scripts/run_api.ps1
 # Then visit http://localhost:8000/docs
 ```
 
 ### 4. Jupyter Notebook
 
 ```bash
-jupyter notebook L2_M9_Hypothetical_Document_Embeddings_\(HyDE\).ipynb
+jupyter lab notebooks/L3_M9_Hypothetical_Document_Embeddings_\(HyDE\).ipynb
 ```
 
 ## How It Works
@@ -176,6 +177,47 @@ Adds 500-1000ms latency (cannot be eliminated); costs $0.001-0.005 per query (10
 - Highly specialized domain → fine-tuned embeddings better
 - Can afford fine-tuning ($500 one-time vs $1500/month ongoing)
 
+## Environment Variables
+
+The module requires the following environment variables (set in `.env` file):
+
+```bash
+# Required
+OPENAI_API_KEY=sk-your-openai-api-key-here
+
+# Optional (for vector search)
+PINECONE_API_KEY=your-pinecone-api-key-here
+PINECONE_INDEX_NAME=hyde-index
+
+# Optional (for caching)
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+# Model Settings
+HYDE_MODEL=gpt-4o-mini
+EMBEDDING_MODEL=text-embedding-3-small
+
+# HyDE Parameters
+HYDE_TEMPERATURE=0.3
+HYDE_MAX_TOKENS=200
+
+# Retrieval Settings
+DEFAULT_TOP_K=10
+HYDE_WEIGHT=0.6
+TRADITIONAL_WEIGHT=0.4
+
+# Cache Settings
+CACHE_TTL_SECONDS=3600
+
+# Query Classification
+HYDE_THRESHOLD=0.1
+
+# API Server Settings
+API_HOST=0.0.0.0
+API_PORT=8000
+```
+
 ## Troubleshooting
 
 ### "OpenAI API key not found"
@@ -183,6 +225,9 @@ Adds 500-1000ms latency (cannot be eliminated); costs $0.001-0.005 per query (10
 export OPENAI_API_KEY='sk-your-key-here'
 # Or add to .env file
 ```
+
+### Offline/Limited Mode
+**Note:** The module runs in a limited, "degraded" mode if `OPENAI_API_KEY` is not set in `.env`. The `config.py` file will return `None` for the client, and the `app.py` logic will return a `{"skipped": true, "reason": "Service not initialized..."}` response for API calls. This graceful degradation allows the module to be explored without requiring API keys, though hypothesis generation and LLM-based features will be unavailable.
 
 ### "Pinecone connection failed"
 This is expected if you don't have Pinecone configured. The module will:
@@ -212,15 +257,26 @@ Optimizations:
 
 ```
 ccc_l3_aug_practical/
-├── l2_m9_hypothetical_document_embeddings.py  # Main module
 ├── app.py                                      # FastAPI wrapper
 ├── config.py                                   # Configuration
 ├── requirements.txt                            # Dependencies
 ├── .env.example                                # Config template
 ├── example_data.json                           # Sample queries
-├── tests_smoke.py                              # Basic tests
 ├── README.md                                   # This file
-└── L2_M9_Hypothetical_Document_Embeddings_(HyDE).ipynb  # Tutorial
+├── src/
+│   └── l3_m9_hypothetical_document_embeddings/
+│       └── __init__.py                         # Main module (811 lines)
+├── notebooks/
+│   └── L3_M9_Hypothetical_Document_Embeddings_(HyDE).ipynb  # Tutorial
+├── tests/
+│   └── test_m9_hypothetical_document_embeddings.py  # Tests
+├── configs/
+│   └── example.json                            # Sample config
+└── scripts/
+    ├── run_api.ps1                             # Start API (Windows)
+    ├── run_api.sh                              # Start API (Unix)
+    ├── run_tests.ps1                           # Run tests (Windows)
+    └── run_tests.sh                            # Run tests (Unix)
 ```
 
 ## API Endpoints
