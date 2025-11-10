@@ -12,11 +12,15 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any
+import os
 import time
 import logging
 
+# Offline mode for running without external API calls
+OFFLINE = os.getenv("OFFLINE", "false").lower() == "true"
+
 # Import core functionality - NO business logic in this file
-from l2_m10_multi_agent_orchestration import (
+from src.l3_m10_multi_agent_orchestration import (
     run_multi_agent_query,
     should_use_multi_agent
 )
@@ -270,6 +274,7 @@ async def startup_event():
     """Log startup information."""
     logger.info("="*70)
     logger.info("Multi-Agent Orchestration API starting...")
+    logger.info(f"Offline mode: {OFFLINE}")
     logger.info(f"Model: {Config.OPENAI_MODEL}")
     logger.info(f"Max iterations: {Config.MAX_ITERATIONS}")
     logger.info(f"Configured: {Config.is_configured()}")

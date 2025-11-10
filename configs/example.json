@@ -1,0 +1,21 @@
+{
+  "_comment": "Configuration reference for Multi-Agent Orchestration",
+  "openai": {
+    "api_key": "Set via OPENAI_API_KEY environment variable",
+    "model": "gpt-4o-mini",
+    "temperature": 0.7
+  },
+  "orchestration": {
+    "max_iterations": 3,
+    "timeout_seconds": 60,
+    "max_cost_per_query": 0.10
+  },
+  "langsmith": {
+    "tracing_enabled": false,
+    "api_key": "Set via LANGCHAIN_API_KEY (optional)",
+    "project": "multi-agent-orchestration"
+  },
+  "logging": {
+    "level": "INFO"
+  }
+}

@@ -51,34 +51,86 @@ pip install -r requirements.txt
 
 ### 2. Configure Environment
 
+**Windows (PowerShell):**
+```powershell
+Copy-Item .env.example .env
+# Edit .env and add your OPENAI_API_KEY
+```
+
+**Linux/Mac:**
 ```bash
 cp .env.example .env
 # Edit .env and add your OPENAI_API_KEY
 ```
 
+**Environment Variables:**
+- `OPENAI_API_KEY` - Your OpenAI API key (required)
+- `OPENAI_MODEL` - Model to use (default: gpt-4o-mini)
+- `OPENAI_TEMPERATURE` - Temperature setting (default: 0.7)
+- `MAX_ITERATIONS` - Max validation loops (default: 3)
+- `OFFLINE` - Skip external API calls (default: false)
+- `LOG_LEVEL` - Logging verbosity (default: INFO)
+
 ### 3. Run Examples
 
-#### Python Module
+**Windows (PowerShell):**
+```powershell
+# Run API Server
+.\scripts\run_api.ps1
+
+# Or manually:
+$env:PYTHONPATH=$PWD; uvicorn app:app --reload
+```
+
+**Linux/Mac:**
 ```bash
-python l2_m10_multi-agent_orchestration.py
+# Run API Server
+./scripts/run_api.sh
+
+# Or manually:
+export PYTHONPATH=$PWD && uvicorn app:app --reload
 ```
 
 #### Jupyter Notebook
 ```bash
-jupyter notebook L2_M10_Multi-Agent_Orchestration.ipynb
-```
-
-#### FastAPI Server
-```bash
-python app.py
-# Visit http://localhost:8000/docs for interactive API docs
+jupyter notebook notebooks/L3_M10_Multi-Agent_Orchestration.ipynb
 ```
 
 ### 4. Test Installation
 
-```bash
-pytest tests_smoke.py -v
+**Windows (PowerShell):**
+```powershell
+# Run tests
+.\scripts\run_tests.ps1
+
+# Or manually:
+$env:PYTHONPATH=$PWD; python -m pytest tests/ -q
 ```
+
+**Linux/Mac:**
+```bash
+# Run tests
+./scripts/run_tests.sh
+
+# Or manually:
+export PYTHONPATH=$PWD && python3 -m pytest tests/ -q
+```
+
+### 5. Offline Mode
+
+Run without external API calls (for testing/development):
+
+**Windows:**
+```powershell
+$env:OFFLINE="true"; python app.py
+```
+
+**Linux/Mac:**
+```bash
+OFFLINE=true python app.py
+```
+
+When in offline mode, the API returns `{"skipped": true}` responses instead of making LLM calls.
 
 ## How It Works
 
@@ -434,15 +486,34 @@ curl -X POST http://localhost:8000/route \
 
 ```
 .
-├── l2_m10_multi-agent_orchestration.py  # Core implementation
-├── config.py                             # Configuration management
-├── app.py                                # FastAPI wrapper
-├── tests_smoke.py                        # Basic tests
-├── L2_M10_Multi-Agent_Orchestration.ipynb  # Interactive tutorial
-├── requirements.txt                      # Dependencies
-├── .env.example                          # Environment template
-├── example_data.json                     # Sample queries
-└── README.md                             # This file
+├── app.py                              # FastAPI wrapper
+├── config.py                           # Configuration management
+├── example_data.json                   # Sample queries
+├── requirements.txt                    # Dependencies
+├── .env.example                        # Environment template
+├── .gitignore                          # Git ignore rules
+├── pyproject.toml                      # pytest configuration
+├── README.md                           # This file
+│
+├── src/
+│   └── l3_m10_multi_agent_orchestration/
+│       └── __init__.py                 # Core implementation
+│
+├── notebooks/
+│   └── L3_M10_Multi-Agent_Orchestration.ipynb  # Interactive tutorial
+│
+├── tests/
+│   ├── conftest.py                     # Test configuration
+│   └── test_m10_multi_agent_orchestration.py   # Test suite
+│
+├── configs/
+│   └── example.json                    # Configuration reference
+│
+└── scripts/
+    ├── run_api.ps1                     # Windows API server
+    ├── run_api.sh                      # Linux/Mac API server
+    ├── run_tests.ps1                   # Windows tests
+    └── run_tests.sh                    # Linux/Mac tests
 ```
 
 ## Production Deployment

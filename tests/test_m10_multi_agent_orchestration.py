@@ -22,7 +22,7 @@ def test_config_loads():
 def test_main_module_imports():
     """Test that main module imports successfully."""
     try:
-        import l2_m10_multi_agent_orchestration as main
+        from src import l3_m10_multi_agent_orchestration as main
         assert hasattr(main, 'run_multi_agent_query')
         assert hasattr(main, 'should_use_multi_agent')
         assert hasattr(main, 'AgentState')
@@ -59,7 +59,7 @@ def test_example_data_valid():
 
 def test_should_use_multi_agent_simple_query():
     """Test routing logic for simple queries."""
-    from l2_m10_multi_agent_orchestration import should_use_multi_agent
+    from src.l3_m10_multi_agent_orchestration import should_use_multi_agent
 
     simple_query = "What is our return policy?"
     result = should_use_multi_agent(simple_query)
@@ -73,7 +73,7 @@ def test_should_use_multi_agent_simple_query():
 
 def test_should_use_multi_agent_complex_query():
     """Test routing logic for complex queries."""
-    from l2_m10_multi_agent_orchestration import should_use_multi_agent
+    from src.l3_m10_multi_agent_orchestration import should_use_multi_agent
 
     complex_query = "Analyze our top 3 competitors and create a comprehensive strategy report"
     result = should_use_multi_agent(complex_query)
@@ -87,7 +87,7 @@ def test_should_use_multi_agent_complex_query():
 
 def test_agent_state_structure():
     """Test AgentState TypedDict structure."""
-    from l2_m10_multi_agent_orchestration import AgentState
+    from src.l3_m10_multi_agent_orchestration import AgentState
 
     # Create sample state
     state: AgentState = {
@@ -109,10 +109,10 @@ def test_agent_state_structure():
     assert state['iterations'] == 0
 
 
-@patch('l2_m10_multi_agent_orchestration.get_langchain_llm')
+@patch('src.l3_m10_multi_agent_orchestration.get_langchain_llm')
 def test_planner_agent_without_api_key(mock_get_llm):
     """Test planner agent gracefully handles missing API key."""
-    from l2_m10_multi_agent_orchestration import planner_agent, AgentState
+    from src.l3_m10_multi_agent_orchestration import planner_agent, AgentState
 
     # Mock LLM to raise error
     mock_get_llm.side_effect = ValueError("OPENAI_API_KEY not configured")
@@ -134,10 +134,10 @@ def test_planner_agent_without_api_key(mock_get_llm):
         planner_agent(state)
 
 
-@patch('l2_m10_multi_agent_orchestration.get_langchain_llm')
+@patch('src.l3_m10_multi_agent_orchestration.get_langchain_llm')
 def test_planner_agent_returns_plan(mock_get_llm):
     """Test planner agent returns a plan structure."""
-    from l2_m10_multi_agent_orchestration import planner_agent, AgentState
+    from src.l3_m10_multi_agent_orchestration import planner_agent, AgentState
 
     # Mock LLM response
     mock_llm = Mock()
@@ -173,10 +173,10 @@ def test_planner_agent_returns_plan(mock_get_llm):
     assert len(result['messages']) > 0
 
 
-@patch('l2_m10_multi_agent_orchestration.get_langchain_llm')
+@patch('src.l3_m10_multi_agent_orchestration.get_langchain_llm')
 def test_validator_agent_approval(mock_get_llm):
     """Test validator agent approval path."""
-    from l2_m10_multi_agent_orchestration import validator_agent, AgentState
+    from src.l3_m10_multi_agent_orchestration import validator_agent, AgentState
 
     # Mock LLM response
     mock_llm = Mock()
@@ -238,16 +238,16 @@ def test_config_is_configured():
 
 def test_routing_logic_functions_exist():
     """Test that routing functions exist and have correct signatures."""
-    from l2_m10_multi_agent_orchestration import should_continue, check_validation
+    from src.l3_m10_multi_agent_orchestration import should_continue, check_validation
 
     assert callable(should_continue)
     assert callable(check_validation)
 
 
-@patch('l2_m10_multi_agent_orchestration.create_multi_agent_graph')
+@patch('src.l3_m10_multi_agent_orchestration.create_multi_agent_graph')
 def test_run_multi_agent_query_structure_without_execution(mock_create_graph):
     """Test run_multi_agent_query returns expected structure without actual execution."""
-    from l2_m10_multi_agent_orchestration import run_multi_agent_query
+    from src.l3_m10_multi_agent_orchestration import run_multi_agent_query
 
     # Mock the graph execution
     mock_app = Mock()
