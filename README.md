@@ -70,8 +70,14 @@ asyncio.run(main())
 ### 3. Run the FastAPI Server
 
 ```bash
-# Start the API server
+# Start the API server (Linux/Mac)
 python app.py
+
+# OR using Windows PowerShell script
+powershell -c "$env:PYTHONPATH='$PWD'; uvicorn app:app --reload"
+
+# OR using the script directly (Windows)
+.\scripts\run_api.ps1
 
 # Test the health endpoint
 curl http://localhost:8000/health
@@ -288,8 +294,14 @@ openai.RateLimitError: Rate limit exceeded
 ## Running Tests
 
 ```bash
-# Run smoke tests
-python tests_smoke.py
+# Run smoke tests (Linux/Mac)
+pytest -q tests/
+
+# OR using Windows PowerShell
+powershell -c "$env:PYTHONPATH='$PWD'; pytest -q"
+
+# OR using the script directly (Windows)
+.\scripts\run_tests.ps1
 
 # Expected output:
 # ✓ Config loads successfully
