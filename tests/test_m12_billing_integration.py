@@ -6,7 +6,7 @@ Tests basic functionality without requiring live Stripe keys.
 import pytest
 import os
 from unittest.mock import Mock, patch
-from l2_m12_billing_integration import (
+from src.l3_m12_billing_integration import (
     StripeBillingManager,
     UsageSyncService,
     DunningManager,

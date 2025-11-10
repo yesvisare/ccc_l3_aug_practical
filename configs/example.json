@@ -1,0 +1,22 @@
+{
+  "plans": [
+    {
+      "name": "starter",
+      "base_price": 29.00,
+      "included_queries": 10000,
+      "overage_price": 0.001
+    },
+    {
+      "name": "pro",
+      "base_price": 99.00,
+      "included_queries": 100000,
+      "overage_price": 0.0008
+    },
+    {
+      "name": "enterprise",
+      "base_price": 499.00,
+      "included_queries": 1000000,
+      "overage_price": 0.0005
+    }
+  ]
+}

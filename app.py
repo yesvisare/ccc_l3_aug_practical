@@ -8,7 +8,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 import logging
 
-from l2_m12_billing_integration import (
+from src.l3_m12_billing_integration import (
     StripeBillingManager,
     UsageSyncService,
     DunningManager,
