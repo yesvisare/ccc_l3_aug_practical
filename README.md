@@ -32,7 +32,7 @@ This module demonstrates how to integrate **Datadog APM (Application Performance
 
 - Python 3.8+
 - Completed Level 1 M2.3 (Prometheus/Grafana)
-- Completed Level 2 M7.1 (OpenTelemetry Tracing)
+- Completed Level 3 M7.1 (OpenTelemetry Tracing)
 - Datadog account (14-day free trial available)
 
 ### Installation
@@ -50,18 +50,50 @@ cp .env.example .env
 # Edit .env and add your DD_API_KEY from https://app.datadoghq.com/organization-settings/api-keys
 ```
 
+### Environment Variables
+
+Configure APM behavior via environment variables (set in `.env`):
+
+```bash
+# Required for APM
+DD_API_KEY=your_datadog_api_key        # Get from https://app.datadoghq.com/organization-settings/api-keys
+DD_SITE=datadoghq.com                  # or datadoghq.eu for EU
+DD_SERVICE=compliance-copilot-rag      # Service name in Datadog
+DD_ENV=production                      # Environment (production, staging, dev)
+
+# APM Control (defaults shown)
+APM_ENABLED=false                      # Set to 'true' to enable APM telemetry
+DD_PROFILING_ENABLED=true              # Enable continuous profiling
+DD_PROFILING_CAPTURE_PCT=1             # Profile 1% of requests (production-safe)
+DD_TRACE_SAMPLE_RATE=0.1               # Sample 10% of traces (cost control)
+DD_PROFILING_MAX_TIME_USAGE_PCT=5.0    # Max 5% CPU overhead
+
+# Offline Mode (for local development)
+OFFLINE=false                          # Set to 'true' to run without external services
+```
+
+**Note**: The module works without APM configuration (APM_ENABLED=false) for local development and testing. Set `APM_ENABLED=true` to export telemetry to Datadog.
+
 ### Basic Usage
 
 ```bash
-# Run smoke tests
+# Run tests (Windows PowerShell)
+powershell -c "$env:PYTHONPATH='$PWD'; pytest -q"
+# or use the script
+./scripts/run_tests.ps1
+
+# Run API server (with APM enabled)
+powershell -c "$env:APM_ENABLED='True'; $env:PYTHONPATH='$PWD'; uvicorn app:app --reload"
+# or use the script
+./scripts/run_api.ps1
+
+# Explore notebook
+jupyter lab notebooks/L3_M7_Application_Performance_Monitoring.ipynb
+
+# Linux/Mac alternatives
+export PYTHONPATH=$PWD
 pytest tests/test_m7_application_performance_monitoring.py -v
-
-# Run demo via API
 python app.py
-
-# Start FastAPI server
-python app.py
-# Visit http://localhost:8000/docs for API documentation
 ```
 
 ### API Endpoints
@@ -143,17 +175,17 @@ curl -X POST http://localhost:8000/memory/leak-check \
 
 ### Key Components
 
-1. **APMManager** (`l2_m7_application_performance_monitoring.py:53`)
+1. **APMManager** (`src/l3_m7_application_performance_monitoring/__init__.py:53`)
    - Initializes Datadog tracer with OpenTelemetry bridge
    - Manages continuous profiler lifecycle
    - Enforces production safety limits (max 5% CPU overhead)
 
-2. **ProfiledRAGPipeline** (`l2_m7_application_performance_monitoring.py:145`)
+2. **ProfiledRAGPipeline** (`src/l3_m7_application_performance_monitoring/__init__.py:145`)
    - RAG pipeline with `@tracer.wrap()` decorators
    - Custom span tagging (user_id, query_length)
    - Simulates O(n²) bottleneck for APM detection
 
-3. **MemoryProfiledComponent** (`l2_m7_application_performance_monitoring.py:332`)
+3. **MemoryProfiledComponent** (`src/l3_m7_application_performance_monitoring/__init__.py:332`)
    - Memory leak detection with `tracemalloc`
    - Per-function memory allocation tracking
    - Alert on large allocations (>100MB)
@@ -367,7 +399,7 @@ Choose APM when you have ALL of:
 python -c "from config import apm_config; print(f'Configured: {apm_config.is_configured}')"
 
 # Check APM initialization
-python -c "from l2_m7_application_performance_monitoring import apm_manager; print(f'Initialized: {apm_manager.initialize()}')"
+python -c "from src.l3_m7_application_performance_monitoring import apm_manager; print(f'Initialized: {apm_manager.initialize()}')"
 
 # Verify API key
 curl -H "DD-API-KEY: ${DD_API_KEY}" https://api.datadoghq.com/api/v1/validate
@@ -400,7 +432,7 @@ export DD_TRACE_SAMPLE_RATE=0.05      # Reduce from 10% to 5%
 ```bash
 # Run longer monitoring
 python -c "
-from l2_m7_application_performance_monitoring import monitor_memory_leak
+from src.l3_m7_application_performance_monitoring import monitor_memory_leak
 results = monitor_memory_leak(iterations=100)  # Increase from 10 to 100
 print(results)
 "
@@ -412,6 +444,16 @@ import objgraph
 objgraph.show_growth(limit=10)  # Shows top 10 growing objects
 "
 ```
+
+### APM Disabled Mode
+
+**APM Disabled Mode**: The module will run without Application Performance Monitoring (APM) if `APM_ENABLED` is not set to `true` in `.env`. The `config.py` file will skip telemetry setup, and no traces will be exported to Datadog. This is the default behavior and is useful for:
+- Local development without Datadog account
+- Testing without external service dependencies
+- Cost-controlled environments where APM is not needed
+- OFFLINE mode (`OFFLINE=true`) for complete isolation
+
+To enable APM, set `APM_ENABLED=true` in your `.env` file and provide a valid `DD_API_KEY`.
 
 ---
 
@@ -500,4 +542,4 @@ MIT License - See LICENSE file for details
 
 ---
 
-**Built with ❤️ for Level 2 learners mastering production observability**
+**Built with ❤️ for Level 3 learners mastering production observability**
