@@ -2,7 +2,7 @@
 FastAPI application for Module 11.1: Tenant Isolation Strategies
 
 Provides REST API endpoints for tenant management, data operations, and cost tracking.
-All business logic delegated to l2_m11_tenant_isolation_strategies.py.
+All business logic delegated to src.l3_m11_tenant_isolation_strategies.
 """
 
 from fastapi import FastAPI, HTTPException, status
@@ -11,7 +11,7 @@ from typing import List, Optional, Dict, Any
 import logging
 
 # Import module components
-from l2_m11_tenant_isolation_strategies import (
+from src.l3_m11_tenant_isolation_strategies import (
     TenantRegistry,
     TenantDataManager,
     CostAllocationEngine,

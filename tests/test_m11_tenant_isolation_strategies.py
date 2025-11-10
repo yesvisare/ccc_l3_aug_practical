@@ -9,7 +9,7 @@ Basic tests to verify:
 
 import pytest
 import json
-from l2_m11_tenant_isolation_strategies import (
+from src.l3_m11_tenant_isolation_strategies import (
     TenantRegistry,
     TenantDataManager,
     CostAllocationEngine,
