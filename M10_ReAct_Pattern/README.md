@@ -71,19 +71,27 @@ cp .env.example .env
 
 **Option A: Run the module directly**
 ```bash
-python l2_m10_react_pattern_implementation.py
+# Linux/Mac
+PYTHONPATH=. python -m src.l3_m10_react_pattern_implementation
+
+# Windows PowerShell
+$env:PYTHONPATH="."; python -m src.l3_m10_react_pattern_implementation
 ```
 
 **Option B: Run the FastAPI server**
 ```bash
+# Linux/Mac
 python app.py
-# Server starts on http://localhost:8000
-# API docs at http://localhost:8000/docs
+
+# Windows PowerShell (using provided script)
+powershell -File scripts/run_api.ps1
+# Or manually:
+# $env:PYTHONPATH="."; uvicorn app:app --reload
 ```
 
 **Option C: Run the Jupyter notebook**
 ```bash
-jupyter notebook L2_M10_ReAct_Pattern_Implementation.ipynb
+jupyter notebook notebooks/L3_M10_ReAct_Pattern_Implementation.ipynb
 ```
 
 ### 4. Test the API
@@ -106,8 +114,67 @@ curl -X POST http://localhost:8000/query \
 ### 5. Run Tests
 
 ```bash
-python tests_smoke.py
+# Linux/Mac
+PYTHONPATH=. pytest -q tests/
+
+# Windows PowerShell (using provided script)
+powershell -File scripts/run_tests.ps1
+# Or manually:
+# $env:PYTHONPATH="."; pytest -q tests/
 ```
+
+---
+
+## 🌍 Environment Variables
+
+The system reads configuration from `.env` file (copy from `.env.example`):
+
+### Required
+- `OPENAI_API_KEY` - OpenAI API key for LLM access (required for agent functionality)
+
+### Optional
+- `AGENT_MODEL` - OpenAI model name (default: `gpt-4`)
+- `AGENT_TEMPERATURE` - Temperature for reasoning (default: `0.0` for deterministic)
+- `AGENT_MAX_ITERATIONS` - Maximum reasoning steps (default: `8`)
+- `AGENT_TIMEOUT_SECONDS` - Execution timeout (default: `60`)
+- `PINECONE_API_KEY` - Pinecone API key for vector search (Level 1 integration)
+- `PINECONE_ENVIRONMENT` - Pinecone environment (default: `us-west1-gcp`)
+- `PINECONE_INDEX_NAME` - Pinecone index name (default: `level1-rag`)
+- `INDUSTRY_API_KEY` - External industry data API key
+- `INDUSTRY_API_URL` - Industry data API URL
+- `LOG_LEVEL` - Logging level (default: `INFO`)
+- `ENABLE_AGENT` - Enable/disable agent (default: `true`)
+- `FALLBACK_TO_STATIC` - Fallback to static pipeline on errors (default: `true`)
+
+See `configs/example.json` for detailed documentation of all configuration keys.
+
+---
+
+## 🔒 Offline Mode
+
+The implementation supports **OFFLINE mode** for demonstration and exploration without API keys:
+
+```bash
+# Set OFFLINE environment variable
+export OFFLINE=true  # Linux/Mac
+$env:OFFLINE="true"  # Windows PowerShell
+
+# Run notebook or scripts - external API calls will be skipped
+jupyter notebook notebooks/L3_M10_ReAct_Pattern_Implementation.ipynb
+```
+
+**What happens in OFFLINE mode:**
+- ✅ Notebook structure and explanations fully accessible
+- ✅ Tool registry and configuration examples work
+- ✅ Tests pass or skip gracefully
+- ⚠️ Agent execution skipped (requires OPENAI_API_KEY)
+- ⚠️ External API calls return mock data
+
+**Use cases:**
+- Exploring the codebase without API costs
+- Learning the ReAct pattern structure
+- Running smoke tests in CI/CD without keys
+- Teaching/demo scenarios
 
 ---
 
@@ -407,14 +474,26 @@ python tests_smoke.py
 ```
 M10_ReAct_Pattern/
 ├── README.md                                    # This file
+├── LICENSE                                      # Educational license
+├── .gitignore                                   # Python defaults
+├── pyproject.toml                               # pytest configuration
 ├── requirements.txt                             # Python dependencies
 ├── .env.example                                 # Environment template
 ├── config.py                                    # Configuration management
-├── l2_m10_react_pattern_implementation.py       # Main implementation
-├── app.py                                       # FastAPI server
-├── tests_smoke.py                               # Smoke tests
+├── app.py                                       # FastAPI server (thin HTTP layer)
 ├── example_data.json                            # Test queries and scenarios
-├── L2_M10_ReAct_Pattern_Implementation.ipynb    # Jupyter notebook
+├── src/                                         # Source code
+│   └── l3_m10_react_pattern_implementation/     # Main package
+│       └── __init__.py                          # Core ReAct implementation
+├── notebooks/                                   # Jupyter notebooks
+│   └── L3_M10_ReAct_Pattern_Implementation.ipynb  # Interactive tutorial
+├── tests/                                       # Test files
+│   └── test_m10_react_pattern_implementation.py   # Smoke tests
+├── configs/                                     # Configuration examples
+│   └── example.json                             # Key documentation
+├── scripts/                                     # Helper scripts (Windows-first)
+│   ├── run_api.ps1                             # Start FastAPI server
+│   └── run_tests.ps1                           # Run pytest
 └── agent_traces/                                # Agent execution logs (created at runtime)
 ```
 
