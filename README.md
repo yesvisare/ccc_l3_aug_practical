@@ -1,6 +1,8 @@
-# Module 10.4: Conversational RAG with Memory
+# L3 Module 10.4: Conversational RAG with Memory
 
 Multi-turn dialogue system with dual-level memory (verbatim + summarized), spaCy-based reference resolution, and Redis session persistence.
+
+**Level 3 | TVH Baseline | Windows-First**
 
 ## Overview
 
@@ -88,8 +90,14 @@ docker run -d -p 6379:6379 redis:7-alpine
 
 ### 4. Run the API Server
 
+**Windows (PowerShell - Recommended):**
+```powershell
+powershell -File scripts\run_api.ps1
+```
+
+**Linux/Mac:**
 ```bash
-python app.py
+PYTHONPATH=$PWD python app.py
 ```
 
 Visit http://localhost:8000/docs for interactive API documentation.
@@ -97,7 +105,7 @@ Visit http://localhost:8000/docs for interactive API documentation.
 ### 5. Or Use the Python Module
 
 ```python
-from l2_m10_conversational_rag_with_memory import ConversationalRAG
+from src.l3_m10_conversational_rag_memory import ConversationalRAG
 from config import get_clients, Config
 
 # Initialize
@@ -125,8 +133,14 @@ print(stats)
 
 ### 6. Run Tests
 
+**Windows (PowerShell - Recommended):**
+```powershell
+powershell -File scripts\run_tests.ps1
+```
+
+**Linux/Mac:**
 ```bash
-pytest tests_smoke.py -v
+PYTHONPATH=$PWD pytest -v tests/
 ```
 
 ## API Endpoints
@@ -180,6 +194,56 @@ curl -X POST "http://localhost:8000/session/reset" \
 ### GET /health
 
 Health check with configuration validation.
+
+## Environment Variables
+
+All configuration is managed through `.env` file. See `.env.example` for a complete template.
+
+### Required
+- `OPENAI_API_KEY` - Your OpenAI API key for LLM calls
+
+### Optional
+- `ANTHROPIC_API_KEY` - Alternative LLM provider
+- `REDIS_HOST` - Redis server host (default: `localhost`)
+- `REDIS_PORT` - Redis server port (default: `6379`)
+- `REDIS_DB` - Redis database number (default: `0`)
+- `REDIS_PASSWORD` - Redis password (if required)
+- `REDIS_SESSION_TTL` - Session TTL in seconds (default: `604800` = 7 days)
+
+### Memory Configuration
+- `SHORT_TERM_BUFFER_SIZE` - Number of recent turns to keep verbatim (default: `5`)
+- `MAX_CONTEXT_TOKENS` - Token limit before summarization (default: `8000`)
+- `SUMMARY_MODEL` - Model for summarization (default: `gpt-4o-mini`)
+
+### Other
+- `DEFAULT_MODEL` - Default LLM model (default: `gpt-4o-mini`)
+- `SPACY_MODEL` - spaCy NLP model (default: `en_core_web_sm`)
+
+## Offline Mode
+
+For development and testing without API keys or Redis:
+
+**Windows:**
+```powershell
+$env:OFFLINE="true"
+python app.py
+```
+
+**Linux/Mac:**
+```bash
+OFFLINE=true python app.py
+```
+
+In offline mode:
+- API endpoints return mock responses
+- No external API calls are made
+- Session persistence is disabled
+- All operations are logged but skipped
+
+This is useful for:
+- Local development without API costs
+- CI/CD testing pipelines
+- Demonstrations without live services
 
 ## How It Works
 
@@ -365,15 +429,28 @@ redis-cli ping
 
 ```
 .
-├── l2_m10_conversational_rag_with_memory.py  # Core implementation
-├── app.py                                     # FastAPI wrapper
-├── config.py                                  # Configuration
-├── requirements.txt                           # Dependencies
-├── .env.example                               # Environment template
-├── example_data.json                          # Sample data
-├── tests_smoke.py                             # Basic tests
-├── README.md                                  # This file
-└── L2_M10_Conversational_RAG_with_Memory.ipynb  # Tutorial notebook
+├── app.py                      # FastAPI wrapper (thin, /health + router)
+├── config.py                   # Configuration management
+├── requirements.txt            # Pinned dependencies
+├── .env.example                # Environment template
+├── .gitignore                  # Python/Jupyter ignores
+├── pyproject.toml              # Project metadata + pytest config
+├── LICENSE                     # License file
+├── README.md                   # This file
+├── src/
+│   └── l3_m10_conversational_rag_memory/
+│       └── __init__.py         # Core implementation (all logic)
+├── notebooks/
+│   └── L3_M10_Conversational_RAG_with_Memory.ipynb  # Tutorial
+├── tests/
+│   └── test_m10_conversational_rag_memory.py  # Smoke tests
+├── configs/
+│   ├── example.json            # Config schema documentation
+│   └── example_data.json       # Sample conversation data
+└── scripts/
+    ├── run_api.ps1             # Windows PowerShell - run API
+    ├── run_tests.ps1           # Windows PowerShell - run tests
+    └── demo_run.py             # Interactive CLI demo
 ```
 
 ## Next Steps

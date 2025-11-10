@@ -11,12 +11,18 @@ from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 import uvicorn
 
-from l2_m10_conversational_rag_with_memory import ConversationalRAG
+from src.l3_m10_conversational_rag_memory import ConversationalRAG
 from config import get_clients, Config, validate_config
+import os
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# OFFLINE mode (env-driven)
+OFFLINE = os.getenv("OFFLINE", "false").lower() == "true"
+if OFFLINE:
+    logger.info("Running in OFFLINE mode - API/model calls will be skipped")
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -117,6 +123,16 @@ async def query(request: QueryRequest):
     Raises:
         HTTPException: If query processing fails
     """
+    # Check OFFLINE mode
+    if OFFLINE:
+        return QueryResponse(
+            response="[OFFLINE MODE] System would process: " + request.query,
+            session_id=request.session_id,
+            memory_stats={"short_term_turns": 0, "has_long_term_summary": False, "estimated_tokens": 0},
+            skipped=True,
+            reason="offline mode enabled",
+        )
+
     # Check if system is available
     if not rag_system:
         return QueryResponse(

@@ -7,7 +7,7 @@ Tests basic functionality without requiring live API keys or services.
 import json
 import pytest
 from unittest.mock import Mock, patch
-from l2_m10_conversational_rag_with_memory import (
+from src.l3_m10_conversational_rag_memory import (
     Turn,
     ConversationMemoryManager,
     ReferenceResolver,
@@ -97,7 +97,7 @@ def test_memory_manager_serialization():
 
 def test_reference_resolver_no_spacy():
     """Test reference resolver gracefully handles missing spaCy."""
-    with patch("l2_m10_conversational_rag_with_memory.logger"):
+    with patch("src.l3_m10_conversational_rag_memory.logger"):
         resolver = ReferenceResolver()
 
         # Should still work without spaCy
@@ -196,7 +196,7 @@ def test_conversational_rag_reset():
 
 def test_example_data_loads():
     """Test that example data file is valid JSON."""
-    with open("example_data.json", "r") as f:
+    with open("configs/example_data.json", "r") as f:
         data = json.load(f)
 
     assert "scenarios" in data
@@ -241,7 +241,7 @@ def test_memory_handles_many_turns():
 
 def test_replace_first_occurrence():
     """Test case-insensitive replacement helper."""
-    from l2_m10_conversational_rag_with_memory import ReferenceResolver
+    from src.l3_m10_conversational_rag_memory import ReferenceResolver
 
     result = ReferenceResolver._replace_first_occurrence(
         "What is it and how does it work?", "it", "Python"
