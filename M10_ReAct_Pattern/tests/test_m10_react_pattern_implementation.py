@@ -7,7 +7,7 @@ import json
 import os
 from unittest.mock import Mock, patch
 from config import Config
-from l2_m10_react_pattern_implementation import (
+from src.l3_m10_react_pattern_implementation import (
     calculator_tool,
     industry_data_tool,
     get_tools,
@@ -165,7 +165,7 @@ class TestAgentWithoutKeys:
         """Agent should fail gracefully without API key."""
         # Only test if key is actually missing
         if not Config.OPENAI_API_KEY:
-            from l2_m10_react_pattern_implementation import ReActAgent
+            from src.l3_m10_react_pattern_implementation import ReActAgent
 
             with pytest.raises(ValueError, match="OPENAI_API_KEY"):
                 agent = ReActAgent()

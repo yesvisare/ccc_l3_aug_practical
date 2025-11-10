@@ -1,0 +1,29 @@
+{
+  "_comment": "Example configuration keys read by config.py",
+  "description": "This file documents the environment variables used by the ReAct Pattern Implementation",
+  "required_keys": {
+    "OPENAI_API_KEY": "OpenAI API key for LLM access (required for agent functionality)",
+    "AGENT_MODEL": "OpenAI model name (default: gpt-4)",
+    "AGENT_MAX_ITERATIONS": "Maximum reasoning steps (default: 8)",
+    "AGENT_TIMEOUT_SECONDS": "Execution timeout in seconds (default: 60)"
+  },
+  "optional_keys": {
+    "PINECONE_API_KEY": "Pinecone API key for vector search (Level 1 integration)",
+    "PINECONE_ENVIRONMENT": "Pinecone environment (default: us-west1-gcp)",
+    "PINECONE_INDEX_NAME": "Pinecone index name (default: level1-rag)",
+    "INDUSTRY_API_KEY": "External industry data API key",
+    "INDUSTRY_API_URL": "Industry data API URL",
+    "LOG_LEVEL": "Logging level (default: INFO)",
+    "ENABLE_AGENT": "Enable/disable agent (default: true)",
+    "FALLBACK_TO_STATIC": "Fallback to static pipeline on errors (default: true)"
+  },
+  "example_values": {
+    "AGENT_MODEL": "gpt-4",
+    "AGENT_TEMPERATURE": "0.0",
+    "AGENT_MAX_ITERATIONS": "8",
+    "AGENT_TIMEOUT_SECONDS": "60",
+    "LOG_LEVEL": "INFO",
+    "ENABLE_AGENT": "true",
+    "FALLBACK_TO_STATIC": "true"
+  }
+}

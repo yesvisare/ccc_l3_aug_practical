@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "l3-m10-react-pattern-implementation"
+version = "1.0.0"
+description = "Module 10.1: ReAct Pattern Implementation for Agentic RAG"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Educational"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "-W", "ignore::DeprecationWarning",
+]

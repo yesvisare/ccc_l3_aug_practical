@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 import uvicorn
 
 from config import Config
-from l2_m10_react_pattern_implementation import StatefulReActAgent
+from src.l3_m10_react_pattern_implementation import StatefulReActAgent
 
 # Setup logging
 logger = logging.getLogger(__name__)
