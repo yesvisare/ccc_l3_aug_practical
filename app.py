@@ -21,7 +21,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from config import Config, get_clients
-from l2_m11_tenant_specific_customization import (
+from src.l3_m11_tenant_specific_customization import (
     TenantConfig,
     TenantConfigRepository,
     simulate_rag_query,

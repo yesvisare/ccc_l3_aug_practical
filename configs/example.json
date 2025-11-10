@@ -1,0 +1,14 @@
+{
+  "DATABASE_URL": "postgresql://user:password@localhost:5432/tenant_config_db",
+  "REDIS_URL": "redis://localhost:6379/0",
+  "REDIS_TTL": 300,
+  "LOG_LEVEL": "INFO",
+  "DEFAULT_MODEL": "gpt-3.5-turbo",
+  "DEFAULT_TEMPERATURE": 0.7,
+  "DEFAULT_TOP_K": 5,
+  "DEFAULT_ALPHA": 0.5,
+  "MAX_TEMPERATURE": 2.0,
+  "MIN_TEMPERATURE": 0.0,
+  "MAX_TOP_K": 20,
+  "MIN_TOP_K": 1
+}

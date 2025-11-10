@@ -15,7 +15,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from config import Config
-from l2_m11_tenant_specific_customization import (
+from src.l3_m11_tenant_specific_customization import (
     TenantConfig,
     TenantConfigRepository,
     BrandingConfig,
