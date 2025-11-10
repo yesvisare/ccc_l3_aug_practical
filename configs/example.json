@@ -1,0 +1,12 @@
+{
+  "soc2_controls": [],
+  "compliance_settings": {
+    "evidence_retention_days": 730,
+    "backup_frequency": "daily",
+    "pen_test_frequency_months": 12
+  },
+  "alert_thresholds": {
+    "failed_auth_attempts": 5,
+    "incident_response_time_minutes": 15
+  }
+}

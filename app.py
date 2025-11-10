@@ -15,7 +15,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from config import ComplianceConfig
-from l3_m13_gov_compliance_docu import (
+from src.l3_m13_governance_compliance_rag import (
     create_sample_privacy_policy,
     create_sample_soc2_controls,
     create_sample_incident_playbook,

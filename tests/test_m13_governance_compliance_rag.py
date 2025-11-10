@@ -12,7 +12,7 @@ from pathlib import Path
 from datetime import datetime
 
 from config import ComplianceConfig, EVIDENCE_TYPES, SOC2_CONTROLS
-from l3_m13_gov_compliance_docu import (
+from src.l3_m13_governance_compliance_rag import (
     PrivacyPolicyGenerator,
     SOC2Documentation,
     IncidentResponsePlan,
