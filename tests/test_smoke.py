@@ -4,14 +4,15 @@ Smoke tests for Module 9.4: Advanced Reranking Strategies
 Minimal tests to verify core functionality without requiring external services.
 """
 
+import os
 import pytest
+
+# Skip all tests if no API key (offline mode)
+if not os.getenv("OPENAI_API_KEY"):
+    pytest.skip("Skipping tests: no OPENAI_API_KEY set (offline mode).", allow_module_level=True)
+
 import json
 from typing import List
-import sys
-import os
-
-# Add project root to path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.l3_m9_advanced_reranking.l3_m9_advanced_reranking_strategies import (
     Document,

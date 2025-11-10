@@ -15,6 +15,14 @@ This module implements four complementary strategies for improving search result
 
 Advanced reranking solves these limitations through ensemble confidence, diversity algorithms, temporal awareness, and personalization—but only when production metrics justify the added complexity.
 
+## Environment Variables
+
+The following environment variables are used by this module:
+
+- **OPENAI_API_KEY** — Required for model-backed reranking. If unset, the API and notebook run in OFFLINE mode and skip external model calls.
+
+See `.env.example` for the complete list of configurable parameters including model names, ensemble weights, MMR lambda, temporal decay settings, and performance budgets.
+
 ## Quickstart
 
 ### Installation
@@ -75,12 +83,29 @@ result = personalization.rerank(documents, user_profile)
 
 ### Run the API
 
+**Windows (PowerShell):**
+```powershell
+# Start FastAPI server
+powershell -c "$env:PYTHONPATH='$PWD'; uvicorn app:app --reload"
+```
+
+**Linux/Mac:**
 ```bash
 # Start FastAPI server
-python app.py
+PYTHONPATH=$PWD uvicorn app:app --reload --port 8000
+```
 
-# Or with uvicorn directly
-uvicorn app:app --reload --port 8000
+### Run Tests
+
+**Windows (PowerShell):**
+```powershell
+# Run test suite
+powershell -c "$env:PYTHONPATH='$PWD'; pytest -q"
+```
+
+**Linux/Mac:**
+```bash
+PYTHONPATH=$PWD pytest -v tests/
 ```
 
 ### Test the API
