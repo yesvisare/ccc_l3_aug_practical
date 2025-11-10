@@ -48,16 +48,28 @@ cp .env.example .env
 python config.py
 ```
 
-### 4. Run Smoke Tests
+### 4. Run Tests
 
+**Windows (PowerShell)**:
+```powershell
+.\scripts\run_tests.ps1
+```
+
+**Linux/Mac**:
 ```bash
-pytest tests_smoke.py -v
+PYTHONPATH=$PWD pytest -q tests/
 ```
 
 ### 5. Start the API
 
+**Windows (PowerShell)**:
+```powershell
+.\scripts\run_api.ps1
+```
+
+**Linux/Mac**:
 ```bash
-python app.py
+PYTHONPATH=$PWD uvicorn app:app --reload
 # API runs on http://localhost:8000
 # Docs: http://localhost:8000/docs
 ```
@@ -65,7 +77,7 @@ python app.py
 ### 6. Explore the Notebook
 
 ```bash
-jupyter notebook L2_M12_Billing_Integration.ipynb
+jupyter lab notebooks/L3_M12_Billing_Integration.ipynb
 ```
 
 ---
@@ -90,17 +102,17 @@ jupyter notebook L2_M12_Billing_Integration.ipynb
 
 ### Key Components
 
-1. **StripeBillingManager** (`l2_m12_billing_integration.py`)
+1. **StripeBillingManager** (`src/l3_m12_billing_integration/__init__.py`)
    - `create_customer()`: Create Stripe customer for tenant
    - `create_subscription()`: Set up billing with base + usage pricing
    - `report_usage()`: Send usage data to Stripe
    - `cancel_subscription()`: Handle cancellations
 
-2. **UsageSyncService** (`l2_m12_billing_integration.py`)
+2. **UsageSyncService** (`src/l3_m12_billing_integration/__init__.py`)
    - `sync_daily_usage()`: Batch sync usage for all tenants
    - Idempotent with `action="set"` (safe to run multiple times)
 
-3. **DunningManager** (`l2_m12_billing_integration.py`)
+3. **DunningManager** (`src/l3_m12_billing_integration/__init__.py`)
    - `process_failed_payment()`: Escalating retry strategy
    - Day 1: Reminder → Day 4: Warning → Day 7: Soft suspension → Day 8+: Full suspension
 
@@ -117,6 +129,42 @@ jupyter notebook L2_M12_Billing_Integration.ipynb
 | Starter    | $29/mo    | 10,000           | $0.001/query |
 | Pro        | $99/mo    | 100,000          | $0.0008/query|
 | Enterprise | $499/mo   | 1,000,000        | $0.0005/query|
+
+---
+
+## Environment Variables
+
+The module requires the following environment variables in your `.env` file:
+
+```bash
+# Stripe Configuration (required)
+STRIPE_SECRET_KEY=sk_test_your_secret_key_here
+STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
+
+# Billing Configuration
+DEFAULT_TRIAL_DAYS=14
+DEFAULT_PLAN=pro
+MAX_PAYMENT_FAILURES=4
+
+# Database (optional - for full implementation)
+DATABASE_URL=postgresql://user:password@localhost:5432/billing_db
+CLICKHOUSE_HOST=localhost
+CLICKHOUSE_PORT=9000
+
+# API Configuration
+API_HOST=0.0.0.0
+API_PORT=8000
+
+# Environment
+ENVIRONMENT=development
+```
+
+**Getting Stripe Keys**:
+1. Sign up at https://stripe.com
+2. Go to Dashboard → Developers → API keys
+3. Copy your test keys (`sk_test_...` and `pk_test_...`)
+4. For webhook secret: Dashboard → Developers → Webhooks → Add endpoint → Copy signing secret
 
 ---
 
@@ -297,6 +345,19 @@ Common issues:
 - Response taking >5 seconds
 - Server down during webhook delivery
 
+### Offline/Limited Mode
+
+**Offline/Limited Mode**: The module runs in a degraded, "limited" mode if `STRIPE_SECRET_KEY` or `CLICKHOUSE_HOST` are not set in `.env`.
+
+The `config.py` file will return `None` for these clients, and the `app.py` logic will return a `{"skipped": True, "reason": "Service not initialized..."}` response for API calls.
+
+This allows the module to be explored without live services. The core logic gracefully handles missing configurations without errors.
+
+To enable OFFLINE mode in notebooks, set the environment variable:
+```bash
+export OFFLINE=true
+```
+
 ---
 
 ## Production Deployment Checklist
@@ -380,13 +441,19 @@ POST /webhooks/stripe
 ## Testing
 
 ### Run All Tests
+**Windows (PowerShell)**:
+```powershell
+.\scripts\run_tests.ps1
+```
+
+**Linux/Mac**:
 ```bash
-pytest tests_smoke.py -v
+PYTHONPATH=$PWD pytest -v tests/
 ```
 
 ### Test Specific Function
 ```bash
-pytest tests_smoke.py::test_dunning_first_failure -v
+PYTHONPATH=$PWD pytest tests/test_m12_billing_integration.py::test_dunning_first_failure -v
 ```
 
 ### Test with Stripe CLI
@@ -406,15 +473,26 @@ stripe trigger invoice.payment_failed
 
 ```
 .
-├── l2_m12_billing_integration.py  # Core billing logic
-├── config.py                       # Configuration management
-├── app.py                          # FastAPI entrypoint
-├── requirements.txt                # Python dependencies
-├── .env.example                    # Environment variable template
-├── example_data.json               # Sample data
-├── tests_smoke.py                  # Smoke tests
-├── L2_M12_Billing_Integration.ipynb # Jupyter notebook
-└── README.md                       # This file
+├── app.py                                      # FastAPI entrypoint (kept at root)
+├── config.py                                   # Configuration management (kept at root)
+├── src/
+│   └── l3_m12_billing_integration/
+│       └── __init__.py                         # Core billing logic
+├── notebooks/
+│   └── L3_M12_Billing_Integration.ipynb       # Jupyter notebook
+├── tests/
+│   └── test_m12_billing_integration.py        # Test suite
+├── configs/
+│   └── example.json                            # Configuration examples
+├── scripts/
+│   ├── run_api.ps1                             # Windows: Start API server
+│   └── run_tests.ps1                           # Windows: Run tests
+├── requirements.txt                            # Python dependencies
+├── .env.example                                # Environment variable template
+├── .gitignore                                  # Git ignore patterns
+├── example_data.json                           # Sample data
+├── LICENSE                                     # License file
+└── README.md                                   # This file
 ```
 
 ---
