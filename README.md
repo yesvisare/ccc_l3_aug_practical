@@ -1,4 +1,4 @@
-# Module 12.4: Tenant Lifecycle Management
+# Module 12: Tenant Lifecycle Management (L3)
 
 Complete implementation of tenant lifecycle operations for SaaS applications, including plan upgrades/downgrades, GDPR-compliant data exports, soft-deletion with retention, and reactivation workflows.
 
@@ -12,7 +12,7 @@ This module provides production-ready components for managing the complete tenan
 - **Soft Deletion**: 30-90 day retention with verification
 - **Reactivation**: Win-back workflows with state conflict resolution
 
-**Based on**: Module 12.4 from CCC Level 3 curriculum
+**Based on**: Module 12 (Tenant Lifecycle) from CCC Level 3 curriculum
 
 ## Quickstart
 
@@ -33,46 +33,94 @@ cp .env.example .env
 nano .env
 ```
 
-### 2. Configuration
+### 2. Configuration & Environment Variables
 
-Required environment variables:
+See `.env.example` for all available configuration options. Core environment variables:
 
 ```bash
-# Database
-DATABASE_URL=postgresql://user:password@localhost:5432/tenant_db
+# Database Configuration
+DATABASE_URL=postgresql://user:password@localhost:5432/tenant_lifecycle_db
 
-# Redis (for Celery)
+# Redis Configuration (for Celery broker)
 REDIS_URL=redis://localhost:6379/0
 
-# Stripe (optional but recommended)
-STRIPE_API_KEY=sk_test_your_key_here
-STRIPE_WEBHOOK_SECRET=whsec_your_secret_here
+# Stripe API Configuration
+STRIPE_API_KEY=sk_test_your_stripe_secret_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
+
+# Lifecycle Configuration
+SOFT_DELETE_RETENTION_DAYS=30
+DATA_EXPORT_CHUNK_SIZE_MB=50
+MAX_CONCURRENT_LIFECYCLE_JOBS=10
+
+# Storage Configuration (for data exports)
+EXPORT_STORAGE_TYPE=local
+EXPORT_STORAGE_PATH=/tmp/tenant_exports
+
+# Celery Configuration
+CELERY_BROKER_URL=redis://localhost:6379/0
+CELERY_RESULT_BACKEND=redis://localhost:6379/1
+
+# API Configuration
+API_HOST=0.0.0.0
+API_PORT=8000
+LOG_LEVEL=INFO
+
+# Feature Flags
+ENABLE_AUTO_DOWNGRADE=true
+ENABLE_REACTIVATION_WORKFLOW=true
+ENABLE_METRICS=false
 ```
+
+**Note**: The module works in **limited mode** if `STRIPE_API_KEY`, `DATABASE_URL`, or `REDIS_URL` are not configured. The `config.py` module returns `None` for unconfigured clients, and core logic gracefully skips live API calls (logging warnings instead of failing).
 
 ### 3. Run the API
 
-```bash
-# Start the FastAPI server
-python app.py
+**Windows (PowerShell):**
+```powershell
+# Using script
+.\scripts\run_api.ps1
 
-# API will be available at http://localhost:8000
-# Docs at http://localhost:8000/docs
+# Or manually
+$env:PYTHONPATH = $PWD
+uvicorn app:app --reload
 ```
+
+**Linux/Mac (Bash):**
+```bash
+# Using script
+./scripts/run_api.sh
+
+# Or manually
+export PYTHONPATH=$(pwd)
+uvicorn app:app --reload
+```
+
+API will be available at http://localhost:8000
+Interactive docs at http://localhost:8000/docs
 
 ### 4. Run the Notebook
 
 ```bash
-# Launch Jupyter
-jupyter notebook
+# Launch Jupyter Lab
+jupyter lab notebooks/L3_M12_Tenant_Lifecycle_Management.ipynb
 
-# Open L2_M12_Tenant_Lifecycle_Management.ipynb
+# Or Jupyter Notebook
+jupyter notebook notebooks/
 ```
 
 ### 5. Run Tests
 
+**Windows (PowerShell):**
+```powershell
+.\scripts\run_tests.ps1
+```
+
+**Linux/Mac (Bash):**
 ```bash
-# Run smoke tests
-pytest tests_smoke.py -v
+./scripts/run_tests.sh
+# Or directly
+pytest -q tests/
 ```
 
 ## How It Works
@@ -122,7 +170,7 @@ Plan Hierarchy: FREE → STARTER → PROFESSIONAL → ENTERPRISE
 #### 1. Upgrade Tenant
 
 ```python
-from l2_m12_tenant_lifecycle_management import upgrade_tenant
+from src.l3_m12_tenant_lifecycle_management import upgrade_tenant
 from config import Config
 
 result = upgrade_tenant(
@@ -148,7 +196,7 @@ result = upgrade_tenant(
 #### 2. Downgrade Tenant
 
 ```python
-from l2_m12_tenant_lifecycle_management import downgrade_tenant
+from src.l3_m12_tenant_lifecycle_management import downgrade_tenant
 
 result = downgrade_tenant(
     tenant_data={...},
@@ -167,7 +215,7 @@ result = downgrade_tenant(
 #### 3. Export Data (GDPR)
 
 ```python
-from l2_m12_tenant_lifecycle_management import export_tenant_data
+from src.l3_m12_tenant_lifecycle_management import export_tenant_data
 
 result = export_tenant_data(
     tenant_data={...},
@@ -185,7 +233,7 @@ result = export_tenant_data(
 #### 4. Soft Delete
 
 ```python
-from l2_m12_tenant_lifecycle_management import delete_tenant
+from src.l3_m12_tenant_lifecycle_management import delete_tenant
 
 result = delete_tenant(
     tenant_data={...},
@@ -203,7 +251,7 @@ result = delete_tenant(
 #### 5. Reactivate
 
 ```python
-from l2_m12_tenant_lifecycle_management import reactivate_tenant
+from src.l3_m12_tenant_lifecycle_management import reactivate_tenant
 
 result = reactivate_tenant(
     tenant_data={...},
@@ -318,6 +366,23 @@ if datetime.utcnow() < retention_limit:
 
 ## Troubleshooting
 
+### Offline/Limited Mode
+
+**Description**: The module runs in a limited mode if API keys (`STRIPE_API_KEY`, `DATABASE_URL`, `REDIS_URL`) are not set in `.env`.
+
+**Behavior**: The `config.py` file will return `None` for unconfigured clients, and the core logic/API will gracefully skip live API calls. For example:
+- Upgrade/downgrade operations succeed but skip Stripe subscription updates (logged as warnings)
+- Data exports work but skip cloud storage uploads
+- Reactivation works but skips billing subscription creation
+
+**When to Use**:
+- Local development and testing without external services
+- CI/CD pipelines running smoke tests
+- Educational/demo environments
+- Jupyter notebooks in offline mode (set `OFFLINE=true` environment variable)
+
+**Note**: All operations return success responses with `{"skipped": true}` metadata when running in limited mode.
+
 ### Stripe Not Configured
 
 **Symptom**: Operations succeed but billing not updated
@@ -424,7 +489,7 @@ curl http://localhost:8000/metrics
 
 ## License
 
-Educational use only - CCC Level 3 Module 12.4
+Educational use only - CCC Level 3 Module 12
 
 ## Support
 
