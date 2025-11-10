@@ -1,4 +1,4 @@
-# Module 11.1: Multi-Tenant SaaS Architecture - Tenant Isolation Strategies
+# L3 Module 11: Multi-Tenant SaaS Architecture - Tenant Isolation Strategies
 
 Production-grade tenant isolation for RAG systems supporting 100-500 customers with namespace-based and index-based isolation strategies.
 
@@ -50,48 +50,76 @@ cp .env.example .env
 # Edit .env with your API keys
 ```
 
-### 2. Run Smoke Tests
+### 2. Environment Variables
+
+Required API keys (copy from `.env.example`):
 
 ```bash
-# Verify installation
-python tests_smoke.py
+# PostgreSQL Configuration
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=tenant_isolation
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_postgres_password_here
 
-# Or use pytest
-pytest tests_smoke.py -v
+# Pinecone Configuration
+PINECONE_API_KEY=your_pinecone_api_key_here
+PINECONE_ENVIRONMENT=your_pinecone_environment
+PINECONE_SHARED_INDEX=shared-index-1
+
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Capacity Limits
+MAX_NAMESPACES_PER_INDEX=90
+NAMESPACE_ALERT_THRESHOLD=0.8
+
+# Cost Tracking (USD)
+COST_PER_1K_EMBED_TOKENS=0.0001
+COST_PER_1K_LLM_TOKENS=0.002
+COST_PER_QUERY_PINECONE=0.00001
+
+# Monthly Fixed Costs (USD)
+MONTHLY_PINECONE_BASE=50.0
+MONTHLY_POSTGRES_BASE=30.0
+MONTHLY_MONITORING_BASE=35.0
 ```
 
-### 3. CLI Demo
+**Offline/Limited Mode**: The API runs in a limited mode if `PINECONE_API_KEY` or `OPENAI_API_KEY` are not set. The `/query` and `/upsert` endpoints will return a `{"skipped": true, "reason": "..."}` mock response instead of making live API calls. This allows you to explore the architecture and test isolation logic without external service dependencies.
+
+### 3. Run Tests
 
 ```bash
-# Run standalone demo
-python l2_m11_tenant_isolation_strategies.py
+# Windows (PowerShell)
+powershell -ExecutionPolicy Bypass -File .\scripts\run_tests.ps1
+
+# Linux/Mac
+./scripts/run_tests.sh
+
+# Or manually
+pytest -v tests/
 ```
 
-Expected output:
-```
-=== Module 11.1: Tenant Isolation Strategies Demo ===
-
-1. Registering tenants...
-   - Acme Corp: free tier, namespace=tenant_tenant-001
-   - Beta LLC: pro tier, namespace=tenant_tenant-002
-   - Enterprise Inc: enterprise tier, index=tenant-tenant-003
-...
-```
-
-### 4. Start API Server
+### 3. Start API Server
 
 ```bash
-# Start FastAPI server
-python app.py
+# Windows (PowerShell)
+powershell -ExecutionPolicy Bypass -File .\scripts\run_api.ps1
+
+# Linux/Mac
+./scripts/run_api.sh
+
+# Or manually
+uvicorn app:app --reload
 
 # Server runs on http://localhost:8000
 # API docs at http://localhost:8000/docs
 ```
 
-### 5. Explore Jupyter Notebook
+### 4. Explore Jupyter Notebook
 
 ```bash
-jupyter notebook L2_M11_Tenant_Isolation_Strategies.ipynb
+jupyter lab notebooks/L3_M11_Tenant_Isolation_Strategies.ipynb
 ```
 
 ## How It Works
@@ -99,7 +127,7 @@ jupyter notebook L2_M11_Tenant_Isolation_Strategies.ipynb
 ### Tenant Registration & Tier Assignment
 
 ```python
-from l2_m11_tenant_isolation_strategies import TenantRegistry, TenantTier
+from src.l3_m11_tenant_isolation_strategies import TenantRegistry, TenantTier
 
 registry = TenantRegistry()
 
@@ -115,7 +143,7 @@ ent_tenant = registry.register_tenant("big-corp", "BigCorp Inc", TenantTier.ENTE
 ### Data Operations with Mandatory Scoping
 
 ```python
-from l2_m11_tenant_isolation_strategies import TenantDataManager
+from src.l3_m11_tenant_isolation_strategies import TenantDataManager
 
 data_manager = TenantDataManager(registry)
 
@@ -141,7 +169,7 @@ results = data_manager.query_documents(
 ### Cost Tracking & Allocation
 
 ```python
-from l2_m11_tenant_isolation_strategies import CostAllocationEngine
+from src.l3_m11_tenant_isolation_strategies import CostAllocationEngine
 
 cost_engine = CostAllocationEngine()
 
