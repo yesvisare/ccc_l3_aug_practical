@@ -12,7 +12,20 @@ import json
 from pathlib import Path
 
 # Import modules
-import l3_m13_portfolio_career as portfolio
+import sys
+from pathlib import Path
+
+# Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from src.l3_m13_portfolio_career import (
+    SystemMetrics, TechDecision, ApplicationMetrics,
+    generate_architecture_doc, create_demo_script, generate_case_study,
+    prepare_interview_responses, evaluate_portfolio_decision,
+    track_application_metrics, passes_30_second_test,
+    CareerLevel, PortfolioArtifact
+)
+import src.l3_m13_portfolio_career as portfolio
 from config import PortfolioConfig, OutputPaths, validate_config
 
 

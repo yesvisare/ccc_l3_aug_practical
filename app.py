@@ -13,7 +13,13 @@ import logging
 from datetime import datetime
 
 # Import core module
-import l3_m13_portfolio_career as portfolio
+from src.l3_m13_portfolio_career import (
+    SystemMetrics, TechDecision, ApplicationMetrics,
+    generate_architecture_doc, create_demo_script, generate_case_study,
+    prepare_interview_responses, evaluate_portfolio_decision,
+    track_application_metrics, passes_30_second_test
+)
+import src.l3_m13_portfolio_career as portfolio
 from config import PortfolioConfig, OutputPaths, validate_config
 
 # Optional: Prometheus metrics
