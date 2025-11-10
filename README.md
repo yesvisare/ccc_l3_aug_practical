@@ -60,65 +60,39 @@ cp .env.example .env
 ### 2. Run Tests
 
 ```bash
-# Smoke tests (no API keys required - uses simulated components)
-python tests_smoke.py
+# Windows (PowerShell)
+powershell -c "$env:PYTHONPATH='$PWD'; pytest -q"
+# or
+.\scripts\run_tests.ps1
 
-# Or with pytest
-pytest tests_smoke.py -v
+# Unix/Linux/macOS
+PYTHONPATH=. pytest -q
+# or
+./scripts/run_tests.sh
 ```
 
-### 3. CLI Demo
+### 3. Start API Server
 
 ```bash
-# Run standalone demo (simulated - no API calls)
-python l3_m13_complete_saas_build.py
-```
+# Windows (PowerShell)
+powershell -c "$env:PYTHONPATH='$PWD'; uvicorn app:app --reload"
+# or
+.\scripts\run_api.ps1
 
-Expected output:
-```
-============================================================
-Module 13: Enterprise RAG SaaS Demo
-============================================================
-
-1. Ingesting documents per tenant...
-  ✓ acme_corp: 3 docs in ns=tenant_acme_corp
-  ✓ beta_inc: 3 docs in ns=tenant_beta_inc
-  ✓ gamma_labs: 3 docs in ns=tenant_gamma_labs
-
-2. Configuring tenant tiers...
-  ✓ acme_corp: Upgraded to GPT-4 + Hybrid retrieval
-
-3. Executing queries...
-  ✓ acme_corp: 2000.00ms, model=gpt-4
-  ✓ beta_inc: 500.00ms, model=gpt-3.5-turbo
-  ✓ gamma_labs: 500.00ms, model=gpt-3.5-turbo
-
-4. Tenant Metrics (Last Hour):
-  acme_corp:
-    - Queries: 1/1
-    - Avg Latency: 2000.00ms
-    - Est. Cost: $0.0200
-  ...
-```
-
-### 4. Start API Server
-
-```bash
-# Development mode
-python app.py
-
-# Or with uvicorn
-uvicorn app:app --reload --port 8000
+# Unix/Linux/macOS
+PYTHONPATH=. uvicorn app:app --reload
+# or
+./scripts/run_api.sh
 ```
 
 API available at `http://localhost:8000`
 - Docs: `http://localhost:8000/docs`
 - Health: `http://localhost:8000/health`
 
-### 5. Jupyter Notebook
+### 4. Jupyter Notebook
 
 ```bash
-jupyter notebook L3_M13_Complete_SaaS_Build.ipynb
+jupyter notebook notebooks/L3_M13_Complete_SaaS_Build.ipynb
 ```
 
 Execute cells sequentially to see:
@@ -344,6 +318,47 @@ Retrieve usage metrics and costs.
 }
 ```
 
+## Environment Variables
+
+Configure these environment variables in `.env` (copy from `.env.example`):
+
+```bash
+# LLM API Keys
+OPENAI_API_KEY=sk-your-openai-api-key-here
+ANTHROPIC_API_KEY=sk-ant-your-anthropic-api-key-here
+
+# Vector Store (Pinecone)
+PINECONE_API_KEY=your-pinecone-api-key-here
+PINECONE_ENVIRONMENT=us-west1-gcp
+PINECONE_INDEX_NAME=compliance-copilot
+
+# Database (PostgreSQL for tenant configs)
+DATABASE_URL=postgresql://user:password@localhost:5432/compliance_copilot
+
+# System Defaults
+DEFAULT_MODEL=gpt-3.5-turbo
+DEFAULT_RETRIEVAL_MODE=basic
+DEFAULT_MAX_TOKENS=4096
+
+# Resource Limits
+MAX_QUERIES_PER_HOUR=100
+MAX_CONCURRENT_REQUESTS=5
+MAX_DOCUMENTS_PER_TENANT=10000
+QUERY_TIMEOUT_SECONDS=30.0
+
+# Observability (OpenTelemetry)
+OTLP_ENDPOINT=http://localhost:4317
+LOG_LEVEL=INFO
+
+# Application Settings
+ENVIRONMENT=development
+DEBUG=false
+
+# FastAPI Settings
+API_HOST=0.0.0.0
+API_PORT=8000
+```
+
 ## Troubleshooting
 
 ### "Service not initialized" error
@@ -379,6 +394,22 @@ Retrieve usage metrics and costs.
 
 **Fix:** Increase limits in tenant config or upgrade tier
 
+### Offline/Limited Mode
+
+**Behavior:** The module runs in a "degraded" mode if API keys (`OPENAI_API_KEY`, `PINECONE_API_KEY`) are not set in `.env`.
+
+The `config.py` file will return `None` for these clients, and the `app.py` logic will return a `{"skipped": true, "reason": "Service not initialized..."}` response for API calls.
+
+**Use case:** This mode is useful for:
+- Running tests without real API calls (smoke tests)
+- Local development without API keys
+- Educational purposes (simulated/mocked operations)
+
+**To enable live API calls:**
+1. Configure API keys in `.env`
+2. Restart the API server
+3. The system will automatically detect available services
+
 ## Practathon Challenges
 
 ### Easy (10-15 hours)
@@ -401,15 +432,27 @@ Retrieve usage metrics and costs.
 
 ```
 ccc_l3_aug_practical/
-├── l3_m13_complete_saas_build.py   # Core module
-├── config.py                        # Environment & client management
-├── app.py                          # FastAPI entrypoint
-├── requirements.txt                # Dependencies
-├── .env.example                    # Environment template
-├── example_data.json               # Sample data
-├── tests_smoke.py                  # Smoke tests
-├── L3_M13_Complete_SaaS_Build.ipynb # Jupyter notebook
-└── README.md                       # This file
+├── app.py                                  # FastAPI entrypoint
+├── config.py                               # Environment & client management
+├── src/
+│   └── l3_m13_complete_saas_build/
+│       └── __init__.py                     # Core module (multi-tenant logic)
+├── notebooks/
+│   └── L3_M13_Complete_SaaS_Build.ipynb   # Jupyter notebook
+├── tests/
+│   └── test_m13_complete_saas_build.py    # Smoke tests
+├── configs/
+│   └── example.json                        # Configuration templates
+├── scripts/
+│   ├── run_api.ps1                         # Windows: Start API
+│   ├── run_api.sh                          # Unix: Start API
+│   ├── run_tests.ps1                       # Windows: Run tests
+│   └── run_tests.sh                        # Unix: Run tests
+├── requirements.txt                        # Dependencies
+├── .env.example                            # Environment template
+├── .gitignore                              # Git ignore rules
+├── example_data.json                       # Sample data
+└── README.md                               # This file
 ```
 
 ## Next Steps
