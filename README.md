@@ -1,4 +1,4 @@
-# Module 11.4: Vector Index Sharding
+# L3.M11: Vector Index Sharding
 
 Production-grade vector database sharding for multi-tenant SaaS applications. Distributes tenants across multiple Pinecone indexes using consistent hashing to overcome single-index limitations.
 
@@ -30,22 +30,67 @@ pip install -r requirements.txt
 
 ```bash
 cp .env.example .env
-# Edit .env with your API keys:
-# - PINECONE_API_KEY
-# - OPENAI_API_KEY
-# - REDIS_HOST (optional, falls back to in-memory)
+# Edit .env with your API keys
 ```
+
+**Environment Variables:**
+
+```bash
+# Pinecone Configuration
+PINECONE_API_KEY=your-pinecone-api-key-here
+PINECONE_ENVIRONMENT=us-east-1-aws
+
+# Redis Configuration (for shard assignment tracking)
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_DB=0
+REDIS_PASSWORD=
+
+# OpenAI Configuration (for embeddings)
+OPENAI_API_KEY=your-openai-api-key-here
+
+# Sharding Configuration
+NUM_SHARDS=4
+SHARD_PREFIX=tenant-shard
+VECTOR_DIMENSION=1536
+METRIC=cosine
+
+# Performance Thresholds
+MAX_VECTORS_PER_SHARD=300000
+MAX_NAMESPACES_PER_SHARD=20
+P95_LATENCY_THRESHOLD_MS=500
+REBALANCE_NAMESPACE_THRESHOLD=18
+```
+
+**Offline/Limited Mode:**
+
+The API runs in a limited mode if `PINECONE_API_KEY` or `OPENAI_API_KEY` are not set. The `/query` and `/ingest` endpoints will return a `{"skipped": true, "reason": "no keys/service"}` mock response instead of making live API calls. This allows you to explore the architecture and test routing logic without requiring active services.
 
 ### 3. Run Tests
 
 ```bash
-pytest tests_smoke.py -v
+# Windows PowerShell
+.\scripts\run_tests.ps1
+
+# Or manually with PYTHONPATH
+$env:PYTHONPATH = $PWD; pytest -q
+
+# Linux/Mac
+PYTHONPATH=$PWD pytest -q
 ```
 
 ### 4. Start API
 
 ```bash
-python app.py
+# Windows PowerShell
+.\scripts\run_api.ps1
+
+# Or manually with PYTHONPATH
+$env:PYTHONPATH = $PWD; uvicorn app:app --reload
+
+# Linux/Mac
+PYTHONPATH=$PWD uvicorn app:app --reload
+
 # API runs at http://localhost:8000
 # Docs at http://localhost:8000/docs
 ```
@@ -53,7 +98,7 @@ python app.py
 ### 5. Explore Notebook
 
 ```bash
-jupyter notebook L2_M11_Vector_Index_Sharding.ipynb
+jupyter lab notebooks/L3_M11_Vector_Index_Sharding.ipynb
 ```
 
 ## How It Works
