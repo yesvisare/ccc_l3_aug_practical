@@ -11,7 +11,7 @@ import pytest
 from unittest.mock import Mock, patch
 
 # Import module components
-from l2_m9_hypothetical_document_embeddings import (
+from src.l3_m9_hypothetical_document_embeddings import (
     HyDEGenerator,
     HyDERetriever,
     HybridHyDERetriever,

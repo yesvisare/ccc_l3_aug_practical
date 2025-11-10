@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 import uvicorn
 
 # Import module components
-from l2_m9_hypothetical_document_embeddings import (
+from src.l3_m9_hypothetical_document_embeddings import (
     AdaptiveHyDERetriever,
     HyDEGenerator,
     QueryClassifier
