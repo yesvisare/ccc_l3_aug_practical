@@ -1,10 +1,10 @@
-# Module 12.3: Self-Service Tenant Onboarding
+# L3 Module 12: Self-Service Tenant Onboarding
 
 > **Automate SaaS customer onboarding using multi-tenant architecture and billing integration.** Enables customers to become productive within 5 minutes through automated provisioning.
 
 ## Overview
 
-This module teaches Level 3 learners how to build a complete self-service onboarding system that eliminates the 10-15 hours weekly spent on manual customer setup. The solution automates:
+This Level 3 module teaches how to build a complete self-service onboarding system that eliminates the 10-15 hours weekly spent on manual customer setup. The solution automates:
 
 - **Signup & Payment Capture** - Synchronous collection of user info and Stripe checkout
 - **Automated Provisioning** - Background tenant setup via Celery (Pinecone namespace, DB tables, API keys)
@@ -23,32 +23,45 @@ pip install -r requirements.txt
 
 ```bash
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env with your API keys (or leave empty for offline/limited mode)
 ```
 
 ### 3. Run Tests
 
+```powershell
+# Windows PowerShell
+$env:PYTHONPATH="$PWD"; pytest -q
+# or use the script
+.\scripts\run_tests.ps1
+```
+
 ```bash
-pytest tests_smoke.py -v
+# Unix/Linux/Mac
+export PYTHONPATH=$PWD && pytest -q
+# or use the script
+./scripts/run_tests.sh
 ```
 
 ### 4. Start API Server
 
-```bash
-python app.py
-# or: uvicorn app:app --reload
+```powershell
+# Windows PowerShell
+$env:PYTHONPATH="$PWD"; uvicorn app:app --reload
+# or use the script
+.\scripts\run_api.ps1
 ```
 
-### 5. Try the Module
-
 ```bash
-python l2_m12_self_service_tenant_onboarding.py
+# Unix/Linux/Mac
+export PYTHONPATH=$PWD && uvicorn app:app --reload
+# or use the script
+./scripts/run_api.sh
 ```
 
-### 6. Explore the Notebook
+### 5. Explore the Notebook
 
 ```bash
-jupyter notebook L2_M12_Self-Service_Tenant_Onboarding.ipynb
+jupyter lab notebooks/L3_M12_Self_Service_Tenant_Onboarding.ipynb
 ```
 
 ## How It Works
@@ -277,19 +290,95 @@ Check:
 2. `SENDGRID_FROM_EMAIL` is verified sender
 3. Email not in spam (check SPF/DKIM/DMARC)
 
+## Environment Variables
+
+Copy `.env.example` to `.env` and configure the following keys:
+
+```bash
+# Database
+DATABASE_URL=sqlite:///./tenants.db
+
+# Stripe (payment processing)
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+STRIPE_PRICE_ID_STARTER=price_starter_monthly
+STRIPE_PRICE_ID_PRO=price_pro_monthly
+STRIPE_PRICE_ID_ENTERPRISE=price_enterprise_monthly
+
+# Pinecone (vector database)
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_ENVIRONMENT=us-west1-gcp
+PINECONE_INDEX_NAME=saas-tenants
+
+# Redis/Celery (background jobs)
+REDIS_URL=redis://localhost:6379/0
+CELERY_BROKER_URL=redis://localhost:6379/0
+CELERY_RESULT_BACKEND=redis://localhost:6379/0
+
+# SendGrid (email delivery)
+SENDGRID_API_KEY=SG.your_sendgrid_api_key
+SENDGRID_FROM_EMAIL=onboarding@yourdomain.com
+SENDGRID_FROM_NAME=Your SaaS Platform
+
+# Application
+APP_URL=http://localhost:8000
+JWT_SECRET=your-secret-jwt-key-min-32-chars
+JWT_ALGORITHM=HS256
+JWT_EXPIRY_HOURS=720
+
+# Provisioning
+PROVISIONING_TIMEOUT_SECONDS=300
+MAX_PROVISIONING_RETRIES=3
+SAMPLE_DATA_ENABLED=true
+
+# Rate Limiting
+SIGNUP_RATE_LIMIT_PER_HOUR=10
+```
+
+## Offline / Limited Mode
+
+**The module runs in a limited mode if API keys are not configured.** This allows you to explore the codebase, run tests, and understand the architecture without requiring live service accounts.
+
+When API keys (`STRIPE_SECRET_KEY`, `PINECONE_API_KEY`, `SENDGRID_API_KEY`) are not set in `.env`, the `config.py` file returns `None` for these clients. The core logic gracefully handles this by:
+
+- **Stripe:** Returning mock checkout URLs instead of creating real sessions
+- **Pinecone:** Skipping namespace creation and vector upserts (logs warning)
+- **SendGrid:** Skipping email delivery (logs warning)
+
+All tests pass in offline mode. The API returns `200` responses with `{"skipped": true, "reason": "..."}` for operations requiring external services.
+
+To enable **OFFLINE mode** in the notebook, set:
+```bash
+export OFFLINE=true
+```
+
 ## File Structure
 
 ```
 .
-├── l2_m12_self_service_tenant_onboarding.py  # Main module
-├── app.py                                     # FastAPI server
-├── config.py                                  # Configuration
-├── requirements.txt                           # Dependencies
-├── .env.example                               # Environment template
-├── example_data.json                          # Sample data
-├── tests_smoke.py                             # Smoke tests
-├── README.md                                  # This file
-└── L2_M12_Self-Service_Tenant_Onboarding.ipynb  # Jupyter notebook
+├── app.py                                    # FastAPI server (thin wrapper)
+├── config.py                                 # Configuration & client accessors
+├── src/
+│   └── l3_m12_self_service_tenant_onboarding/
+│       └── __init__.py                       # Core business logic
+├── notebooks/
+│   └── L3_M12_Self_Service_Tenant_Onboarding.ipynb  # Interactive tutorial
+├── tests/
+│   └── test_m12_self_service_tenant_onboarding.py   # Test suite
+├── configs/
+│   └── example.json                          # Plan configurations
+├── scripts/
+│   ├── run_api.ps1                          # Windows API launcher
+│   ├── run_api.sh                           # Unix API launcher
+│   ├── run_tests.ps1                        # Windows test runner
+│   └── run_tests.sh                         # Unix test runner
+├── requirements.txt                          # Dependencies
+├── .env.example                              # Environment template
+├── example_data.json                         # Sample data
+├── .gitignore                                # Git ignore rules
+├── LICENSE                                   # License file
+└── README.md                                 # This file
 ```
 
 ## Next Steps
