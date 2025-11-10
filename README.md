@@ -25,17 +25,21 @@ Portfolio effectiveness: **80% communication, 20% technical ability** at senior+
 pip install -r requirements.txt
 
 # 2. Run the Jupyter notebook (recommended)
-jupyter notebook L3_M13_Portfolio_Showcase_Career_Launch.ipynb
+jupyter lab notebooks/L3_M13_Portfolio_Showcase_Career_Launch.ipynb
 
-# 3. Or use the Python module directly
-python l3_m13_portfolio_career.py
+# 3. Run tests (Windows)
+powershell -c "$env:PYTHONPATH='$PWD'; pytest -q"
+# or use the script
+.\scripts\run_tests.ps1
 
-# 4. Or run the FastAPI server
-python app.py
+# 4. Run the FastAPI server (Windows)
+powershell -c "$env:PYTHONPATH='$PWD'; uvicorn app:app --reload"
+# or use the script
+.\scripts\run_api.ps1
 # Visit http://127.0.0.1:8000/docs for API documentation
 
-# 5. Run tests
-pytest tests_smoke.py -v
+# 5. Run tests (Linux/Mac)
+pytest tests/ -v
 ```
 
 ## How It Works
@@ -152,6 +156,41 @@ pytest tests_smoke.py -v
 
 Portfolio is **table stakes**, not sufficient alone.
 
+## Environment Variables
+
+This module works **fully without any API keys** - all core functionality runs locally. Optional integrations:
+
+```bash
+# Optional: Video hosting & publishing (from .env.example)
+YOUTUBE_API_KEY=your_youtube_api_key_here
+MEDIUM_API_TOKEN=your_medium_integration_token_here
+DEVTO_API_KEY=your_devto_api_key_here
+LINKEDIN_ACCESS_TOKEN=your_linkedin_access_token_here
+
+# Optional: Analytics
+GA_TRACKING_ID=UA-XXXXXXXXX-X
+
+# Application defaults
+OUTPUT_DIR=./output
+LOG_LEVEL=INFO
+```
+
+Copy `.env.example` to `.env` and fill in values if you want to use optional integrations.
+
+## Offline/Limited Mode
+
+**Note:** The module runs in a limited "degraded" mode if external service API keys are not set in `.env`.
+
+The `config.py` file will return `None` for any missing clients, and the `app.py` logic will gracefully return `{"skipped": true, "reason": "Service not initialized..."}` responses for API calls that would require external services.
+
+**For this module:** All core functionality (architecture doc generation, demo script creation, case study writing, interview prep, decision framework) works **completely offline** without any external services. This module is focused on local portfolio creation, not external API integration.
+
+To run in explicit OFFLINE mode for notebooks:
+```bash
+export OFFLINE=true
+jupyter lab notebooks/L3_M13_Portfolio_Showcase_Career_Launch.ipynb
+```
+
 ## Troubleshooting
 
 ### Q: My callback rate is still <5% after portfolio
@@ -201,14 +240,24 @@ Portfolio is **table stakes**, not sufficient alone.
 
 ```
 .
-├── l3_m13_portfolio_career.py        # Core module with all functions
+├── app.py                             # FastAPI server (thin wrapper)
 ├── config.py                          # Configuration and constants
-├── app.py                             # FastAPI server (optional)
-├── tests_smoke.py                     # Smoke tests
+├── src/
+│   └── l3_m13_portfolio_career/
+│       └── __init__.py                # Core module with all functions
+├── notebooks/
+│   └── L3_M13_Portfolio_Showcase_Career_Launch.ipynb  # Interactive notebook
+├── tests/
+│   └── test_m13_portfolio_career.py   # Smoke tests
+├── configs/
+│   └── example.json                   # Placeholder config
+├── scripts/
+│   ├── run_api.ps1                    # Windows: Run API server
+│   └── run_tests.ps1                  # Windows: Run tests
 ├── requirements.txt                   # Python dependencies
 ├── .env.example                       # Environment template (optional)
 ├── example_data.json                  # Sample portfolio data
-├── L3_M13_Portfolio_Showcase_Career_Launch.ipynb  # Interactive notebook
+├── .gitignore                         # Python defaults
 ├── README.md                          # This file
 └── output/                            # Generated artifacts
     ├── architecture_documentation.md

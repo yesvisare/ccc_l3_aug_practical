@@ -307,7 +307,7 @@ def test_passes_30_second_test_bad():
 
 def test_example_data_loads():
     """Test that example_data.json loads properly"""
-    example_path = Path(__file__).parent / "example_data.json"
+    example_path = Path(__file__).parent.parent / "example_data.json"
     assert example_path.exists()
 
     with open(example_path, 'r') as f:

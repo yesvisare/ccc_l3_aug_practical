@@ -86,7 +86,7 @@ class TechDecision:
 
 **Cost Impact:** ${self.cost_monthly_usd}/month
 
-**When to Choose Alternative:** {when_to_choose_alternative}
+**When to Choose Alternative:** {self.when_to_choose_alternative}
 """
 
 
