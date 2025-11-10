@@ -12,7 +12,7 @@ Validates:
 import pytest
 from unittest.mock import Mock, MagicMock
 from config import Config
-from l2_m11_vector_index_sharding import ShardManager, ShardedRAG, monitor_shard_health
+from src.l3_m11_vector_index_sharding import ShardManager, ShardedRAG, monitor_shard_health
 
 
 class TestConfig:

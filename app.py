@@ -14,7 +14,7 @@ from typing import List, Dict, Any, Optional
 import logging
 
 from config import Config, get_clients, has_required_services
-from l2_m11_vector_index_sharding import ShardManager, ShardedRAG, monitor_shard_health
+from src.l3_m11_vector_index_sharding import ShardManager, ShardedRAG, monitor_shard_health
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

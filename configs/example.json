@@ -1,0 +1,6 @@
+{
+  "PINECONE_API_KEY": "your-pinecone-api-key-here",
+  "REDIS_HOST": "localhost",
+  "OPENAI_API_KEY": "your-openai-api-key-here",
+  "NUM_SHARDS": 4
+}
