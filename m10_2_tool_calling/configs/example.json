@@ -1,0 +1,44 @@
+{
+  "_comment": "Example configuration file documenting keys used by config.py",
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "name": "agentic_rag",
+    "user": "postgres",
+    "password": "your_password_here"
+  },
+  "openai": {
+    "api_key": "sk-your-openai-api-key-here",
+    "model": "gpt-4",
+    "temperature": 0.0
+  },
+  "slack": {
+    "bot_token": "xoxb-your-slack-bot-token-here",
+    "webhook_url": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
+  },
+  "vector_db": {
+    "api_key": "your_vector_db_api_key_here",
+    "endpoint": "https://your-index.pinecone.io"
+  },
+  "external_api": {
+    "api_key": "your_external_api_key_here",
+    "base_url": "https://api.example.com"
+  },
+  "tool_defaults": {
+    "timeout_seconds": 30,
+    "retry_count": 2,
+    "max_concurrent_tools": 5,
+    "sandbox_enabled": true
+  },
+  "agent": {
+    "max_iterations": 10
+  },
+  "rate_limiting": {
+    "api_rate_limit_per_minute": 60,
+    "api_rate_limit_per_hour": 1000
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "tool_execution.log"
+  }
+}

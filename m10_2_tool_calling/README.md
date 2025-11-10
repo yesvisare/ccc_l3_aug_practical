@@ -1,4 +1,4 @@
-# Module 10.2: Tool Calling & Function Execution
+# Module 10.2: Tool Calling & Function Execution (L3)
 
 Production-grade tool ecosystem for agentic RAG systems with sandboxing, timeouts, and comprehensive error handling.
 
@@ -34,25 +34,45 @@ cp .env.example .env
 ### 3. Run Examples
 
 **Option A: Python Module**
-```bash
-python l2_m10_tool_calling_function_execution.py
+```powershell
+# Windows (PowerShell)
+$env:PYTHONPATH = $PWD; python src/l3_m10_tool_calling_function_execution/__init__.py
+
+# Linux/Mac
+PYTHONPATH=$PWD python src/l3_m10_tool_calling_function_execution/__init__.py
 ```
 
 **Option B: FastAPI Server**
-```bash
-python app.py
+```powershell
+# Windows (PowerShell) - Using script
+.\scripts\run_api.ps1
+
+# Or manually
+$env:PYTHONPATH = $PWD; python app.py
+
+# Linux/Mac
+PYTHONPATH=$PWD python app.py
 # Visit http://localhost:8000/docs for interactive API
 ```
 
 **Option C: Jupyter Notebook**
-```bash
-jupyter notebook L2_M10_Tool_Calling_Function_Execution.ipynb
+```powershell
+# Windows/Linux/Mac
+cd notebooks
+jupyter notebook L3_M10_Tool_Calling_Function_Execution.ipynb
 ```
 
 ### 4. Run Tests
 
-```bash
-pytest tests_smoke.py -v
+```powershell
+# Windows (PowerShell) - Using script
+.\scripts\run_tests.ps1
+
+# Or manually
+$env:PYTHONPATH = $PWD; pytest -q
+
+# Linux/Mac
+PYTHONPATH=$PWD pytest -q
 ```
 
 ---
@@ -103,6 +123,47 @@ pytest tests_smoke.py -v
 
 ---
 
+## Environment Variables
+
+All configuration is managed through environment variables (see `.env.example` for template):
+
+```bash
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=agentic_rag
+DB_USER=postgres
+DB_PASSWORD=your_db_password_here
+
+# OpenAI API (optional - system gracefully degrades without it)
+OPENAI_API_KEY=sk-your-openai-api-key-here
+
+# Slack Configuration (optional)
+SLACK_BOT_TOKEN=xoxb-your-slack-bot-token-here
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+
+# Vector Database (optional)
+VECTOR_DB_API_KEY=your_vector_db_api_key_here
+VECTOR_DB_ENDPOINT=https://your-index.pinecone.io
+```
+
+**Offline Mode:** Set `OFFLINE=true` to skip all external API calls (useful for demos, testing without credentials, or air-gapped environments). The system will:
+- Skip OpenAI LLM calls
+- Use mock responses for external APIs
+- Run all local tools (calculator, mock DB queries)
+- Print "⚠️ Running in OFFLINE mode" notifications
+
+```powershell
+# Windows
+$env:OFFLINE = "true"
+python app.py
+
+# Linux/Mac
+OFFLINE=true python app.py
+```
+
+---
+
 ## How It Works
 
 ### Tool Registry
@@ -110,7 +171,7 @@ pytest tests_smoke.py -v
 Central catalog of all available tools with Pydantic validation:
 
 ```python
-from l2_m10_tool_calling_function_execution import (
+from src.l3_m10_tool_calling_function_execution import (
     tool_registry,
     register_default_tools
 )
@@ -129,7 +190,7 @@ for tool in tools:
 Execute tools with automatic safety protections:
 
 ```python
-from l2_m10_tool_calling_function_execution import SafeToolExecutor
+from src.l3_m10_tool_calling_function_execution import SafeToolExecutor
 
 executor = SafeToolExecutor(tool_registry)
 
@@ -147,7 +208,7 @@ print(f"Time: {result.execution_time_ms:.2f}ms")
 Full agent loop with tool calling:
 
 ```python
-from l2_m10_tool_calling_function_execution import ReActAgent
+from src.l3_m10_tool_calling_function_execution import ReActAgent
 
 agent = ReActAgent(executor)
 response = agent.run("How do I implement tool calling?")
@@ -332,14 +393,26 @@ xcode-select --install
 
 ```
 m10_2_tool_calling/
-├── l2_m10_tool_calling_function_execution.py  # Core module (all logic)
+├── src/
+│   └── l3_m10_tool_calling_function_execution/
+│       └── __init__.py                         # Core module (all logic)
+├── notebooks/
+│   └── L3_M10_Tool_Calling_Function_Execution.ipynb  # Tutorial notebook
+├── tests/
+│   ├── conftest.py                             # Pytest configuration
+│   └── test_m10_tool_calling_function_execution.py   # Test suite
+├── scripts/
+│   ├── run_api.ps1                             # Windows: Start FastAPI
+│   └── run_tests.ps1                           # Windows: Run tests
+├── configs/
+│   └── example.json                            # Configuration documentation
+├── app.py                                      # FastAPI entrypoint (thin)
 ├── config.py                                   # Environment config
-├── app.py                                      # FastAPI entrypoint
-├── tests_smoke.py                              # Smoke tests
-├── L2_M10_Tool_Calling_Function_Execution.ipynb  # Tutorial notebook
-├── requirements.txt                            # Python dependencies
-├── .env.example                                # Environment template
 ├── example_data.json                           # Sample queries/failures
+├── requirements.txt                            # Python dependencies
+├── pyproject.toml                              # Pytest & tool config
+├── .env.example                                # Environment template
+├── .gitignore                                  # Git exclusions
 └── README.md                                   # This file
 ```
 

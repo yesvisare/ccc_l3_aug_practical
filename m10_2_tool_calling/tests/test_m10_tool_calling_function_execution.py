@@ -13,7 +13,7 @@ from pathlib import Path
 
 # Import modules to test
 import config
-from l2_m10_tool_calling_function_execution import (
+from src.l3_m10_tool_calling_function_execution import (
     ToolRegistry,
     ToolDefinition,
     ToolCategory,
@@ -283,7 +283,7 @@ def test_tool_statistics_tracking():
 
 def test_example_data_exists():
     """Test example_data.json exists and is valid."""
-    data_path = Path(__file__).parent / "example_data.json"
+    data_path = Path(__file__).parent.parent / "example_data.json"
     assert data_path.exists()
 
     with open(data_path) as f:

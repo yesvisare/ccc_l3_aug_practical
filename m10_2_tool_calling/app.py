@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 import uvicorn
 
 # Import core module
-from l2_m10_tool_calling_function_execution import (
+from src.l3_m10_tool_calling_function_execution import (
     tool_registry,
     register_default_tools,
     SafeToolExecutor,
