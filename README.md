@@ -40,8 +40,7 @@ cp .env.example .env
 
 ```python
 import asyncio
-from l2_m9_query_decomposition_planning import QueryDecompositionPipeline
-from config import Config
+from src.l3_m9_query_decomposition import QueryDecompositionPipeline, Config
 
 # Mock retrieval function (replace with your actual retrieval)
 async def my_retrieval(query: str) -> str:
@@ -86,7 +85,7 @@ curl -X POST http://localhost:8000/query \
 ### 4. Explore the Jupyter Notebook
 
 ```bash
-jupyter notebook L2_M9_Query_Decomposition_Planning.ipynb
+jupyter notebook notebooks/L3_M9_Query_Decomposition_Planning.ipynb
 ```
 
 ## How It Works
@@ -302,14 +301,24 @@ python tests_smoke.py
 
 ```
 .
-├── l2_m9_query_decomposition_planning.py  # Core implementation
-├── config.py                               # Configuration management
+├── src/
+│   └── l3_m9_query_decomposition/
+│       ├── __init__.py                     # Package exports
+│       ├── pipeline.py                     # Core implementation
+│       └── config.py                       # Configuration management
+├── notebooks/
+│   └── L3_M9_Query_Decomposition_Planning.ipynb  # Interactive tutorial
+├── tests/
+│   └── test_smoke.py                       # Basic tests
+├── scripts/
+│   ├── run_api.ps1                         # Windows script to run API
+│   └── run_tests.ps1                       # Windows script to run tests
 ├── app.py                                  # FastAPI entrypoint
 ├── requirements.txt                        # Dependencies
 ├── .env.example                            # Environment template
 ├── example_data.json                       # Sample queries & test data
-├── L2_M9_Query_Decomposition_Planning.ipynb  # Interactive tutorial
-├── tests_smoke.py                          # Basic tests
+├── .gitignore                              # Git ignore rules
+├── LICENSE                                 # License file
 └── README.md                               # This file
 ```
 

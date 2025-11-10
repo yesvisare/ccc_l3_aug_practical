@@ -2,7 +2,7 @@
 FastAPI application for Module 9.1: Query Decomposition & Planning
 
 Provides REST API endpoints for query decomposition and processing.
-No business logic here - all logic is in l2_m9_query_decomposition_planning.py
+No business logic here - all logic is in src/l3_m9_query_decomposition/pipeline.py
 """
 
 import asyncio
@@ -14,13 +14,13 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 import uvicorn
 
-from l2_m9_query_decomposition_planning import (
+from src.l3_m9_query_decomposition.pipeline import (
     QueryDecompositionPipeline,
     DecompositionError,
     DependencyError,
     SynthesisError
 )
-from config import Config
+from src.l3_m9_query_decomposition.config import Config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

@@ -9,11 +9,15 @@ Minimal tests to verify:
 
 import asyncio
 import json
+import sys
 from pathlib import Path
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import pytest
 
-from l2_m9_query_decomposition_planning import (
+from src.l3_m9_query_decomposition.pipeline import (
     QueryDecomposer,
     DependencyGraph,
     ParallelExecutionEngine,
@@ -24,7 +28,7 @@ from l2_m9_query_decomposition_planning import (
     DependencyError,
     SynthesisError
 )
-from config import Config
+from src.l3_m9_query_decomposition.config import Config
 
 
 def test_config_loads():
