@@ -17,7 +17,7 @@ import json
 def test_imports():
     """Test that all core modules can be imported."""
     try:
-        from l2_m12_usage_metering_analytics import (
+        from src.l3_m12_usage_metering_analytics import (
             UsageEvent, TenantQuota, ClickHouseSchema,
             UsageTracker, CostCalculator, QuotaManager, BillingExporter
         )
@@ -58,7 +58,7 @@ def test_clickhouse_client_graceful_failure():
 
 def test_usage_event_creation():
     """Test creating a UsageEvent object."""
-    from l2_m12_usage_metering_analytics import UsageEvent
+    from src.l3_m12_usage_metering_analytics import UsageEvent
 
     event = UsageEvent(
         event_id="test_001",
@@ -83,7 +83,7 @@ def test_usage_event_creation():
 
 def test_tenant_quota_creation():
     """Test creating a TenantQuota object."""
-    from l2_m12_usage_metering_analytics import TenantQuota
+    from src.l3_m12_usage_metering_analytics import TenantQuota
 
     quota = TenantQuota(
         tenant_id="test_tenant",
@@ -102,7 +102,7 @@ def test_tenant_quota_creation():
 
 def test_schema_sql_generation():
     """Test that schema SQL can be generated."""
-    from l2_m12_usage_metering_analytics import ClickHouseSchema
+    from src.l3_m12_usage_metering_analytics import ClickHouseSchema
 
     sql_statements = ClickHouseSchema.get_schema_sql()
 
@@ -117,7 +117,7 @@ def test_schema_sql_generation():
 
 def test_cost_calculator():
     """Test cost calculation logic."""
-    from l2_m12_usage_metering_analytics import CostCalculator, UsageEvent
+    from src.l3_m12_usage_metering_analytics import CostCalculator, UsageEvent
 
     # Test query cost
     query_event = UsageEvent(
@@ -159,7 +159,7 @@ def test_cost_calculator():
 @pytest.mark.asyncio
 async def test_usage_tracker_initialization():
     """Test that UsageTracker can be initialized without ClickHouse."""
-    from l2_m12_usage_metering_analytics import UsageTracker
+    from src.l3_m12_usage_metering_analytics import UsageTracker
 
     # Should work even without client
     tracker = UsageTracker(client=None)
@@ -178,7 +178,7 @@ async def test_usage_tracker_initialization():
 @pytest.mark.asyncio
 async def test_usage_tracker_fallback():
     """Test that tracker falls back to file storage when no client."""
-    from l2_m12_usage_metering_analytics import UsageTracker, UsageEvent
+    from src.l3_m12_usage_metering_analytics import UsageTracker, UsageEvent
     import os
 
     tracker = UsageTracker(client=None)
@@ -228,7 +228,7 @@ def test_example_data_loads():
 
 def test_quota_manager_without_client():
     """Test QuotaManager handles missing client gracefully."""
-    from l2_m12_usage_metering_analytics import QuotaManager, TenantQuota
+    from src.l3_m12_usage_metering_analytics import QuotaManager, TenantQuota
 
     # Should initialize even without client
     manager = QuotaManager(client=None)
@@ -248,7 +248,7 @@ def test_quota_manager_without_client():
 
 def test_billing_exporter_without_client():
     """Test BillingExporter handles missing client gracefully."""
-    from l2_m12_usage_metering_analytics import BillingExporter
+    from src.l3_m12_usage_metering_analytics import BillingExporter
 
     exporter = BillingExporter(client=None)
     assert exporter is not None

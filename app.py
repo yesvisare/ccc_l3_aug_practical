@@ -7,7 +7,7 @@ Provides REST API endpoints for metering operations:
 - Quota checking
 - Invoice generation
 
-No business logic - delegates to l2_m12_usage_metering_analytics.py
+No business logic - delegates to src.l3_m12_usage_metering_analytics
 """
 
 import logging
@@ -19,7 +19,7 @@ from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 import uvicorn
 
-from l2_m12_usage_metering_analytics import (
+from src.l3_m12_usage_metering_analytics import (
     UsageEvent, TenantQuota, ClickHouseSchema,
     UsageTracker, QuotaManager, BillingExporter, CostCalculator
 )
